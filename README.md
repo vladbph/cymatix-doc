@@ -49,7 +49,7 @@
     "data_files":"hello.txt"
 }
 ```
-* Create training **hello.txt** training file
+* Create **hello.txt** training file
 ```
 .train
 GREETING:Hello World
@@ -59,6 +59,9 @@ That's it. Literally, 3 lines(Ok, 5 if consider beautification) of code would ge
 
 After login, upload the project by choosing ***hello*** folder
 ![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
+
+When project is uploaded, you need to train it. Choose ***Training*** option in launch project page
+![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
 
 
