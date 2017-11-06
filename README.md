@@ -54,14 +54,17 @@
 .train
 GREETING:Hello World
 ```
-That's it. Literally, 3 lines(Ok, 5 if consider beautification) of code would get you there. To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***
+That's it. Literally, 3 lines(Ok, 5 if consider beautification) of code would get you there. To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
+***NOTE!*** Please use real e-mail address during registration to be able to receive training completion notification.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
 After login, upload the project by choosing ***hello*** folder
 ![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
 
-When project is uploaded, you need to train it. Choose ***Training*** option in launch project page
+When project is uploaded, you need to train it. Choose ***Training*** option and press launch.
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
+
+Depending on project complexity it may take from few seconds to few hours to train your project. NOTE! Please use real e-mail address during registration to be able to receive training completion notification.
 
 
 
