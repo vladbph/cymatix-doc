@@ -1,4 +1,6 @@
-# Please watch the repo for updates. I am in process creating documentation and examples. 
+```diff 
+Please watch the repo updates. I am in process creating documentation and examples
+```
 
 ### zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
 
@@ -44,7 +46,7 @@
 # 'Hello Word' Example.
 * Create and enter **hello** folder
 * Create **hello.json** file
-```
+```json
 {
     "data_files":"hello.txt"
 }
