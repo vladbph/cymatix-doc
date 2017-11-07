@@ -65,9 +65,10 @@ When project is uploaded, you need to train it. Choose ***Training*** option and
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
 Depending on project complexity it may take from few seconds to few hours to train your project. 
-What's next after prject training is finished? Two options:
+What's next after project training is finished? Two options:
 * Use REST api 
 * Use deduction page to verify the training
+![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
 
 
