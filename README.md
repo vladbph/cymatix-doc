@@ -20,6 +20,7 @@
 - Supports method of embedding states, events, sensors information to maintain flow of the conversation. All machine learning based.
 - Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
+    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_destination':'Home', 't_stopover':'restaurant' } ```
 - Lookup labels support
 - NLU tasks supported:
     - Self-contained deductions, not contextual
