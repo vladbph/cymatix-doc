@@ -2,7 +2,7 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-### zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
+# zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
 
     - Healthcare 
     - Finance
@@ -11,17 +11,18 @@
     - Automotive
     - ...
 
-### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) method of conversation flow tracking as well as many powerful features...
+### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) contextual method of conversation flow tracking as well as many powerful features...
+### ___...Context is everything ...___
 ## Features Highlights
 - State of the Art deduction pipeline to efficiently resolve ambiguity
 - Train Of Thought technology
 - Ability to create 1000s of utterances in few minutes
-- Supports method of embedding states, events, sensors information to maintain flow of the conversation
+- Supports method of embedding states, events, sensors information to maintain flow of the conversation. All machine learning based.
 - Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
 - Lookup labels support
 - NLU tasks supported:
-    - Self-contained deductions
+    - Self-contained deductions, not contextual
         * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
         * __"Take me to Seattle"__ =>  ``` { 't_intent':'NAVIGATE, 't_destination':'Seattle' } ```
     - AI Bot asks user questions. Example: Order pizza bot
