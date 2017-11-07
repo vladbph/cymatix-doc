@@ -70,9 +70,9 @@ What's next after project training is finished? Two options:
     * Login:
         <https://nlp2.zcymatix.com/?action=launch&project_id=project_id>
         
-        In the responce you will receive ___session_id___
+        In the responce you will receive ___session_id___ which has to be used in deduction requests
     * Deduction:
-        <https://nlp2.zcymatix.com/?action=deduce&session_id=session id&query=hello+world>
+        <https://nlp2.zcymatix.com/?action=deduce&session_id=session_id&query=hello+world>
     
 * Use deduction page to verify the training
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
