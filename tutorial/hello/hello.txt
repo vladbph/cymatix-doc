@@ -1,0 +1,10 @@
+# Training section contains all utterances
+.train
+    # Basic utterance. 'GREETING' is the intent to be deduced. 'Hello World' is the utterance
+    GREETING:Hello World
+
+    # This template will produce tree utterances:
+    #   GREETING:Hello guys
+    #   GREETING:Hello folks
+    #   GREETING:Hello
+    GREETING:Hello (guys|folks|)
