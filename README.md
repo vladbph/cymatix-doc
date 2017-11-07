@@ -22,6 +22,7 @@
 - Idioms interpretation mechanism
     * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_destination':'Home', 't_stopover':'restaurant' } ```
 - Lookup labels support
+    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['bbq chicken', 'new york']```
 - NLU tasks supported:
     - Self-contained deductions, not contextual
         * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
