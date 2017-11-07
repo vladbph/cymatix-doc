@@ -68,11 +68,11 @@ Depending on project complexity it may take from few seconds to few hours to tra
 What's next after project training is finished? Two options:
 * Use REST api. 
     * Login:
-        https://nlp2.zcymatix.com/?action=launch&project_id=<project_id>
+        <https://nlp2.zcymatix.com/?action=launch&project_id=project_id>
         
         In the responce you will receive ___session_id___
     * Deduction:
-        https://nlp2.zcymatix.com/?action=deduce&session_id=<session id>&query=hello+world
+        <https://nlp2.zcymatix.com/?action=deduce&session_id=session id&query=hello+world>
     
 * Use deduction page to verify the training
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
