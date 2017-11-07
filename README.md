@@ -1,5 +1,5 @@
 ```diff 
-+ Please watch the repo updates. I am in process creating documentation and examples
++ Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
 ### zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
