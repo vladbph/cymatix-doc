@@ -2,25 +2,30 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-# zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
+# zCymatix Natural Language Understanding(NLU) Voice/text UI platform
+
+For:
 
     - Healthcare 
     - Finance
     - Electronics
     - Wearables
     - Automotive
+    - Web sites for blind
     - ...
 
 ### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) contextual method of conversation flow tracking as well as many powerful features...
-### ___...Context is everything ...___
+### ___...Context IS everything ...___
 ## Features Highlights
-- State of the Art deduction pipeline to efficiently resolve ambiguity
 - Train Of Thought technology
+- State of the Art deduction pipeline to efficiently resolve ambiguity
 - Ability to create 1000s of utterances in few minutes
-- Supports method of embedding states, events, sensors information to maintain flow of the conversation. All machine learning based.
-- Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to.
+- Supports method of embedding states, events, sensors information to maintain flow of the conversation
+- Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
+- Optional scripting support.
+    * All layers of the pipeline are ML layers, however if desired, scripting can be used
 - Idioms interpretation mechanism
-    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_destination':'Home', 't_stopover':'restaurant' } ```
+    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' } ```
 - Lookup labels support
     * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['bbq chicken', 'new york']```
 - NLU tasks supported:
@@ -43,6 +48,10 @@
         * User> __How?__
         * __Bot__> Create a folder. Name it as a project name. Create config file and at least one training file
     - Combination of above
+- Indirect subject referencing
+    * Notion of 'it/there'
+        * 'Where is Seattle'
+        * 'Take me there'
 - Expert system support. Result of the dialog is fed into a layer to process conversation outcome.
     
    So, Let's do it!
