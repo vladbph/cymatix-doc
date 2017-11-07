@@ -2,7 +2,7 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-# zCymatix Natural Language Understanding(NLU) Voice/text UI platform
+# zCymatix Natural Language Understanding(NLU) Voice/text UI platform (www.zcymatix.com)
 
 For:
 
