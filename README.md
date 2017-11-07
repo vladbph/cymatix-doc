@@ -2,11 +2,11 @@
 
 ### zCymatix Natural Language Understanding(NLU) Voice/text UI platform for
 
-	- Healthcare 
-	- Finance
-	- Electronics
-	- Wearables
-	- Automotive
+    - Healthcare 
+    - Finance
+    - Electronics
+    - Wearables
+    - Automotive
     - ...
 
 ### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) method of conversation flow tracking as well as many powerful features...
@@ -66,7 +66,9 @@ When project is uploaded, you need to train it. Choose ***Training*** option and
 
 Depending on project complexity it may take from few seconds to few hours to train your project. 
 What's next after project training is finished? Two options:
-* Use REST api 
+* Use REST api. 
+    * Login:
+        https://nlp2.zcymatix.com/?query=Hello+World&action=deduce&project_id=<project_id>
 * Use deduction page to verify the training
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
