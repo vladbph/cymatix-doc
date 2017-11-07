@@ -19,7 +19,7 @@
 - Supports method of embedding states, events, sensors information to maintain flow of the conversation
 - Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
-- Machine learning lookup labels support
+- Lookup labels support
 - NLU tasks supported:
     - Self-contained deductions
         * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
