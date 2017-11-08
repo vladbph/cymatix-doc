@@ -1,0 +1,8 @@
+.define
+    @take = take|bring
+    @me = me|us|them
+.train
+    NAVIGATE: @take @me to seattle{t_destination} by car{t_transport}
+
+.prompt
+    NAVIGATE = Ok, I will take you to {t_destination} by {t_transport}

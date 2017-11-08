@@ -1,0 +1,10 @@
+# Define section contains macros
+# Note that macro @guys has four variants 1.guys 2. folks 3. World 4.<empty string>
+.define
+    @hi = Hello|hi
+    @guys = guys|folks|World|
+
+# Training section contains utterances with intents and slots/parameters
+.train
+    # Basic utterance. 'GREETING' is the intent to be deduced. 'Hello World' is the utterance
+    GREETING:@hi @guys

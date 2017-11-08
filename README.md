@@ -122,21 +122,40 @@ What's next after project training is finished? Two options:
             101 - Authentication error
             100 - Invalid parameters
         ```
-        
+
     
 2. __Use Web interface for training verification:__
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
-# 2. Using macros
+# 2. Using prompts example
+What if I want AI system to respond to user query, how should I do that? Let's use the 'Hello World' code. Simple:
+```
+.train
+    GREETING: Hello World
+.prompt
+    GREETING = Hello my friend
+    GREETING = Hello!
+    GREETING = Hi!    
+```
+Add section ***.prompt*** and then: 
+```
+INTENT=<PROMPT VARIANT>
+```
+In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like behaviour. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
+```
+.prompts
+    NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
+```
+Where ___t_destination___ and ___t_car___ are slots/parameters. See section 4 for the example.
+
+# 3. Using macros
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
 ```json
-# Define section contains macros.
 .define
     @hi = Hello|hi
     @guys = guys|folks|World|
 
-# Training section contains utterances
 .train
     GREETING:@hi @guys
 ```
@@ -151,11 +170,11 @@ GREETING:Hello guys
 GREETING:Hello
 GREETING:hi
 ```
-Please note the last OR in ***@guys*** definition reads like ***guys*** or ***folks*** or ***World*** or ***empty string***. Granularity of regular expression feature is limited to the words. Example:
+Please note the last OR in ***@guys*** definition reads like ***guys*** or ***folks*** or ***World*** or ***empty string***. Granularity of regular expression feature ___is limited to the words___. Example:
 ***folk(s|)*** is INVALID
 ***(folk|folks)*** is VALID
 
-# 3. Using Slots (== parameters)
+# 4. Using Slots (== parameters)
 Training file:
 ```json
 .define
@@ -163,13 +182,15 @@ Training file:
     @me = me|us|them
 .train
     NAVIGATE: @take @me to Seattle{t_destination} by car{t_transport}
+.prompt
+    NAVIGATE = Sure, I am starting navigation to {t_destination} by {t_transport}
 ```
 
 The deduction will look like:
 ```json
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
-# 3. Introduction to Layers
+# 5. Introduction to Layers
 zCymatix platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
 ```json
 [
@@ -236,8 +257,8 @@ So this mechanism enables smaller context needed to train the layer to extract a
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
 So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
-# 4. Dialogs
-## 4.1 Loose Dialogs
+# 6. Dialogs
+## 6.1 Loose Dialogs
 There are two ways to hande dialogs/conversations. Both require enabling of ***ToTh(Train of Thougth)*** mechanism. For that you need to add the following parameter `"toth":true`
 ```json
 [
