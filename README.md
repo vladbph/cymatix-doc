@@ -98,7 +98,7 @@ What's next after project training is finished? Two options:
             action = launch
             project_id = c7df223a3b97 // Example value
         ```
-        The responce has fixed format consisting of two fields ***'code'*** and ***'msg'***:
+        The responce has fixed format consisting of two fields ***code*** and ***msg***:
         ```json
         { "code":200, "msg":"806bb67b"}
         ```
@@ -170,7 +170,7 @@ The deduction will look like:
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
 # 3. Introduction to Layers
-zCymatix platform is using the concept of ***layers***. Each layer may be responsible for deduction of specific thing. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, will just use those lookup labels instead of actual values. The final deduction will resolve the actual values. Example project starts with more complex configuration file showing 2 layer. Once you have more than one layer you have to name it:
+zCymatix platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific thing. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
 ```json
 [
     {
@@ -183,26 +183,26 @@ zCymatix platform is using the concept of ***layers***. Each layer may be respon
     }
 ]
 ```
-Please don't be scared, it is rather simple when you see the explanation :) I'll walk you through. First of all let's put all the macros in one file ***macros.txt*** and include it into both layers. It is optional however. So, let's take a look at ***kinds.txt***. In particular one utterance:
+I'll walk you through. First of all, let's put all the macros in one file ***macros.h*** and include it into both layers. It is optional however. So, let's take a look at ***kinds.txt*** file. One utterance in particular:
 ```
-i would like to place an order for small bbq chicken and large meat pizza
+I would like to place an order for a small bbq chicken and large meat pizza
 ```
-For the sake of example, ignore pizza sizes deduction.
+For simplicity sake, let's ignore pizza sizes deduction.
 
 ***kinds.txt***:
 ```
 .train
-    i would like to place an order for small (bbq chicken){&PIZZA_KIND} and large meat{&PIZZA_KIND} pizza
+    I would like to place an order for a small (bbq chicken){&PIZZA_KIND} and large meat{&PIZZA_KIND} pizza
 ```
 *Intent is not present here, because the purpose of this utterance is to extract and label pizza kind:*
 ***PIZZA_KIND = bbq chicken***
 ***PIZZA_KIND = meat***
 
-This is very powerful mechanism to label multiple words with the specific label and using more than one such label in one utterance(***Amazon Lex does not allow that***). Not only that, it will distinguish one pizza kind from another(!). To explain futher lets take a look at the next layer and file 
+This is a mechanism to label multiple words with specific label and using multiple instance of the label in a single utterance(***Amazon Lex does not allow that***). To explain further lets take a look at the next layer and file 
 ***order_pizza.txt***:
 ```
 .train
-    ORDER_PIZZA: i would like to place an order for small PIZZA_KIND{t_kind} and large PIZZA_KIND{t_kind} pizza
+    ORDER_PIZZA: I would like to place an order for a small PIZZA_KIND{t_kind} and large PIZZA_KIND{t_kind} pizza
 ```
 The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is to get ***the intent and slots/parameters values*** that come with it.
 ***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds
@@ -228,11 +228,12 @@ Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Ima
 ```
 ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and @pizza_kind{t_kind} pizza
 ```
-So this mechanism enables smaller context needed to train the system to understand pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So I would put into training file something like this:
+So this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So I would put into training file something like this:
 ```
 .define 
     @pizza_kind = bbq chicken|meat|pepperoni|hawaiian
 .train
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
-But be careful though. ***False positives one of the biggest issue with NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task. So I said it. Now it is not so easy :). What is not so easy is to create ***high quality training set.***
+So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issue with NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
+
