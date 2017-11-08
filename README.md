@@ -26,13 +26,13 @@ For:
 - Optional scripting support.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make changes based on the context. See examples.
 - Idioms interpretation mechanism
-    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' } ```
+    * "I would really want to grab a bite and then go back home" => ``` { "t_intent":"NAVIGATE", "t_stopover":"restaurant", "t_destination":"Home" } ```
 - Lookup labels support
-    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['bbq chicken', 'new york']```
+    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { "t_intent":"ORDER_PIZZA", "t_kind":["bbq chicken", "new york"]```
 - NLU tasks supported:
     - Self-contained deductions, not contextual
-        * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
-        * __"Take me to Seattle"__ =>  ``` { 't_intent':'NAVIGATE, 't_destination':'Seattle' } ```
+        * __"Play the latest from Def Leppard"__ =>  ``` { "t_intent":"PLAY_MUSIC", "t_artist":"Def Leppard" } ```
+        * __"Take me to Seattle"__ =>  ``` { "t_intent":"NAVIGATE, "t_destination":"Seattle" } ```
     - AI Bot asks user questions. Example: Order pizza bot
         * User> __I am hungry for pizza.__
         * __Bot__> What kind of pizza would you like?
@@ -70,13 +70,13 @@ For:
 ***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any learnt associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
 So, that's it. Literally, 3 lines of code get you there. The deduction of the phrase 'Hello World' will be 
 ```json
-    {'t_intent':'GREETING'}
+    {"t_intent":"GREETING"}
 ```
 BTW, to convert deduction to an object in Python:
 ```
     import json
     from argparse import Namespace
-    obj = json.loads( '{'t_intent':'GREETING'}', object_hook = lambda d: Namespace( **d ) )
+    obj = json.loads( "{"t_intent":"GREETING"}", object_hook = lambda d: Namespace( **d ) )
 ```
 To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Oherwise you cannot use the service.
@@ -100,7 +100,7 @@ What's next after project training is finished? Two options:
         ```
         The responce has fixed format consisting of two fields ***'code'*** and ***'msg'***:
         ```json
-        { 'code':200, 'msg':'806bb67b'}
+        { "code":200, "msg":"806bb67b"}
         ```
         In the responce you will receive dynamic ___session_id___ which has to be used in deduction requests. Given value 806bb67b is an example.
     * ***Deduction:***
@@ -112,7 +112,7 @@ What's next after project training is finished? Two options:
         ```
         The responce:
         ```json
-        { 'code':201, 'msg':"{'t_intent':'GREETINGS'}"}
+        { "code":201, "msg":"{"t_intent":"GREETINGS"}"}
         ```
         ```
         List of codes:
@@ -167,7 +167,7 @@ Training file:
 
 The deduction will look like:
 ```json
-{'t_intent':'NAVIGATE', 't_destination':'Seattle', 't_transport':'car'}
+{"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
 # 3. Introduction to Layers
 zCymatix platform is using the concept of ***layers***. Each layer may be responsible for deduction of specific thing. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, will just use those lookup labels instead of actual values. The final deduction will resolve the actual values. Example project starts with more complex configuration file showing 2 layer. Once you have more than one layer you have to name it:
@@ -184,13 +184,13 @@ zCymatix platform is using the concept of ***layers***. Each layer may be respon
 ]
 ```
 Please don't be scared, it is rather simple when you see the explanation :) I'll walk you through. First of all let's put all the macros in one file ***macros.txt*** and include it into both layers. It is optional however. So, let's take a look at ***kinds.txt***. In particular one utterance:
-```json
+```
 i would like to place an order for small bbq chicken and large meat pizza
 ```
 For the sake of example, ignore pizza sizes deduction.
 
 ***kinds.txt***:
-```json
+```
 .train
     i would like to place an order for small (bbq chicken){&PIZZA_KIND} and large meat{&PIZZA_KIND} pizza
 ```
@@ -207,11 +207,11 @@ This is very powerful mechanism to label multiple words with the specific label 
 The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is to get ***the intent and slots/parameters values*** that come with it.
 ***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds
 The resulting deduction after applying both layers will be:
-```json
+```
 {
-    't_utt':'i would like to place an order for small bbq chicken and large meat pizza',
-    't_intent':'ORDER_PIZZA',
-    't_kind':['bbq chicken', 'meat']
+    "t_utt":"i would like to place an order for small bbq chicken and large meat pizza",
+    "t_intent":"ORDER_PIZZA",
+    "t_kind":["bbq chicken", "meat"]
 }
 ```
 You could say - ___How about if I have a macro @pizza_kind and put all values there and use training utterance in one single layer?:___
