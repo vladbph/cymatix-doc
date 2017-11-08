@@ -26,13 +26,13 @@ For:
 - Optional scripting support.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make changes based on the context. See examples.
 - Idioms interpretation mechanism
-    * "I would really want to grab a bite and then go back home" => ``` { "t_intent":"NAVIGATE", "t_stopover":"restaurant", "t_destination":"Home" } ```
+    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' } ```
 - Lookup labels support
-    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { "t_intent":"ORDER_PIZZA", "t_kind":["bbq chicken", "new york"]```
+    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['bbq chicken', 'new york']```
 - NLU tasks supported:
     - Self-contained deductions, not contextual
-        * __"Play the latest from Def Leppard"__ =>  ``` { "t_intent":"PLAY_MUSIC", "t_artist":"Def Leppard" } ```
-        * __"Take me to Seattle"__ =>  ``` { "t_intent":"NAVIGATE, "t_destination":"Seattle" } ```
+        * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
+        * __"Take me to Seattle"__ =>  ``` { 't_intent':'NAVIGATE, 't_destination':'Seattle' } ```
     - AI Bot asks user questions. Example: Order pizza bot
         * User> __I am hungry for pizza.__
         * __Bot__> What kind of pizza would you like?
@@ -76,7 +76,7 @@ BTW, to convert deduction to an object in Python:
 ```
     import json
     from argparse import Namespace
-    obj = json.loads( "{"t_intent":"GREETING"}", object_hook = lambda d: Namespace( **d ) )
+    obj = json.loads( "{'t_intent':'GREETING'}', object_hook = lambda d: Namespace( **d ) )
 ```
 To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Oherwise you cannot use the service.
@@ -200,14 +200,14 @@ For the sake of example, ignore pizza sizes deduction.
 
 This is very powerful mechanism to label multiple words with the specific label and using more than one such label in one utterance(***Amazon Lex does not allow that***). Not only that, it will distinguish one pizza kind from another(!). To explain futher lets take a look at the next layer and file 
 ***order_pizza.txt***:
-```json
+```
 .train
     ORDER_PIZZA: i would like to place an order for small PIZZA_KIND{t_kind} and large PIZZA_KIND{t_kind} pizza
 ```
 The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is to get ***the intent and slots/parameters values*** that come with it.
 ***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds
 The resulting deduction after applying both layers will be:
-```
+```json
 {
     "t_utt":"i would like to place an order for small bbq chicken and large meat pizza",
     "t_intent":"ORDER_PIZZA",
@@ -236,14 +236,3 @@ So this mechanism enables smaller context needed to train the system to understa
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
 But be careful though. ***False positives one of the biggest issue with NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task. So I said it. Now it is not so easy :). What is not so easy is to create ***high quality training set.***
-
-
-
-
-
-
-
-
-
-   
- 
