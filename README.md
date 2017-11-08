@@ -243,7 +243,7 @@ There are two ways to hande dialogs/conversations. Both require enabling of ***T
 [
     {
         "layer_name":"Pizza kinds",
-        "data_files":["kinds", "macros.h"]
+        "data_files":["kinds", "macros.h"],
         "toth":true
     },
     {
