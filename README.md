@@ -170,7 +170,7 @@ The deduction will look like:
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
 # 3. Introduction to Layers
-zCymatix platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific thing. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
+zCymatix platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
 ```json
 [
     {
@@ -235,5 +235,30 @@ So this mechanism enables smaller context needed to train the layer to extract a
 .train
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
-So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issue with NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
-
+So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
+# 4. Dialogs
+## 4.1 Loose Dialogs
+There are two ways to hande dialogs/conversations. Both require enabling of ***ToTh(Train of Thougth)*** mechanism. For that you need to add the following parameter `"toth":true`
+```json
+[
+    {
+        "layer_name":"Pizza kinds",
+        "data_files":["kinds", "macros.h"]
+        "toth":true
+    },
+    {
+        "layer_name":"Ordering pizza",
+        "data_files":["order_pizza.txt", "macros.h"]
+    }
+]
+```
+Toth mechanism enables including previous intent as a prefix to utterance. Example:
+```
+How many would you like?
+```
+This question is not self-contained. It implies having the knowledge of previous information. Knowing that we are ordering pizza creates the context required to make sense out of it. What is you see this instead?
+```
+.train
+    ORDER_PIZZA How many would you like?
+```
+Please note there is no ___':'___ sign after the intent meaning that it is treated as a 'word' in the utterance.
