@@ -14,14 +14,15 @@ For:
     - Web sites for blind
     - ...
 
-### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) contextual method of conversation flow tracking as well as many powerful features...
-### ___...Context IS everything ...___
+#### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) contextual method of conversation flow tracking and many other features...
+### ___"...Context IS everything ..."___
 ## Features Highlights
-- Train Of Thought technology
-    * Literaly maintains train of thought of the conversation
-- State of the Art deduction pipeline to efficiently resolve ambiguity
-- Ability to create 1000s of utterances in few minutes
-- Supports method of embedding states, events, sensors information to maintain flow of the conversation
+- ***Train Of Thought technology***
+    * Literaly maintains a train of thought of the conversation
+- State of the Art ***deduction pipeline*** to efficiently resolve ambiguity
+- Ability to create ***1000s of utterances*** in few minutes
+- Supports method of ***embedding states, events, sensors information to maintain flow of the conversation***
+- Conversation instance with the ***context is maintained on the backend*** leaving client focusing only on the application itself
 - Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional scripting support.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make changes based on the context. See examples.
@@ -49,13 +50,14 @@ For:
         * User> __How?__
         * __Bot__> Create a folder. Name it as a project name. Create config file and at least one training file
     - Combination of above
-- Indirect subject referencing
-    * Notion of 'it/there'
+- ***Indirect*** subject referencing
+    * Notion of ***'it/there'***
         * 'Where is Seattle'
         * 'Take me there'
-- Expert system support. Result of the dialog is fed into a layer to process conversation outcome.
+- ***Expert system support.*** Result of the dialog could be fed into a layer to process conversation outcome.
+    * This is not NLU specific feature enabling the platform utilization in any field of knowledge
     
-   So, Let's do it!
+   ### So, Let's do it!
 # 1. 'Hello Word' Example.
 * Create and enter **hello** folder
 * Create **hello.json** file
@@ -142,12 +144,18 @@ Add section ***.prompt*** and then:
 ```
 INTENT=<PROMPT VARIANT>
 ```
-In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like behaviour. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
+In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interraction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
 .prompts
     NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
 ```
-Where ___t_destination___ and ___t_car___ are slots/parameters. See section 4 for the example.
+Where ___t_destination___ and ___t_car___ are known slots/parameters. See section 4 for the example.
+Prompts purpose is to be able to respond to user. Also prompt mechanism can be used to pass modified data to next deduction layer. This mechanism is a key for creating expert systems.
+The idea: You collect all the data from user in the form of slot values and then use prompt template to build the 'utterance' for the next model. 
+```json
+.prompts
+    R$READY = {t_param1} {t_param2} {t_param3}...
+```
 
 # 3. Using macros
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
@@ -213,7 +221,8 @@ For simplicity sake, let's ignore pizza sizes deduction.
 ***kinds.txt***:
 ```
 .train
-    I would like to place an order for a small (bbq chicken){&PIZZA_KIND} and large meat{&PIZZA_KIND} pizza
+    I would like to place an order for a small (bbq chicken){&PIZZA_KIND} and \
+    large meat{&PIZZA_KIND} pizza
 ```
 *Intent is not present here, because the purpose of this utterance is to extract and label pizza kind:*
 ***PIZZA_KIND = bbq chicken***
@@ -223,10 +232,11 @@ This is a mechanism to label multiple words with specific label and using multip
 ***order_pizza.txt***:
 ```
 .train
-    ORDER_PIZZA: I would like to place an order for a small PIZZA_KIND{t_kind} and large PIZZA_KIND{t_kind} pizza
+    ORDER_PIZZA: I would like to place an order for a small PIZZA_KIND{t_kind} and \
+                 large PIZZA_KIND{t_kind} pizza
 ```
 The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is to get ***the intent and slots/parameters values*** that come with it.
-***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds
+***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds.
 The resulting deduction after applying both layers will be:
 ```json
 {
@@ -237,7 +247,11 @@ The resulting deduction after applying both layers will be:
 ```
 You could say - ___How about if I have a macro @pizza_kind and put all values there and use training utterance in one single layer?:___
 ```
-ORDER_PIZZA: i would like to place an order for small @pizza_kind{t_kind} and large @pizza_kind{t_kind} pizza
+.define
+    @pizza_kind = bbq chicken|meat|hawaiian|...
+.train
+    ORDER_PIZZA: i would like to place an order for small @pizza_kind{t_kind} and \
+                 large @pizza_kind{t_kind} pizza
 ```
 Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Imagine if on top you have:
 ```
@@ -247,7 +261,8 @@ Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Ima
     @small = small|large|medium|
 ```
 ```
-ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and @pizza_kind{t_kind} pizza
+ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and \
+             @pizza_kind{t_kind} pizza
 ```
 So this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So I would put into training file something like this:
 ```
@@ -258,28 +273,101 @@ So this mechanism enables smaller context needed to train the layer to extract a
 ```
 So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
 # 6. Dialogs
+There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
 ## 6.1 Loose Dialogs
-There are two ways to hande dialogs/conversations. Both require enabling of ***ToTh(Train of Thougth)*** mechanism. For that you need to add the following parameter `"toth":true`
-```json
-[
-    {
-        "layer_name":"Pizza kinds",
-        "data_files":["kinds", "macros.h"],
-        "toth":true
-    },
-    {
-        "layer_name":"Ordering pizza",
-        "data_files":["order_pizza.txt", "macros.h"]
-    }
-]
+AI System asks user questions - for example: ordering pizza. As a user I can freely provide the information I have about the pizza I want without following scricted flow of the conversation:
 ```
-Toth mechanism enables including previous intent as a prefix to utterance. Example:
+    User> I want to order some pizza
+    Bot> What kind would you like?
+    User> I want small bbq chicken with extra cheese and tomatoes
+    Bot> What is the delivery address?
+    User>...
+    Bot> Here is you order... Should I go ahead and place your order?
+    User> you bet!
+    Bot> Great, thank you!!!
 ```
-How many would you like?
+In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So the converation could go like this:
 ```
-This question is not self-contained. It implies having the knowledge of previous information. Knowing that we are ordering pizza creates the context required to make sense out of it. What is you see this instead?
+    User> I want to small bbq chicken with extra cheese and tomatoes on top and my address is ...
+    Bot> Here is you order... Should I go ahead and place your order?
+    User> Yes
 ```
-.train
-    ORDER_PIZZA How many would you like?
+
+There are few things to know before we can create such dialog.
+### 6.1.1 Prototype section
+Syntax:
 ```
-Please note there is no ___':'___ sign after the intent meaning that it is treated as a 'word' in the utterance.
+.protos
+    <List of intents separated by commas> : <list of slot names separated by commas>
+```
+Pizza example:
+```
+.protos
+    ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
+```
+This section creates a link between a ***list of intents and corresponding list of slots/parameters*** to be collected by asking user set of questions to consider conversation complete.
+
+### 6.1.2 'Gates' section (script)
+
+Syntax is using python style `if` statements. It is better to demostrate using Pizza example:
+```python
+.gates
+    'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and o.t_kind is None
+    'ASK_SIZE'        if o.t_intent == 'ORDER_PIZZA' and o.t_size is None
+    'ASK_TOPPINGS'    if o.t_intent == 'ORDER_PIZZA' and o.t_toppings is None
+    'ASK_ADDRESS'     if o.t_intent == 'ORDER_PIZZA' and o.t_address is None
+    'ASK_TO_CONFIRM'  if o.t_intent == 'ORDER_PIZZA'
+    'R$THANKS_YES'    if o.t_intent == 'ORDER_PIZZA_YES'
+    'R$THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
+```
+```python
+.prompts
+    ASK_KIND = What kind of pizza would you like?(bbq chicken, hawaiian, pepperoni, etc)
+    ASK_SIZE = What size? (large, medium, small, etc)
+    ASK_TOPPINGS = Anything on top?(ham, cheese, tomatoes, etc)
+    ASK_ADDRESS = What is your address?
+    ASK_TO_CONFIRM = Your order is {t_size} {t_kind} pizza with {t_topping} \
+                     to be delivered to {t_address} Should I go ahead and place the order?
+    R$THANKS_YES = Thank you for your order
+    R$THANKS_NO = Sure, I will cancel the order for you
+```
+The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind from the prompt section.
+***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
+**Please note a mandatory prefix 'o.' in front of slot and intent label and also single quites surrounding the intent name.**
+Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed later.
+==It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.==
+
+
+==================================
+To be added:
+```
+.regex
+    &restaurant:place where (i)? can eat
+vs
+.regex
+    restaurant:place where (i)? can eat
+```
+It/there
+```
+NAVIGATE/t_destination/t_stopover:take me there
+```
+Prefixes:
+```
+R$ - return all collected values in history
+B$ - step back
+C$ - change value
+```
+Compare
+```
+Single layer:
+    take me to (Los Angeles){t_target} and to (New York){target} 
+    => t_target = ['Los', 'Angeles', 'New', 'York']
+and
+layer 1: type training
+    take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE} 
+    => lookup table P_PLACE:0 = 'Los Angeles' and P_PLACE:1 = 'New York'
+layer 2:
+    NAVIGATE: take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
+    => t_destination = ['Los Angeles', 'New York']
+```
+
