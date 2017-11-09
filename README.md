@@ -320,7 +320,7 @@ Syntax is using python style `if` statements. It is better to demostrate using P
     'R$THANKS_YES'    if o.t_intent == 'ORDER_PIZZA_YES'
     'R$THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
 ```
-```python
+```
 .prompts
     ASK_KIND = What kind of pizza would you like?(bbq chicken, hawaiian, pepperoni, etc)
     ASK_SIZE = What size? (large, medium, small, etc)
@@ -335,7 +335,9 @@ The intuition is simple. It reads like this - when current intent is ORDER_PIZZA
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quites surrounding the intent name.**
 Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed later.
-==It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.==
+```diff
++ It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
+```
 
 
 ==================================
