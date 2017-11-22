@@ -341,13 +341,13 @@ Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_
 
 
 ==================================
-To be added:
+To be added - raw notes:
 ```
 .regex
-    &restaurant:place where (i)? can eat
+    &restaurant:place where (I)? can eat // => Utterance place where I can eat witll be replaced with 'restaurant'
 vs
 .regex
-    restaurant:place where (i)? can eat
+    restaurant:place where (I)? can eat // => Utterance place where I can eat witll be replaced with 'restaurant', but in the final deduction restaurant IF used as value of a slot, will be replaced with 'place where I can eat'
 ```
 It/there
 ```
@@ -372,4 +372,12 @@ layer 2:
     NAVIGATE: take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
     => t_destination = ['Los Angeles', 'New York']
 ```
+```
+			Use case: user asks - What did you say?
+			.train
+				REPEAT:What did you say
+			.prompt:
+				REPEAT = *
+```                
+
 
