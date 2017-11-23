@@ -389,7 +389,7 @@ Example: t_name is absent in the last deduction.
 
 7. Empty prefix implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
-Example: t_kind values is in whole deduction history, t_kind = bbq and t_kind = meat
+Example: t_kind values are in whole deduction history, t_kind = bbq and t_kind = meat
     .prompt
         ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
         => Ok, I will place an order of bbq, meat pizza for you
