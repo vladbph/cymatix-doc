@@ -339,7 +339,7 @@ Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
 
 # 7. Prompt label prefixes:
-Prompts is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. Prompt, as descussed earlier, could be a simple textual/voice response to user on the query or be a template of for collected slot and values. The values in the template are controled by prompt's prefixes as described below:
+Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple textual/voice response to user query or a template which uses collected slot and their values to build next 'utterance' for next layer in the pipeline. The values in the template are controlled by prompt's prefixes as described below:
 
 1. Prefix __"#<label name>"__  implies using label's ___name__ instead of ___value___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
