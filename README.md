@@ -341,7 +341,7 @@ It was mentioned earlier that ***prompt's template*** can be used to pass inform
 # 7. Prompt label prefixes:
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple textual/voice response to user query or a template which uses collected slot and their values to build next 'utterance' for next layer in the pipeline. The values in the template are controlled by prompt's prefixes as described below:
 
-1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. The approach can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last deduction, t_age is absent
 .prompt
