@@ -395,7 +395,7 @@ Example: t_kind values are in whole deduction history, t_kind = bbq and t_kind =
         => Ok, I will place an order of bbq, meat pizza for you
 ```
 
-8. Prefix: __"?label_name"__  implies using label's ___values___ in ___deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+8. Prefix: __"?label_name"__  implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in deduction history
     .prompt
