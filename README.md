@@ -344,62 +344,62 @@ Prompt is a powerful tool of ___ToTh___ mechanism to control passing information
 1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last deduction, t_age is absent
-    .prompt
-        RESULT = {#t_name} {#t_age}
-        # The value of RESULT = t_name None
+.prompt
+    RESULT = {#t_name} {#t_age}
+    # The value of RESULT = t_name None
 ```
 
 2. Prefix __"?#label name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example:  t_name value is in the last deduction, t_age is absent
-    .prompt
-        RESULT = {?#t_name} {?#t_age}
-        # The value of RESULT = t_name 
+.prompt
+    RESULT = {?#t_name} {?#t_age}
+    # The value of RESULT = t_name 
 ```
 
 3. Prefix __"$label_name"__  implies using label's ___name___ instead of ___value___ in ___whole deduction history___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
-    .prompt
-        RESULT = {$t_name} {$t_age}
-        # The value of RESULT = t_name None
+.prompt
+    RESULT = {$t_name} {$t_age}
+    # The value of RESULT = t_name None
 ```
 
 4. Prefix __"?$label_name"__  implies using label's ___name___ instead of ___value___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name value is in all whole history, t_age is absent
-    .prompt
-        RESULT = {?$t_name} {?$t_age}
-        # The value of RESULT = t_name 
+.prompt
+    RESULT = {?$t_name} {?$t_age}
+    # The value of RESULT = t_name 
 ```
 
 5. Prefix: __".label_name"__ implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name = John is in the last deduction. 
-    .prompt
-        GREETING = Hello {.t_name} => Hello John
+.prompt
+    GREETING = Hello {.t_name} => Hello John
 ```
 
 6. Prefix: __"?.label_name"__  implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in the last deduction. 
-    .prompt
-        GREETING = Hello {?.t_name} => Hello
+.prompt
+    GREETING = Hello {?.t_name} => Hello
 ```
 
 7. Empty prefix implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_kind values are in whole deduction history, t_kind = bbq and t_kind = meat
-    .prompt
-        ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
-        => Ok, I will place an order of bbq, meat pizza for you
+.prompt
+    ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
+    => Ok, I will place an order of bbq, meat pizza for you
 ```
 
 8. Prefix: __"?label_name"__  implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in deduction history
-    .prompt
-        GREETING = Hello {?t_name} => Hello
+.prompt
+    GREETING = Hello {?t_name} => Hello
 ```
 
 ==================================
