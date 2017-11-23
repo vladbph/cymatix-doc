@@ -131,6 +131,7 @@ What's next after project training is finished? Two options:
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
 # 2. Using prompts example
+
 What if I want AI system to respond to user query, how should I do that? Let's use the 'Hello World' code. Simple:
 ```
 .train
@@ -335,25 +336,73 @@ The intuition is simple. It reads like this - when current intent is ORDER_PIZZA
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quites surrounding the intent name.**
 Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed later.
-```diff
-+ It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
+It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
+
+# 7. Prompt label prefixes:
+Prompts is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. Prompt, as descussed earlier, could be a simple textual/voice response to user on the query or be a template of for collected slot and values. The values in the template are controled by prompt's prefixes as described below:
+
+1. Prefix __"#<label name>"__  implies using label's ___name__ instead of ___value___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+```
+Example: t_name value is in the history, t_age is absent
+    .prompt
+        RESULT = {#t_name} {#t_age}
+        # The value of RESULT = t_name None
+It reads like this: 'name empty age were provided'... 
 ```
 
+2. Prefix __"?#<label name>"__  implies using label's name instead of value. ___NOTE: if value is absent it will be skipped from the prompt___
+```
+Example: t_name value is in the history, t_age is absent
+    .prompt
+        RESULT = {#t_name} {#t_age}
+        # The value of RESULT = t_name 
+It reads like this: 'name is provided'... 
+```
+
+
+3. Prefix: __".<label name>"__ implies using the ___most recent value___ of the label from the history. ___NOTE: if value is absent it will be replaced with 'None'___
+```
+Example: if t_name last value is 'John' in deductions history. 
+    .prompt
+        GREETING = Hello {.t_name} => Hello John
+```
+
+4. Prefix: __"?.<label name>"__  implies using the ___most recent value___ of the label from the history. ___NOTE: if value is absent it will be skipped from the prompt___
+```
+Example: if t_name is absent in deduction history
+    .prompt
+        GREETING = Hello {?.t_name} => Hello
+```
+
+5. Empty prefix implies using ___all values___ in the deduction history. ___NOTE: if value is absent it will be replaced with 'None'___
+```
+Example: t_kind values in deduction history are t_kind = bbq and t_kind = meat
+    .prompt
+        ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
+        => Ok, I will place an order of bbq, meat pizza for you
+```
+
+6. Prefix: __"?<label name>"__  implies using ___all values___ in the deduction history. ___NOTE: if value is absent it will be skipped from the prompt___
+```
+Example: t_name is absent in deduction history
+    .prompt
+        GREETING = Hello {?t_name} => Hello
+```
 
 ==================================
-To be added - raw notes:
+TODOs:
 ```
 .regex
-    &restaurant:place where (I)? can eat // => Utterance place where I can eat witll be replaced with 'restaurant'
+    &restaurant:place where I can eat
 vs
 .regex
-    restaurant:place where (I)? can eat // => Utterance place where I can eat witll be replaced with 'restaurant', but in the final deduction restaurant IF used as value of a slot, will be replaced with 'place where I can eat'
+    restaurant:place where I can eat
 ```
 It/there
 ```
 NAVIGATE/t_destination/t_stopover:take me there
 ```
-Prefixes:
+Intent Prefixes:
 ```
 R$ - return all collected values in history
 B$ - step back
@@ -373,11 +422,9 @@ layer 2:
     => t_destination = ['Los Angeles', 'New York']
 ```
 ```
-			Use case: user asks - What did you say?
-			.train
-				REPEAT:What did you say
-			.prompt:
-				REPEAT = *
-```                
-
-
+Use case: user asks - What did you say?
+.train
+	REPEAT:What did you say
+.prompt:
+	REPEAT = *
+```
