@@ -339,9 +339,31 @@ Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
 
 # 7. Prompt label prefixes:
-Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple textual/voice response to user query or a template which uses collected slot and their values to build next 'utterance' for next layer in the pipeline. The values in the template are controlled by prompt's prefixes as described below:
+Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
+```
+utterance => 
+    Layer1 => 
+        updated utterance OR prompt => 
+            Layer2 => ... 
+                final Layer => prompt
+```
+__Note! If layer produces a prompt, it is used as an input for the next layer, unless of couse layer is final. In that case prompt is what is presented to user as a responce to user query.__
+Example:
+```
+Utterance: Take me to Seattle => 
+    [Address Layer] => 
+        Utterance: Take me to P_PLACE => 
+            [Intent layer] => 
+                prompt:Sure, I will nagivate you to {t_destination}
+                {
+                    't_intent':NAVIGATE
+                    't_destination':Seattle
+                    't_prompt':Sure, I will navigate you to Seattle
+                }
+```
+The values in the template are controlled by prompt's prefixes as described below:
 
-1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. The approach can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last deduction, t_age is absent
 .prompt
