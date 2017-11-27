@@ -426,23 +426,7 @@ Example: t_name is absent in deduction history
 
 ==================================
 TODOs:
-```
-.regex
-    &restaurant:place where I can eat
-vs
-.regex
-    restaurant:place where I can eat
-```
-It/there
-```
-NAVIGATE/t_destination/t_stopover:take me there
-```
-Intent Prefixes:
-```
-R$ - return all collected values in history
-B$ - step back
-C$ - change value
-```
+
 Compare
 ```
 Single layer:
@@ -456,10 +440,331 @@ layer 2:
     NAVIGATE: take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
     => t_destination = ['Los Angeles', 'New York']
 ```
+
+# 8. PIZZA2 BOT Example
+Let's consider PIZZA2 BOT example. In this example we will not use scipting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many usefull features of the platform. The project has 3 layers. 
+### Layer 1 - Slots
+Layer 1 is named "slots" is dedicated to isolate types of the slots - __pizza kind__, __pizza toppings__,  __size__ and __delivery address__. Here is the configuration for the layer:
 ```
-Use case: user asks - What did you say?
+{
+    "layer_name":"slots",
+    "data_files":[ "base.h","slots.txt" ],
+    "bi_lstm":true,
+    "toth":true
+}
+```
+It contains 2 files - ___base.h___ with useful macros, ___slots.txt___ is an actual training file. 
+Let's discuss 'bi_lstm' parameter.
+```
+"bi_lstm":true
+```
+Consider sentences: "I would like cheese on top". It is clear that 'cheese' refers to the toppings not the pizza type. We get it only when we see 'on top' which comes at the end of the sentence. ___bi_lstm___ tells framework to 'read' utterances not only ___left to right___ but also ___right to left___ to get this information.
+
+```"toth":true``` will be discussed later 
+
+__slots.txt__ file:
+```    
+.regex
+    // Replace and leave it as such
+    &and:(as well as|and also)
+    // Replace, but finally resolve to actual value
+    P_SIZE:@small
 .train
-	REPEAT:What did you say
-.prompt:
-	REPEAT = *
+    // The goal is isolate slot types(!) and replace them by the type name, so next layer - has
+    // less samples to be trained with
+    (ORDER_PIZZA|) @kind{&P_KIND}
+    (ORDER_PIZZA|) @toppings{&P_TOPPINGS} on top
+    (ORDER_PIZZA|) @i @want (P_SIZE|) @kind{&P_KIND} @pizza (with|)
+    (ORDER_PIZZA|) @i @want @kind{&P_KIND} @and @kind{&P_KIND} @pizza (with|)
+    (ORDER_PIZZA|) @i @want @extra @toppings{&P_TOPPINGS} on top
+    (ORDER_PIZZA|) @i @want @extra @toppings{&P_TOPPINGS} @and @extra @toppings{&P_TOPPINGS} on top
+    (ORDER_PIZZA|) @i @want @pizza with @extra @toppings{&P_TOPPINGS}
+    (ORDER_PIZZA|) on top @i @want @extra @toppings{&P_TOPPINGS}
+    (ORDER_PIZZA|) add (topping|toppings) @extra @toppings{&P_TOPPINGS}
+    (ORDER_PIZZA|) add @toppings{&P_TOPPINGS} on top
+    (ORDER_PIZZA|) (my|@the) address is @address{&P_ADDRESS}
+    (ORDER_PIZZA|) @i live in @address{&P_ADDRESS}
 ```
+It is not always makes sense to use machine learning training models in all layers. Sometimes it is sufficient to use direct replacement mechanism like regular expressions. __You can, but you don't have to.__
+Developers of knowledge domains are faced with the challege to come up with as many variations of utterances as possible so the system can understand all users - the ways they talk. From one side - we want to have lots of utterances to achive that, but on the other hand it leads to longer training times.
+```
+.define
+    @and = and|also|as well as
+.train
+    I would like ham @and extra cheese on top 
+```
+In the example above we would have 3 utterances instead of one because we have 3 variants for ```and```
+Lets review regex section.
+```    
+.define 
+    @small = small|medium|large
+.regex
+    // Replace and leave it as such
+    &and:(as well as|and also)
+    // Replace, but finally resolve to actual value
+    P_SIZE:@small
+```
+```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final deduction.
+```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final deduction result. 
+___NOTE!___ Regex section is used for both - __training__ and __prediction__ modes.
+___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc so next layer that supposed to deduce user intents would not deal with them.
+__base.h__ file:
+```
+.define
+    @i = i|we
+    @i_want = @i @want
+    @pizza = pizza
+    @please = please|kindly
+    @want = want|need|would like
+    @and = and|and also|as well as
+    @small = small|large|medium
+    @kind = pepperoni|meat|hawaiian|bbq|meat|cheese
+    @toppings = ham|cheese|tomato|meat|cheese
+    @address = seattle|vancouver
+    @extra = extra|
+    @the = the|a|
+    @yes = yes|sure|go ahead|you bet|sure why not
+    @no = no|no way|nope|(@i|) changed my mind
+```
+
+Original utterance transformation with "SLOTS" layer:
+```
+I would like to place an order for small pepperoni with extra cheese and ham on top
+=>
+I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOPPINGS on top
+```
+Latter is an input utterance to next layer called 'Pizza'
+
+### Layer 2 - Pizza
+
+Config for this layer:
+```
+{
+    "layer_name":"pizza",
+    "data_files":["base.h","pizza.txt"],
+    "bi_lstm":true,
+    "toth":true
+}
+```
+
+__pizza.txt__ file:
+```
+.train
+    ORDER_PIZZA: @i @want some @pizza @please
+    ORDER_PIZZA: @pizza (@please|)
+    ORDER_PIZZA: ASK_SIZE P_SIZE{t_size}
+    ORDER_PIZZA: ASK_KIND P_KIND{t_kind}
+    ORDER_PIZZA: ASK_KIND P_KIND{t_kind} and P_KIND{t_kind}
+    ORDER_PIZZA: ASK_TOPPINGS with P_TOPPINGS{t_toppings}
+    ORDER_PIZZA: ASK_TOPPINGS with P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings}
+    ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} on top
+    ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings} on top
+    ORDER_PIZZA: ASK_ADDRESS P_ADDRESS{t_address}
+    ORDER_PIZZA: ASK_ADDRESS @i live in P_ADDRESS{t_address}
+    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+.prompt
+    // Generate Prompt that contains only one(!) missing slot to train next dialog layer
+    // With the prompt dedinition below one of:
+    //   if t_kind is missing
+    //   if t_size is missing
+    //   if t_toppings is missing
+    //   if t_address is missing
+    //   if none is missing
+    // will be passed to the next layer, which must be trained like this:
+    // .train
+    //   ASK_KIND: if t_kind is missing
+    // See bot.txt file.
+    ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
+
+    // NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
+    // the deduction history, thus to forget what user said before.
+    R$ORDER_PIZZA_YES = Thank you for you order :)
+    R$ORDER_PIZZA_NO = Sure, may be next time
+```
+Now time to discuss:
+```
+"toth":true
+```
+It tells that ___this___ layer wants to receive ___last intent___ intent as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make deductions more accurate. __NOTE!__ Intents can be generaged by any layers in the stack and be passed to next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value(See explanation if Chapter 7) is passed to the next layer. Consider the following training utterance:
+```
+.train
+    ORDER_PIZZA: ASK_TOPPINGS i want pizza with P_TOPPINGS{t_toppings}
+```    
+It reads like this: when user is prompted to provide pizza toppings(previous intent was ___ASK_TOPPINGS___) and user response is 'I want pizza with cheese', generate intent ___ORDER_PIZZA___ and assign ___t_toppings___ with the value. In this case: ```t_toppings = cheese```
+
+Layer 'Pizza' should contain as many utterances as possible to understand any user and the way they talk! The layer collects all slots and their values. 
+Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer deduction is based on the fact which slots we have already collected. This information is stored in the deduction history, which is what user said before kind of thing. See the comments in prompt section above.
+```
+.prompt
+    ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
+```
+```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all deduction history(prefix __'$'__) and replace with a __slot name__ that is __NOT__ present in the deduction history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt template could just look like this:
+```
+.prompt
+    ORDER_PIZZA = {$!t_kind|t_size|t_toppings|t_address|none}
+```
+This way we costruct prompts providing sufficient information to the next layer to decide - what to ask next. 
+Layer 'Pizza' generates prompts => utterances for next layer:
+```
+if t_size is missing
+if t_kind is missing
+if t_toppings is missing
+if t_address is missing
+```
+Next layer is called 'Bot'.
+
+### Layer 3 - Bot
+Configuration:
+```
+    {
+        "layer_name":"bot",
+        "data_files":"bot.txt"
+    }
+```
+__bot.txt__ training file is very simple and contains very few 'utterances', which are, in fact, prompts generated by previous layer.
+```
+.train
+    ASK_KIND: if t_kind is missing
+    ASK_SIZE: if t_size is missing
+    ASK_TOPPINGS: if t_toppings is missing
+    ASK_ADDRESS: if t_address is missing
+    ASK_TO_CONFIRM: if None is missing
+.prompt
+    ASK_KIND = What kind of pizza would you like. For example, hawaiian, bbq, etc.?
+    ASK_SIZE = Small, medium or large?
+    ASK_TOPPINGS = What do you want on top. For example: tomato, ham, cheese, etc.?
+    ASK_ADDRESS = What is delivery address?
+    ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
+                     be delivered to {t_address}. Would you like to go ahead with the order?
+```
+The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatevly you can use ___.gates___ section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+
+## Pizza project Final Deduction
+Let's review utterance transformation going though all layers of the 'Pizza' project:
+```
+// 'Slot' layer
+I would like to place an order for small pepperoni with extra cheese and ham on top
+where P_SIZE = small, P_KIND = pepperoni, P_TOPPINGS = cheese P_TOPPINGS = ham
+=>
+// 'Pizza' layer
+I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOPPINGS on top
+where t_size = small, t_kind = pepperoni, t_toppings = cheese t_toppings = ham
+=>
+// 'Bot' layer
+if t_address is missing
+=>
+// Prompt to user
+What is the delivery address?
+```
+
+I hope it is clear why the 1st quesion is 'What is the delivery address'. It is because user already provided ___t_kind___, ___t_toppings___ and ___t_size___ in the origincal sentence.
+
+## Deduction history
+This information is useful to understand platform operation under the hood. Deduction history could be simply described as the "things user said before". All deductions are collected in the ```history``` or ```stack```. Those terms will be used interchangeably. The deduction history contains:
+* Layer's input utterance with predefined slot name ```t_utt```
+* Layer's intent with predefined slot name ```t_intent```, if any
+* Layer's deduced ```slots``` and their ```values```, if any
+* Layer's prompt with predefined slot name ```t_prompt```, if any
+
+## How to control deduction history
+
+At some point we need to collect all slots values in the stack to build a aggregative deduction(pizza order), or forget a deduction, because it is self contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". All of above are pieces of __ToTh__ method. It is done via intent prefixes:
+
+* ### Intent Prefixes
+```
+<no prefix> - Normal intent. The intent and slots values to be collected in the history
+R$ - Return all collected slots values in the deduction history and clean the history. "Return" command.
+F$ - Do not remember this particular deduction in the history - "Deduce and forget" command.
+B$ - Step back in the deduction stack. "Back" command.
+C$ - Change value of a slot. "Change" command.
+X$ - Clean the deduction history. "Cross" command.
+?? - We are open to discuss any other prefixes to control the history.
+```
+* ### `Empty` prefix
+Intent without prefix with deduced slots and their values are saved in the deduction in the history.
+`ORDER_PIZZA: @i @want some @pizza @please`
+where
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' intent comes along
+
+
+* ### `R$` prefix
+In 'Pizza' layer we have:
+```
+.train
+    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+.prompt:
+    R$ORDER_PIZZA_YES = Thank you for you order :)
+    R$ORDER_PIZZA_NO = Sure, may be next time
+```
+Intents with ```'R$'``` prefix tell the framework to collect all slots and their values and return them to user as a deduction in json format:
+```
+{
+    "t_size":"small", 
+    "t_kind":"pepperoni", 
+    "t_toppings": ["cheese", "ham"]
+}
+```
+* ### `F$` prefix
+```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self contained statement and depending on the domain there may be no need to keep it in the history. So the resulting deduction will be returned and it will not be remembered in the stack.
+```
+{
+    "t_intent":"GET_TIME",
+    "t_prompt":"It is 1:38PM"
+}
+```
+This is actually tricky example. __zCymatix platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value
+
+* ### `B$` prefix
+`B$` prefix tells the framework to go back one step in the history and return that deduction. It is usefull for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
+```
+Bot>What type of pizza would you like?
+User>What?
+Bot>What type of pizza would you like?
+```
+
+There is an alternative to achieve the same result. Consider training sample:
+```
+.train
+	F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
+.prompt:
+	F$REPEAT = *
+```
+`*` means to use the last value of `t_prompt` saved in the history. It is up to you to choose which method to use.
+
+* ### `C$` prefix
+`C$` prefix tells the framework to change the value of the slot in the history
+```
+User> Take me to Seattle
+{
+    "t_intent":"NAVIGATE",
+    "t_destination":"Seattle"
+}
+
+User> No, change it to Vancouver
+{
+    "t_intent":"C$NAVIGATE",
+    "t_destination":"Vancouver"
+}
+```
+The `t_destination` slot value `Seattle` will be replaced with 'Vancouver' in the history stack
+
+* ### `X$` prefix
+`X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
+
+# 9. Handling `it` or `there` or frequetly used indirect references
+
+Consider the training samples:
+```
+.train
+    I_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
+    I_SHOW_PLACE: where is P_PLACE{t_place}
+    I_SHOW_PLACE: I am looking for P_PLACE{t_place}
+    I_DISTANCE_INFO: how far is P_PLACE{t_destination}
+    I_NAVIGATE/t_place/t_destinationr:take me there
+```
+First four training samples reply on explict name of the place we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
+`I_NAVIGATE/t_place/t_destinationr:take me there`
+Why list of slots? The intuition is - search for either `t_place` or `t_destination`, whichever comes first in te
+

@@ -1,0 +1,46 @@
+.train
+    ORDER_PIZZA: @i @want some @pizza @please
+
+    ORDER_PIZZA: @pizza (@please|)
+
+    ORDER_PIZZA: ASK_SIZE P_SIZE{t_size}
+
+    ORDER_PIZZA: ASK_KIND P_KIND{t_kind}
+
+    ORDER_PIZZA: ASK_KIND P_KIND{t_kind} and P_KIND{t_kind}
+
+    ORDER_PIZZA: ASK_TOPPINGS with P_TOPPINGS{t_toppings}
+
+    ORDER_PIZZA: ASK_TOPPINGS with P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings}
+
+    ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} on top
+
+    ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings} on top
+
+    ORDER_PIZZA: ASK_ADDRESS P_ADDRESS{t_address}
+
+    ORDER_PIZZA: ASK_ADDRESS @i live in P_ADDRESS{t_address}
+
+    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+
+    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+
+.prompt
+
+    # Generate Prompt that contains only one(!) missing slot to train next dialog layer
+    # With the prompt dedinition below one of:
+    #   if t_kind is missing
+    #   if t_size is missing
+    #   if t_toppings is missing
+    #   if t_address is missing
+    #   if none is missing
+    # will be passed to the next layer, which must be trained like this:
+    # .train
+    #   ASK_KIND: if t_kind is missing
+    # See bot.txt file.
+    ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
+
+    # NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
+    # the deduction history, that is forget what user said before.
+    R$ORDER_PIZZA_YES = Thank you for you order :)
+    R$ORDER_PIZZA_NO = Sure, may be next time

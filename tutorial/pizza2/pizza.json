@@ -1,0 +1,30 @@
+[
+    {
+        "layer_name":"slots",
+        "hw":"gpu",
+        "data_files":[
+            "base.h",
+            "slots.txt"
+            ],
+        "bi_lstm":true,
+        "toth":true
+    },
+    {
+        "layer_name":"pizza",
+        "hw":"gpu",
+        "data_files":[
+            "base.h",
+            "pizza.txt"
+            ],
+        "bi_lstm":true,
+        "toth":true
+    },
+    {
+        "layer_name":"bot",
+        "hw":"gpu",
+        "data_files":[
+            "bot.txt"
+            ],
+        "bi_lstm":true
+    }
+]

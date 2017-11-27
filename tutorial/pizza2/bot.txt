@@ -1,0 +1,14 @@
+.train
+    ASK_KIND: if t_kind is missing
+    ASK_SIZE: if t_size is missing
+    ASK_TOPPINGS: if t_toppings is missing
+    ASK_ADDRESS: if t_address is missing
+    ASK_TO_CONFIRM: if None is missing
+
+.prompt
+    ASK_KIND = What kind of pizza would you like. For example, hawaiian, bbq chicken, etc.?
+    ASK_SIZE = Small, medium or large?
+    ASK_TOPPINGS = What do you want on top. For example: tomatoes, ham, cheese, etc.?
+    ASK_ADDRESS = What is delivery address?
+    ASK_TO_CONFIRM = Your order is {?t_cnt} [{t_size}] [{t_kind}] pizza with [{t_toppings}] to be delivered to [{t_address}]. Would you like to go ahead with the order?
+
