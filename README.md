@@ -50,12 +50,17 @@ Table of Contents
       * [X$ prefix](#x-prefix)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
+   * [Comments in training files](#comments-in-training-files)
+   * [Long lines continuation](#long-lines-continuation)
+   * [Unkown word marker](#unkown-word-marker)
+   * [Placement slot deduction](#placement-slot-deduction)
+   * [Regex section](#regex-section)
+      * [Irreversable replacement](#irreversable-replacement)
+      * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
-   * [Comments in training files](#comments-in-training-files)
-   * [Long lines continuation](#long-lines-continuation)
-
+   
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
 # Features Highlights
@@ -217,11 +222,12 @@ GREETING:Hello guys
 GREETING:Hello
 GREETING:hi
 ```
-Please note the last OR in ***@guys*** definition reads like ***guys*** or ***folks*** or ***World*** or ***empty string***. Granularity of regular expression feature ___is limited to the words___. Example:
-***folk(s|)*** is INVALID
-***(folk|folks)*** is VALID
+Please note the last OR in ***@guys*** definition reads like ***empty string***. So, __@guys__ it is either ***guys*** or ***folks*** or ***World*** or ***empty string***. It is similar to regular expression, but limited at the words level only. Examples:
+- ***folk(s|)*** is INVALID
+- ***(folk|folks)*** is VALID
 
 # Using `Slots` (parameters)
+In the training set we can assign intent and mark/label words with slot names for each utterance.
 Training file:
 ```json
 .define
@@ -237,8 +243,10 @@ The deduction will look like:
 ```json
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
+This way we deduce the meaning of the utterance.
+
 # Introduction to Layers
-`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
+`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is upto developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -263,11 +271,11 @@ For simplicity sake, let's ignore pizza sizes deduction.
     I would like to place an order for a small (BBQ chicken){&PIZZA_KIND} and \
     large meat{&PIZZA_KIND} pizza
 ```
-*Intent is not present here, because the purpose of this utterance is to extract and label pizza kind:*
+*Intent is not present here, because the purpose of this utterance is to create `sufficient context` to isolate and extract pizza kind:*
 ***PIZZA_KIND = BBQ chicken***
 ***PIZZA_KIND = meat***
 
-This is a mechanism to label multiple words with specific label and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further lets take a look at the next layer and file 
+This is a mechanism to label multiple words with specific `lookup label` and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further, lets take a look at the next layer and file 
 ***order_pizza.txt***:
 ```
 .train
@@ -314,7 +322,7 @@ So, having a context consisting only surrounding words is enough? You decide. Bu
 # Dialogs
 There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
 ## Loose Dialogs
-AI System asks user questions - for example: ordering pizza. User can freely provide the information about the pizza  without following script flow of the conversation:
+This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. `Presence of the slots values` is sufficient for the system to consider conversation complete. Example: ordering pizza. User can freely provide the information about the pizza without following script flow of the conversation:
 ```
     User> I want to order some pizza
     Bot> What kind would you like?
@@ -327,11 +335,10 @@ AI System asks user questions - for example: ordering pizza. User can freely pro
 ```
 In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So, the conversation could go like this:
 ```
-    User> I want to small BBQ chicken with extra cheese and tomatoes on top and my address is ...
+    User> I want small BBQ chicken with extra cheese and tomatoes on top and my address is ...
     Bot> Here is you order... Should I go ahead and place your order?
     User> Yes
 ```
-
 There are few things to know before we can create such dialog.
 ### Prototype section
 Syntax:
@@ -344,11 +351,10 @@ Pizza example:
 .protos
     ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
 ```
-This section creates a link between a ***list of intents and corresponding list of slots/parameters*** to be collected by asking user set of questions to consider conversation complete.
+This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
 
 ### `Gates` section (script)
-
-Syntax is using python style `if` statements. It is better to demonstrate using Pizza example:
+Gates are the condictions to produce new intent. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
 .gates
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and o.t_kind is None
@@ -370,13 +376,37 @@ Syntax is using python style `if` statements. It is better to demonstrate using 
     R$THANKS_YES = Thank you for your order
     R$THANKS_NO = Sure, I will cancel the order for you
 ```
-The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind from the prompt section.
+The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the `prompt` section.
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quotes surrounding the intent name.**
-Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed later.
+Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
 
 ## Strict Dialogs
+Strict dialog resembles traversing desicion tree. The idea is to ask questions based on the `previous answer results`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
+Let's take as example visit to doctor. 
+```
+Patient> I have a stomach ache
+Doctor> Did you take any medications?
+Patient> Yes
+Doctor> What kind of medication did you take?
+Patient>...
+```
+Or
+```
+Patient> I have a stomach ache
+Doctor> Did you take any medications?
+Patient> No
+Doctor> How bad is the pain on the scale of 1 to 10?
+Patient>...
+```
+As you can see based on the patient answer, conversation goes different routes. 
+Using `toth` and `intent_to_utterance` flags:
+```
+    "toth":True
+    "intent_to_utterance":true
+```
+or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users answers as a context for next deductions.
 
 # Prompt label prefixes
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
@@ -837,15 +867,60 @@ __NOTE!__ You need to train your models with encoded events/states and modify us
 
 This makes client application __cleaner, focusing on its task__ and `backend` takes care of the session, its history and the context. In our example it only __`acts`__ on the intent by playing `Def Leppard` in `living room`.
 
+# Comments in training files
+To add comments to the training files, use either `#` or `//` prefixes
+
+# Long lines continuation
+Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
+
+# Unkown word marker
+__`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
+
+# Placement slot deduction
+`Placement slot deduction` is used when we don't know all the values of the slot that we want to deduce. What we can do in this case is to create utterances that make sufficient context to be sure that even unkown word is something that we are looking for.
+Example:
+```
+.define
+    @pizza_kind = BBQ chicken|Hawaiian|<UNK>|<UNK> <UNK>
+.train
+    ORDER_PIZZA:I would like to order @pizza_kind{t_kind}
+```
+User> I want to order blah pizza
+```json
+{
+    "t_intent":"ORDER_PIZZA",
+    "t_kind":"blah"
+}
+```
+
+# Regex section
+We already discussed the cases when it makes sense to have direct lookup substitution without using trainable Neural Networks. To recap:
+## Irreversable replacement
+```
+.regex
+    &and:(as well as|and also)
+```
+It is direct replacement of words in the utterance to simplify training sets.
+
+## Reversable replacement or lookup lables
+```
+.define
+    @small = small|medium|large
+.regex
+    P_SIZE:@small
+    P_ADDRESS: <regex to search for address>
+```
+The actual value of small, medium or large is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples
+
 # Recommendations, tips and tricks
-- Before you start creating your `project` or `knowledge domain` important to remember:
+- Before starting creating a `project` or `knowledge domain` important to remember:
 There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
     ```
     .train
         INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
         don't show me flights to Seattle
     ```
-    Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made. So, the training process will teach the model to remember the difference between these samples.
+    Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
 - Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
 - Consider 2 training sets:
@@ -880,7 +955,6 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
         }
     ```
     You can see the advantage of second approach, where names are correctly isolated.
-
 
 # Optional configuration parameters
 
@@ -1014,10 +1088,4 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
         'Adamax(lr = 0.002, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, decay = 0.0)'    
     ]
     ```
-
-# Comments in training files
-To add comments to the training files, use either `#` or `//` prefixes
-
-# Long lines continuation
-Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
 
