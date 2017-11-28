@@ -130,7 +130,7 @@ What's next after project training is finished? Two options:
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
-# 2. Using prompts example
+# 2. Using `prompts` example
 
 What if I want AI system to respond to user query, how should I do that? Let's use the 'Hello World' code. Simple:
 ```
@@ -158,7 +158,7 @@ The idea: You collect all the data from user in the form of slot values and then
     R$READY = {t_param1} {t_param2} {t_param3}...
 ```
 
-# 3. Using macros
+# 3. Using `macros`
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
 ```json
 .define
@@ -183,7 +183,7 @@ Please note the last OR in ***@guys*** definition reads like ***guys*** or ***fo
 ***folk(s|)*** is INVALID
 ***(folk|folks)*** is VALID
 
-# 4. Using Slots (== parameters)
+# 4. Using `Slots` (parameters)
 Training file:
 ```json
 .define
@@ -200,7 +200,7 @@ The deduction will look like:
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
 # 5. Introduction to Layers
-zCymatix platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
+`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
 ```json
 [
     {
@@ -276,7 +276,7 @@ So having a context consisting only surrounding words is enough? You decide. But
 # 6. Dialogs
 There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
 ## 6.1 Loose Dialogs
-AI System asks user questions - for example: ordering pizza. As a user I can freely provide the information I have about the pizza I want without following scricted flow of the conversation:
+AI System asks user questions - for example: ordering pizza. User can freely provide the information about the pizza  without following scripte flow of the conversation:
 ```
     User> I want to order some pizza
     Bot> What kind would you like?
@@ -424,23 +424,6 @@ Example: t_name is absent in deduction history
     GREETING = Hello {?t_name} => Hello
 ```
 
-==================================
-TODOs:
-
-Compare
-```
-Single layer:
-    take me to (Los Angeles){t_target} and to (New York){target} 
-    => t_target = ['Los', 'Angeles', 'New', 'York']
-and
-layer 1: type training
-    take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE} 
-    => lookup table P_PLACE:0 = 'Los Angeles' and P_PLACE:1 = 'New York'
-layer 2:
-    NAVIGATE: take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
-    => t_destination = ['Los Angeles', 'New York']
-```
-
 # 8. PIZZA2 BOT Example
 Let's consider PIZZA2 BOT example. In this example we will not use scipting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many usefull features of the platform. The project has 3 layers. 
 ### Layer 1 - Slots
@@ -458,7 +441,7 @@ Let's discuss 'bi_lstm' parameter.
 ```
 "bi_lstm":true
 ```
-Consider sentences: "I would like cheese on top". It is clear that 'cheese' refers to the toppings not the pizza type. We get it only when we see 'on top' which comes at the end of the sentence. ___bi_lstm___ tells framework to 'read' utterances not only ___left to right___ but also ___right to left___ to get this information.
+Consider sentence: "I would like cheese on top". It is clear that 'cheese' refers to the toppings not the pizza type. We get it only when we see 'on top' which comes at the end of the sentence. ___bi_lstm___ tells framework to 'read' utterances not only ___left to right___ but also ___right to left___ to get this information.
 
 ```"toth":true``` will be discussed later 
 
@@ -589,17 +572,17 @@ Now time to discuss:
 It tells that ___this___ layer wants to receive ___last intent___ intent as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make deductions more accurate. __NOTE!__ Intents can be generaged by any layers in the stack and be passed to next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value(See explanation if Chapter 7) is passed to the next layer. Consider the following training utterance:
 ```
 .train
-    ORDER_PIZZA: ASK_TOPPINGS i want pizza with P_TOPPINGS{t_toppings}
+    ORDER_PIZZA: ASK_TOPPINGS I want pizza with P_TOPPINGS{t_toppings}
 ```    
 It reads like this: when user is prompted to provide pizza toppings(previous intent was ___ASK_TOPPINGS___) and user response is 'I want pizza with cheese', generate intent ___ORDER_PIZZA___ and assign ___t_toppings___ with the value. In this case: ```t_toppings = cheese```
 
 Layer 'Pizza' should contain as many utterances as possible to understand any user and the way they talk! The layer collects all slots and their values. 
-Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer deduction is based on the fact which slots we have already collected. This information is stored in the deduction history, which is what user said before kind of thing. See the comments in prompt section above.
+Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer deduction is based on the fact which slots we have already collected. This information is stored in the deduction history, which is what user said before. See the comments in prompt section above.
 ```
 .prompt
     ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
 ```
-```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all deduction history(prefix __'$'__) and replace with a __slot name__ that is __NOT__ present in the deduction history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt template could just look like this:
+```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all deduction history and put __slot names__(prefix __'$'__) which are __NOT__ present in the deduction history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt's template could just look like this:
 ```
 .prompt
     ORDER_PIZZA = {$!t_kind|t_size|t_toppings|t_address|none}
@@ -641,7 +624,7 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
 The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatevly you can use ___.gates___ section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
-Let's review utterance transformation going though all layers of the 'Pizza' project:
+Let's review utterance transformation going though all layers of the 'Pizza2' project:
 ```
 // 'Slot' layer
 I would like to place an order for small pepperoni with extra cheese and ham on top
@@ -682,10 +665,10 @@ X$ - Clean the deduction history. "Cross" command.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ### `Empty` prefix
-Intent without prefix with deduced slots and their values are saved in the deduction in the history.
+Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
-`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' intent comes along
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along
 
 
 * ### `R$` prefix
@@ -698,7 +681,7 @@ In 'Pizza' layer we have:
     R$ORDER_PIZZA_YES = Thank you for you order :)
     R$ORDER_PIZZA_NO = Sure, may be next time
 ```
-Intents with ```'R$'``` prefix tell the framework to collect all slots and their values and return them to user as a deduction in json format:
+Intents with ```'R$'``` prefix tell the framework to collect all slots and their values and return them to user as a deduction in json format. After that deduction history will be cleaned.
 ```
 {
     "t_size":"small", 
@@ -714,7 +697,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. __zCymatix platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value
+This is actually tricky example. __zCymatix platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ### `B$` prefix
 `B$` prefix tells the framework to go back one step in the history and return that deduction. It is usefull for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
@@ -753,7 +736,7 @@ The `t_destination` slot value `Seattle` will be replaced with 'Vancouver' in th
 * ### `X$` prefix
 `X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
 
-# 9. Handling `it` or `there` or frequetly used indirect references
+# 9. Handling `it` or `there` - frequetly used indirect references
 
 Consider the training samples:
 ```
@@ -766,5 +749,182 @@ Consider the training samples:
 ```
 First four training samples reply on explict name of the place we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
 `I_NAVIGATE/t_place/t_destinationr:take me there`
-Why list of slots? The intuition is - search for either `t_place` or `t_destination`, whichever comes first in te
+Why list of slots? The intuition is - search for either `t_place` or `t_destination`, whichever comes first in the deduction history.
+
+# 10. Recommendations, tips and tricks
+* Do not use intent names that can be confused for words. I recommend to use something like INT_DO_SOMETHING
+* Slot name template `t_<name>` keeping in mind that `t_intent`, `t_utt` and `t_prompt` are reserved.
+* Consider 2 training sets:
+
+from `one layer project`:
+```
+    .train
+        INT_NAVIGATE:take me to (Los Angeles){t_target} and to (New York){target}
+```
+with deduction for the sample:
+```
+    {
+        "t_intent":"INT_NAVIGATE",
+        "t_destination":["Los", "Angeles", "New", "York"]
+    }
+```
+
+vs `two layers project`:
+```
+    # Layer 1 - type training
+    .train
+        take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE}
+```
+```
+    # Layer 2 - intents and slots deduction
+    .train
+        INT_NAVIGATE:take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
+```
+with deduction for the sample:
+```
+    {
+        "t_intent":"INT_NAVIGATE",
+        "t_destination":["Los Angeles", "New York"]
+    }
+```
+You can clearly see the advantage of second aproatch, where names are correctly isolated.
+
+
+# 11. Optional configuration parameters
+
+__NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
+
+To use bidirectional LSTM models. By default it is unidirectional model.
+```
+    "bi_lstm":false
+```
+To enable passing previous intent in the history as utterance prefix. By default it is `False`
+```
+    "toth":True
+```
+For layer to be engaged if current intent starts with `R$` prefix. By default is it `False`. This gating condition for the layer to be included into the deduction pipeline. Useful for expert systems, where it would process lots of slots values and should not be bothered with questions in the middle conversation collecting these slots.
+```
+    "accept_r_intents_only":True
+```
+It is possible to change `vendor` name since you are the `vendor` of this project or knowledge domain
+```
+    "vendor":"zCymatix"
+```
+To change version number of the training set define `version` parameter.
+```
+    "version":"0000.0000.0000"
+```
+To include vendor name into the deductions. By default it is `False`
+```
+    "include_vendor":False
+```
+To include version number into the deductions. By default it is `False`
+```
+    "include_version":False
+```
+To include layer name into the deductions. By default it is `False`
+```
+    "include_layer_name":False
+```
+To include intents into the deductions. By default it is `True`
+```
+    "include_intents":True
+```
+To include prompt into the deductions. By default it is `True`
+```
+    "include_prompts":True
+```
+To include utterance into the deductions. By default it is `True`
+```
+    "include_utt":True
+```
+To keep last intent only in the deductions. By default it is `True`
+```
+    "keep_last_intent":True
+```
+To keep last prompt only in the deductions. By default it is `True`
+```
+    "keep_last_prompt":True
+```
+To keep last utterance only in the deductions. By default it is `True`
+```
+    "keep_last_utterance":True
+```
+To convert the intent to an utterance for the next layer in the deduction pipeline. By default it is `False`. This is quite useful feature. Example: We want to inerpret user's loose answer that would be considered `yes` or `no`.
+```
+.train
+    INT_YES:I guess so|it is rather yes then no|...
+```
+If the intent was `INT_YES` it will become an utterance for next layer(!) reducing training set of this layer to deal only with `INT_YES` or `INT_NO`
+```
+    "intent_to_utterance":False
+```
+
+# 12. Advanced configuration parameters
+__NOTE!__ If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
+To forse backend to use GPUs for training. Default is CPU.
+```
+    "hw":"gpu"
+```
+Accuracy metrics to be used for training. By default: `accuracy`, `loss` and `validation accuracy` are used.
+```
+    "accuracy_metrics":[ "acc", "loss", "val_acc" ]
+```
+Accuracy metrics to stop training early. Defaults in the same order: `accuracy = 1.0`, `accuracy_loss = 0.01`, `validatoion_accuracy = 1.0`, `validation_loss = 0.01`
+```
+    "stop_accuracy_metrics":[ 1.0, 0.01, 1.0, 0.01 ]
+```
+The training model by default returns sequences of labels. However, in case when you have only intents deduced it makes sense to change it to disable the sequence, thus to return only final result.
+```
+    "return_sequences":True
+```
+Example:
+```
+    .train
+        INT_YES: sure|yes|of course|I would say so|...
+        INT_NO: no|nope|I don't think so|negative|no way|...
+```
+
+Number of epochs to train. By default it is `100000`
+```
+    "n_epochs":100000
+```
+Embedding vector size. By default it is `50`
+```
+    "emb_dimension":50
+```
+Number of hidden units. By default it is `100`
+```
+    "n_hidden":100
+```
+Dropout coefficient for feature vector. By default it is `0.1`
+```
+    "dropout_W":0.1
+```
+Dropout coefficient for hidden units. By default it is `0.1`
+```
+    "dropout_U":0.1
+```
+Optimizer name. By default `Adam`
+```
+    "optimizer":"Adam"
+```
+List of optimizers and their parameters. Defaults are listed below.
+```
+    "optimizers":[
+        'SGD(lr = 0.0001, decay = 0.000001, momentum = 0.9, nesterov = True)',
+        'Adam(lr = 0.01, decay = 0.000001, beta_1 = 0.9, beta_2 = 0.999)',
+        'Nadam(lr = 0.001, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, schedule_decay = 0.000001)',
+        'RMSprop(lr = 0.001, rho = 0.9, epsilon = 1e-08, decay = 0.0)',
+        'Adagrad(lr = 0.01, epsilon = 1e-08, decay = 0.0)',
+        'Adadelta(lr = 1.0, rho = 0.95, epsilon = 1e-08, decay = 0.0)',
+        'Adamax(lr = 0.002, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, decay = 0.0)'    
+    ]
+```
+
+# 13. Comments in training files
+To add comments to the training files use either `#` or `//` prefixes
+
+# 14. Long lines continuation
+Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
 
