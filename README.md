@@ -2,8 +2,7 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-# zCymatix Natural Language Understanding(NLU) Voice/text UI 
-# & Expert Systems Platform (www.zcymatix.com)
+# zCymatix Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform (www.zcymatix.com)
 Designed for:
 - Healthcare
 - Finance
@@ -17,7 +16,7 @@ Table of Contents
 =================
    * [Features Highlights](#features-highlights)
    * ['Hello Word' Example](#hello-word-example)
-   * [Using prompts example](#using-prompts-example)
+   * [Using prompts](#using-prompts)
    * [Using macros](#using-macros)
    * [Using Slots (parameters)](#using-slots-parameters)
    * [Introduction to Layers](#introduction-to-layers)
@@ -168,9 +167,9 @@ What's next after project training is finished? Two options:
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
-# Using `prompts` example
+# Using `prompts` 
 
-What if I want AI system to respond to user query, how should I do that? Let's use the 'Hello World' code. Simple:
+What if we want AI system to respond to user query? Let's use the 'Hello World' code:
 ```
 .train
     GREETING: Hello World
@@ -179,18 +178,18 @@ What if I want AI system to respond to user query, how should I do that? Let's u
     GREETING = Hello!
     GREETING = Hi!    
 ```
-Add section ***.prompt*** and then: 
+By add section ***.prompt*** we can define user prompts: 
 ```
 INTENT=<PROMPT VARIANT>
 ```
-In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
+In the example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
 .prompts
     NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
 ```
-Where ___t_destination___ and ___t_car___ are known slots/parameters. See section 4 for the example.
-Prompts purpose is to be able to respond to user. Also, prompt mechanism can be used to pass modified data to next deduction layer. This mechanism is a key for creating expert systems.
-The idea: You collect all the data from user in the form of slot values and then use prompt template to build the 'utterance' for the next model. 
+Where ___t_destination___ and ___t_car___ are slots/parameters.
+Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is a key for creating expert systems.
+The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
 .prompts
     R$READY = {t_param1} {t_param2} {t_param3}...
@@ -954,7 +953,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     If the intent was `INT_YES` it will become an utterance for next layer(!) reducing training set of this layer to deal only with `INT_YES` or `INT_NO`
 
 # Advanced configuration parameters
-__NOTE!__ If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
+__NOTE!__ If the meaning of the parameters are not clear, keep the defaults or drop me a note.
 - To force backend to use GPUs for training. Default is CPU.
     ```
     "hw":"gpu"
