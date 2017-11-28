@@ -813,16 +813,16 @@ Phone gets my intent:
     "t_artist":"Def Leppard"
 }
 ```
-and now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor` data available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. I don't like this solution and here is why: 
+and now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor data` available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. This is not 'good' solution and here is why: 
 1. The decision is made by client device 
 2. The decision is based on hardcoded logic
 
-With `zCymatix` platform it is possible to encode and use sensor's real-time data "when I am in living" room as `__living_room__`:
+With `zCymatix` platform it is possible to encode and use sensor's real-time data "when I am in living" room as symbol `__living_room__`:
 ```
 .train
     PLAY_MUSIC: __living_room__{t_location} play P_ARTIST{t_artist}
 ```
-and deduction result would be:
+and the deduction would be:
 ```json
 {
     "t_intent":"PLAY_MUSIC",
@@ -830,22 +830,22 @@ and deduction result would be:
     "t_location":"__living_room__"
 }
 ```
-__NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
-So what?:
+So what? Here:
 1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment".
 2. This is not hardcoded logic, because the model that generated the intent with slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
+__NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
 
-This makes client application __cleaner, focusing on its task__. In our example it only __`acts`__ on the intent by playing `Def Leppard` in `living room`.
+This makes client application __cleaner, focusing on its task__ and `backend` takes care of the session, its history and the context. In our example it only __`acts`__ on the intent by playing `Def Leppard` in `living room`.
 
 # Recommendations, tips and tricks
-- Before you start creating your project or knowledge domain important to remember:
-There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will produce `GREETING` intent! Why? Because example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
+- Before you start creating your `project` or `knowledge domain` important to remember:
+There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
     ```
     .train
         INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
         don't show me flights to Seattle
     ```
-    Second sample does not have an intent or slot deduction. This means that this statement will be __`just ignored`__ and no deduction will be made. So, the training process will teach the model to remember the difference between these samples.
+    Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made. So, the training process will teach the model to remember the difference between these samples.
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
 - Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
 - Consider 2 training sets:
@@ -879,130 +879,131 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
             "t_destination":["Los Angeles", "New York"]
         }
     ```
-    You can clearly see the advantage of second approach, where names are correctly isolated.
+    You can see the advantage of second approach, where names are correctly isolated.
 
 
 # Optional configuration parameters
 
-__NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
+__NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. 
 
-To use bidirectional LSTM models. By default, it is unidirectional model.
-```
+- To use bidirectional LSTM models. By default, it is unidirectional model.
+    ```
     "bi_lstm":false
-```
-To enable passing previous intent in the history as utterance prefix. By default, it is `False`
-```
+    ```
+- To enable passing previous intent in the history as utterance prefix. By default, it is `False`
+    ```
     "toth":True
-```
-For layer to be engaged if current intent starts with `R$` prefix. By default, is it `False`. This gating condition for the layer to be included into the deduction pipeline. Useful for expert systems, where it would process lots of slots values and should not be bothered with questions in the middle conversation collecting these slots.
-```
+    ```
+- A layer can be optionally inlcuded into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
+    ```
     "accept_r_intents_only":True
-```
-It is possible to change `vendor` name since you are the `vendor` of this project or knowledge domain
-```
+    ```
+- It is possible to change `vendor` name since you are the `vendor` of this project or knowledge domain
+    ```
     "vendor":"zCymatix"
-```
-To change version number of the training set define `version` parameter.
-```
+    ```
+- To change version number of the training set define `version` parameter.
+    ```
     "version":"0000.0000.0000"
-```
-To include vendor name into the deductions. By default, it is `False`
-```
+    ```
+- To include vendor name into the deductions. By default, it is `False`
+    ```
     "include_vendor":False
-```
-To include version number into the deductions. By default, it is `False`
-```
+    ```
+- To include version number into the deductions. By default, it is `False`
+    ```
     "include_version":False
-```
-To include layer name into the deductions. By default, it is `False`
-```
+    ```
+- To include layer name into the deductions. By default, it is `False`
+    ```
     "include_layer_name":False
-```
-To include intents into the deductions. By default,it is `True`
-```
+    ```
+- To include intents into the deductions. By default,it is `True`
+    ```
     "include_intents":True
-```
-To include prompt into the deductions. By default, it is `True`
-```
+    ```
+- To include prompt into the deductions. By default, it is `True`
+    ```
     "include_prompts":True
-```
-To include utterance into the deductions. By default, it is `True`
-```
+    ```
+- To include utterance into the deductions. By default, it is `True`
+    ```
     "include_utt":True
-```
-To keep last intent only in the deductions. By default, it is `True`
-```
+    ```
+- To keep last intent only in the deductions. By default, it is `True`
+    ```
     "keep_last_intent":True
-```
-To keep last prompt only in the deductions. By default, it is `True`
-```
+    ```
+- To keep last prompt only in the deductions. By default, it is `True`
+    ```
     "keep_last_prompt":True
-```
-To keep last utterance only in the deductions. By default, it is `True`
-```
+    ```
+- To keep last utterance only in the deductions. By default, it is `True`
+    ```
     "keep_last_utterance":True
-```
-To convert the intent to an utterance for the next layer in the deduction pipeline. By default, it is `False`. This is quite useful feature. Example: We want to interpret user's loose answer that would be considered `yes` or `no`.
-```
-.train
-    INT_YES:I guess so|it is rather yes then no|...
-```
-If the intent was `INT_YES` it will become an utterance for next layer(!) reducing training set of this layer to deal only with `INT_YES` or `INT_NO`
-```
+    ```
+- To convert the intent value to an utterance for the next layer in the deduction pipeline. By default, it is `False`. 
+    ```
     "intent_to_utterance":False
-```
+    ```
+    This is quite useful feature. Example: We want to interpret user's loose answer that would be considered `yes` or `no`.
+    ```
+    .train
+        INT_YES:I guess so|it is rather yes then no|...
+    ```
+    If the intent was `INT_YES` it will become an utterance for next layer(!) reducing training set of this layer to deal only with `INT_YES` or `INT_NO`
 
 # Advanced configuration parameters
 __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
-To force backend to use GPUs for training. Default is CPU.
-```
+- To force backend to use GPUs for training. Default is CPU.
+    ```
     "hw":"gpu"
-```
-Accuracy metrics to be used for training. By default: `accuracy`, `loss` and `validation accuracy` are used.
-```
+    ```
+- Accuracy metrics to be used for training. By default: `accuracy`, `loss` and `validation accuracy` are used.
+    ```
     "accuracy_metrics":[ "acc", "loss", "val_acc" ]
-```
-Accuracy metrics to stop training early. Defaults in the same order: `accuracy = 1.0`, `accuracy_loss = 0.01`, `validatoion_accuracy = 1.0`, `validation_loss = 0.01`
-```
+    ```
+- Accuracy metrics to stop training early. Defaults in the same order: `accuracy = 1.0`, `accuracy_loss = 0.01`, `validatoion_accuracy = 1.0`, `validation_loss = 0.01`
+    ```
     "stop_accuracy_metrics":[ 1.0, 0.01, 1.0, 0.01 ]
-```
-The training model by default, returns sequences of labels. However, in case when you have only intents deduced it makes sense to change it to disable the sequence, thus to return only final result.
-```
+    ```
+- The training model by default, returns sequences of labels. However, in case when you have a layer which deals with only intents without any slots it makes sense to change it to disable the sequence, thus to return only final result. It leads to faster training times.
+    ```
     "return_sequences":True
-```
-Example:
-```
+    ```
+    Example:
+    ```
     .train
         INT_YES: sure|yes|of course|I would say so|...
         INT_NO: no|nope|I don't think so|negative|no way|...
-```
+    ```
 
-Number of epochs to train. By default, it is `100000`
-```
+- Number of epochs to train. By default, it is `100000`
+    ```
     "n_epochs":100000
-```
-Embedding vector size. By default, it is `50`
-```
+    ```
+- Embedding vector size. By default, it is `50`
+    ```
     "emb_dimension":50
-```
-Number of hidden units. By default, it is `100`
-```
+    ```
+- Number of hidden units. By default, it is `100`
+    ```
     "n_hidden":100
-```
-Dropout coefficient for feature vector. By default, it is `0.1`
-```
+    ```
+- Dropout coefficient for feature vector. By default, it is `0.1`
+    ```
     "dropout_W":0.1
-```
-Dropout coefficient for hidden units. By default, it is `0.1`
-```
+    ```
+- Dropout coefficient for hidden units. By default, it is `0.1`
+    ```
     "dropout_U":0.1
-```
-Optimizer name. By default, `Adam`
-```
+    ```
+- Optimizer name. By default, `Adam`
+    ```
     "optimizer":"Adam"
-```
-List of optimizers and their parameters. Defaults are listed below.
-```
+    ```
+- List of optimizers and their parameters. Defaults are listed below.
+    ```
     "optimizers":[
         'SGD(lr = 0.0001, decay = 0.000001, momentum = 0.9, nesterov = True)',
         'Adam(lr = 0.01, decay = 0.000001, beta_1 = 0.9, beta_2 = 0.999)',
@@ -1012,7 +1013,7 @@ List of optimizers and their parameters. Defaults are listed below.
         'Adadelta(lr = 1.0, rho = 0.95, epsilon = 1e-08, decay = 0.0)',
         'Adamax(lr = 0.002, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, decay = 0.0)'    
     ]
-```
+    ```
 
 # Comments in training files
 To add comments to the training files, use either `#` or `//` prefixes
