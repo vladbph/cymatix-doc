@@ -2,63 +2,106 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-# zCymatix Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform (www.zcymatix.com)
-
+# zCymatix Natural Language Understanding(NLU) Voice/text UI 
+# & Expert Systems Platform (www.zcymatix.com)
 Designed for:
+- Healthcare
+- Finance
+- Electronics
+- Wearables/IoT
+- Automotive
+- Interactive (Voice/text controlled) Web sites
+- Web sites for blind and more
 
-    - Healthcare 
-    - Finance
-    - Electronics
-    - Wearables
-    - Automotive
-    - Web sites for blind or more
-    
+Table of Contents
+=================
+   * [Features Highlights](#features-highlights)
+   * ['Hello Word' Example](#hello-word-example)
+   * [Using prompts example](#using-prompts-example)
+   * [Using macros](#using-macros)
+   * [Using Slots (parameters)](#using-slots-parameters)
+   * [Introduction to Layers](#introduction-to-layers)
+   * [Dialogs](#dialogs)
+      * [Loose Dialogs](#loose-dialogs)
+         * [Prototype section](#prototype-section)
+         * [Gates section (script)](#gates-section-script)
+      * [Strict Dialogs](#strict-dialogs)
+   * [Prompt label prefixes](#prompt-label-prefixes)
+      * [Prefix <strong>"#"</strong>](#prefix-)
+      * [Prefix <strong>"?#"</strong>](#prefix--1)
+      * [Prefix <strong>"$"</strong>](#prefix--2)
+      * [Prefix <strong>"?$"</strong>](#prefix--3)
+      * [Prefix <strong>"."</strong>](#prefix--4)
+      * [Prefix <strong>"?."</strong>](#prefix--5)
+      * [Empty prefix](#empty-prefix)
+      * [Prefix <strong>"?"</strong>](#prefix--6)
+   * [PIZZA2 BOT Example](#pizza2-bot-example)
+      * [Layer 1 Slots](#layer-1-slots)
+      * [Layer 2 Pizza](#layer-2-pizza)
+      * [Layer 3 Bot](#layer-3-bot)
+      * [Pizza project Final Deduction](#pizza-project-final-deduction)
+   * [Deduction history](#deduction-history)
+   * [How to control deduction history](#how-to-control-deduction-history)
+      * [Intent Prefixes](#intent-prefixes)
+      * [Empty prefix](#empty-prefix-1)
+      * [R$ prefix](#r-prefix)
+      * [F$ prefix](#f-prefix)
+      * [B$ prefix](#b-prefix)
+      * [C$ prefix](#c-prefix)
+      * [X$ prefix](#x-prefix)
+   * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
+   * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
+   * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
+   * [Optional configuration parameters](#optional-configuration-parameters)
+   * [Advanced configuration parameters](#advanced-configuration-parameters)
+   * [Comments in training files](#comments-in-training-files)
+   * [Long lines continuation](#long-lines-continuation)
 
-#### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking with many other features...
+#### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
-## Features Highlights
-- ***Train Of Thought technology***
-    * Literaly maintains a train of thought of the conversation
-- State of the Art ***deduction pipeline*** to efficiently resolve ambiguity
-- Ability to create ***1000s of utterances*** in few minutes
-- ***States, events, sensors information embedding to maintain conversation flow***
-- Session based conversation instances.  ***Context is maintained on the backend*** leaving client focusing only on the application itself
-- Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
-- Optional scripting support.
-    * All layers of the pipeline are ML layers, however if desired, scripting can be used to make changes based on the context. See examples.
+# Features Highlights
+- ***`Train Of Thought technology`***
+    * Literally maintains a train of thought of the conversation
+- State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
+- Ability to create ***`1000s of utterances`*** in minutes
+- ***`States, Events and Sensors Data Embedding`*** contextual support
+- ***`Session based conversation instances`***.  Context is maintained on the `backend` leaving client focusing only on the application itself
+- `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
+- Optional `scripting support`.
+    * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
 - Idioms interpretation mechanism
     * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' } ```
 - Lookup labels support
-    * "I want bbq chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['bbq chicken', 'new york']```
-- NLU tasks supported:
-    - Self-contained deductions, not contextual
-        * __"Play the latest from Def Leppard"__ =>  ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard' } ```
-        * __"Take me to Seattle"__ =>  ``` { 't_intent':'NAVIGATE, 't_destination':'Seattle' } ```
-    - AI Bot asks user questions. Example: Order pizza bot
+    * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
+- NLU tasks:
+    - `Self-contained` deductions:
+        * __"Play the latest from Def Leppard"__ =>  
+            ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard', 't_attr':'latest' } ```
+        * __"Show flights to Seattle"__ =>  ``` { 't_intent':'SHOW_FLIGHT, 't_destination':'Seattle' } ```
+    - `AI Bot asks User` questions. Example: Order pizza bot
         * User> __I am hungry for pizza.__
         * __Bot__> What kind of pizza would you like?
-        * User> __I would like bbq chicken and pepperoni__
+        * User> __I would like BBQ chicken and pepperoni__
         * __Bot__> What toppings would you like?
         * User> __I will go with extra cheese and tomatoes on top__
         * ...
-        ...
-    - User asks AI bot questions. Example: Web site 'How To' section:
+    - `User asks AI bot` questions. Example: Web site 'How To' section:
         * User> __What can you do for me?__
-        * __Bot__> I can help you to create a system that answers your question
-        * User> __Nice, how?__
+        * __Bot__> I can help you to create AI chat bots, make your website to talk to you and more...
+        * User> __how?__
         * __Bot__> First, you need to create a project
         * User> __How?__
-        * __Bot__> Create a folder. Name it as a project name. Create config file and at least one training file
+        * __Bot__> Create a folder, then create configuration file and training files for me to learn
     - Combination of above
 - ***Indirect*** subject referencing
-    * Notion of ***'it/there'***
+    * Notion of ***`it/there`***
         * 'Where is Seattle'
         * 'Take me there'
-- ***Expert system support.*** Result of the dialog could be fed into a layer to process conversation outcome.
-    * This is not NLU specific feature enabling the platform utilization in any field of knowledge
+- ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
+    * This is not NLU specific feature which enables platform utilization in any field of knowledge
     
    ### So, Let's do it!
-# 1. 'Hello Word' Example.
+# 'Hello Word' Example
 * Create and enter **hello** folder
 * Create **hello.json** file
 ```json
@@ -69,19 +112,13 @@ Designed for:
 .train
     GREETING:Hello World
 ```
-***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any learnt associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
-So, that's it. Literally, 3 lines of code get you there. The deduction of the phrase 'Hello World' will be 
+***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
+So, this is it. Literally, 3 lines of code get you there. The deduction of the phrase 'Hello World' will be 
 ```json
     {"t_intent":"GREETING"}
 ```
-BTW, to convert deduction to an object in Python:
-```
-    import json
-    from argparse import Namespace
-    obj = json.loads( "{'t_intent':'GREETING'}', object_hook = lambda d: Namespace( **d ) )
-```
 To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
-### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Oherwise you cannot use the service.
+### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
 After login, upload the project by choosing your project folder - ***hello***. Remember - **folder name ___IS___ the project name**
@@ -92,7 +129,7 @@ When project is uploaded, you need to train it. Choose ***Training*** option and
 
 Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail with the ***PROJECT ID***. Please store it, because you need to pass it with ***project launch*** request to the server.
 What's next after project training is finished? Two options:
-1. __Use NLU service via REST api.__
+1. __Use NLU service via REST API__
     * ***Project Launch request:***
         ***<https://nlp2.zcymatix.com/?action=launch&project_id=c7df223a3b97>***
         Parameters: 
@@ -100,11 +137,11 @@ What's next after project training is finished? Two options:
             action = launch
             project_id = c7df223a3b97 // Example value
         ```
-        The responce has fixed format consisting of two fields ***code*** and ***msg***:
+        The response has fixed format consisting of two fields ***code*** and ***msg***:
         ```json
         { "code":200, "msg":"806bb67b"}
         ```
-        In the responce you will receive dynamic ___session_id___ which has to be used in deduction requests. Given value 806bb67b is an example.
+        In the response you will receive dynamic ___session_id___ which has to be used in deduction requests. Given value 806bb67b is an example.
     * ***Deduction:***
         ***<https://nlp2.zcymatix.com/?action=deduce&session_id=806bb67b&query=hello+world>***
         Parameters: 
@@ -112,7 +149,7 @@ What's next after project training is finished? Two options:
             action = deduce
             session_id = 806bb67b // Example value
         ```
-        The responce:
+        The response:
         ```json
         { "code":201, "msg":"{"t_intent":"GREETINGS"}"}
         ```
@@ -121,16 +158,17 @@ What's next after project training is finished? Two options:
             200 - Session id is provided in msg field as a string
             201 - Deduction is provided in msg field as a JSON string
             202 - Info is provided in msg field as a string
+            102 - Project is loading
             101 - Authentication error
             100 - Invalid parameters
         ```
 
     
-2. __Use Web interface for training verification:__
+2. __Use Web interface for training verification__
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
-# 2. Using `prompts` example
+# Using `prompts` example
 
 What if I want AI system to respond to user query, how should I do that? Let's use the 'Hello World' code. Simple:
 ```
@@ -145,20 +183,20 @@ Add section ***.prompt*** and then:
 ```
 INTENT=<PROMPT VARIANT>
 ```
-In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interraction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
+In example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
 .prompts
     NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
 ```
 Where ___t_destination___ and ___t_car___ are known slots/parameters. See section 4 for the example.
-Prompts purpose is to be able to respond to user. Also prompt mechanism can be used to pass modified data to next deduction layer. This mechanism is a key for creating expert systems.
+Prompts purpose is to be able to respond to user. Also, prompt mechanism can be used to pass modified data to next deduction layer. This mechanism is a key for creating expert systems.
 The idea: You collect all the data from user in the form of slot values and then use prompt template to build the 'utterance' for the next model. 
 ```json
 .prompts
     R$READY = {t_param1} {t_param2} {t_param3}...
 ```
 
-# 3. Using `macros`
+# Using `macros`
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
 ```json
 .define
@@ -183,7 +221,7 @@ Please note the last OR in ***@guys*** definition reads like ***guys*** or ***fo
 ***folk(s|)*** is INVALID
 ***(folk|folks)*** is VALID
 
-# 4. Using `Slots` (parameters)
+# Using `Slots` (parameters)
 Training file:
 ```json
 .define
@@ -199,8 +237,8 @@ The deduction will look like:
 ```json
 {"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
 ```
-# 5. Introduction to Layers
-`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping exlicetly. So it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
+# Introduction to Layers
+`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use these lookup labels instead of actual values. The final deduction will resolve the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name them:
 ```json
 [
     {
@@ -215,21 +253,21 @@ The deduction will look like:
 ```
 I'll walk you through. First of all, let's put all the macros in one file ***macros.h*** and include it into both layers. It is optional however. So, let's take a look at ***kinds.txt*** file. One utterance in particular:
 ```
-I would like to place an order for a small bbq chicken and large meat pizza
+I would like to place an order for a small BBQ chicken and large meat pizza
 ```
 For simplicity sake, let's ignore pizza sizes deduction.
 
 ***kinds.txt***:
 ```
 .train
-    I would like to place an order for a small (bbq chicken){&PIZZA_KIND} and \
+    I would like to place an order for a small (BBQ chicken){&PIZZA_KIND} and \
     large meat{&PIZZA_KIND} pizza
 ```
 *Intent is not present here, because the purpose of this utterance is to extract and label pizza kind:*
-***PIZZA_KIND = bbq chicken***
+***PIZZA_KIND = BBQ chicken***
 ***PIZZA_KIND = meat***
 
-This is a mechanism to label multiple words with specific label and using multiple instance of the label in a single utterance(***Amazon Lex does not allow that***). To explain further lets take a look at the next layer and file 
+This is a mechanism to label multiple words with specific label and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further lets take a look at the next layer and file 
 ***order_pizza.txt***:
 ```
 .train
@@ -241,15 +279,15 @@ The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is 
 The resulting deduction after applying both layers will be:
 ```json
 {
-    "t_utt":"i would like to place an order for small bbq chicken and large meat pizza",
+    "t_utt":"i would like to place an order for small BBQ chicken and large meat pizza",
     "t_intent":"ORDER_PIZZA",
-    "t_kind":["bbq chicken", "meat"]
+    "t_kind":["BBQ chicken", "meat"]
 }
 ```
 You could say - ___How about if I have a macro @pizza_kind and put all values there and use training utterance in one single layer?:___
 ```
 .define
-    @pizza_kind = bbq chicken|meat|hawaiian|...
+    @pizza_kind = BBQ chicken|meat|Hawaiian|...
 .train
     ORDER_PIZZA: i would like to place an order for small @pizza_kind{t_kind} and \
                  large @pizza_kind{t_kind} pizza
@@ -265,37 +303,37 @@ Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Ima
 ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and \
              @pizza_kind{t_kind} pizza
 ```
-So this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So I would put into training file something like this:
+So, this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So,I would put into training file something like this:
 ```
 .define 
-    @pizza_kind = bbq chicken|meat|pepperoni|hawaiian
+    @pizza_kind = BBQ chicken|meat|pepperoni|Hawaiian
 .train
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
-So having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
-# 6. Dialogs
+So, having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
+# Dialogs
 There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
-## 6.1 Loose Dialogs
-AI System asks user questions - for example: ordering pizza. User can freely provide the information about the pizza  without following scripte flow of the conversation:
+## Loose Dialogs
+AI System asks user questions - for example: ordering pizza. User can freely provide the information about the pizza  without following script flow of the conversation:
 ```
     User> I want to order some pizza
     Bot> What kind would you like?
-    User> I want small bbq chicken with extra cheese and tomatoes
+    User> I want small BBQ chicken with extra cheese and tomatoes
     Bot> What is the delivery address?
     User>...
     Bot> Here is you order... Should I go ahead and place your order?
     User> you bet!
     Bot> Great, thank you!!!
 ```
-In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So the converation could go like this:
+In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So, the conversation could go like this:
 ```
-    User> I want to small bbq chicken with extra cheese and tomatoes on top and my address is ...
+    User> I want to small BBQ chicken with extra cheese and tomatoes on top and my address is ...
     Bot> Here is you order... Should I go ahead and place your order?
     User> Yes
 ```
 
 There are few things to know before we can create such dialog.
-### 6.1.1 Prototype section
+### Prototype section
 Syntax:
 ```
 .protos
@@ -308,9 +346,9 @@ Pizza example:
 ```
 This section creates a link between a ***list of intents and corresponding list of slots/parameters*** to be collected by asking user set of questions to consider conversation complete.
 
-### 6.1.2 'Gates' section (script)
+### `Gates` section (script)
 
-Syntax is using python style `if` statements. It is better to demostrate using Pizza example:
+Syntax is using python style `if` statements. It is better to demonstrate using Pizza example:
 ```python
 .gates
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and o.t_kind is None
@@ -323,7 +361,7 @@ Syntax is using python style `if` statements. It is better to demostrate using P
 ```
 ```
 .prompts
-    ASK_KIND = What kind of pizza would you like?(bbq chicken, hawaiian, pepperoni, etc)
+    ASK_KIND = What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
     ASK_SIZE = What size? (large, medium, small, etc)
     ASK_TOPPINGS = Anything on top?(ham, cheese, tomatoes, etc)
     ASK_ADDRESS = What is your address?
@@ -334,11 +372,13 @@ Syntax is using python style `if` statements. It is better to demostrate using P
 ```
 The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind from the prompt section.
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
-**Please note a mandatory prefix 'o.' in front of slot and intent label and also single quites surrounding the intent name.**
+**Please note a mandatory prefix 'o.' in front of slot and intent label and also single quotes surrounding the intent name.**
 Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed later.
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
 
-# 7. Prompt label prefixes:
+## Strict Dialogs
+
+# Prompt label prefixes
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
 ```
 utterance => 
@@ -347,7 +387,7 @@ utterance =>
             Layer2 => ... 
                 final Layer => prompt
 ```
-__Note! If layer produces a prompt, it is used as an input for the next layer, unless of couse layer is final. In that case prompt is what is presented to user as a responce to user query.__
+__Note! If layer produces a prompt, it is used as an input for the next layer, unless of course layer is final. In that case prompt is what is presented to user as a response to user query.__
 Example:
 ```
 Utterance: Take me to Seattle => 
@@ -363,7 +403,8 @@ Utterance: Take me to Seattle =>
 ```
 The values in the template are controlled by prompt's prefixes as described below:
 
-1. Prefix __"#label_name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
+## Prefix __"#"__
+Implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last deduction, t_age is absent
 .prompt
@@ -371,7 +412,8 @@ Example: t_name value is in the last deduction, t_age is absent
     # The value of RESULT = t_name None
 ```
 
-2. Prefix __"?#label name"__  implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
+## Prefix __"?#"__  
+Implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example:  t_name value is in the last deduction, t_age is absent
 .prompt
@@ -379,7 +421,8 @@ Example:  t_name value is in the last deduction, t_age is absent
     # The value of RESULT = t_name 
 ```
 
-3. Prefix __"$label_name"__  implies using label's ___name___ instead of ___value___ in ___whole deduction history___. The approatch can be used as an input for dialog traking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+## Prefix __"$"__  
+Implies using label's ___name___ instead of ___value___ in ___whole deduction history___. The approatch can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
@@ -387,7 +430,8 @@ Example: t_name value is in all whole history, t_age is absent
     # The value of RESULT = t_name None
 ```
 
-4. Prefix __"?$label_name"__  implies using label's ___name___ instead of ___value___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+## Prefix __"?$"__  
+Implies using label's ___name___ instead of ___value___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
@@ -395,40 +439,44 @@ Example: t_name value is in all whole history, t_age is absent
     # The value of RESULT = t_name 
 ```
 
-5. Prefix: __".label_name"__ implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
+## Prefix __"."__ 
+Implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name = John is in the last deduction. 
 .prompt
     GREETING = Hello {.t_name} => Hello John
 ```
 
-6. Prefix: __"?.label_name"__  implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
+## Prefix __"?."__  
+Implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in the last deduction. 
 .prompt
     GREETING = Hello {?.t_name} => Hello
 ```
 
-7. Empty prefix implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
+## Empty prefix 
+Implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
-Example: t_kind values are in whole deduction history, t_kind = bbq and t_kind = meat
+Example: t_kind values are in whole deduction history, t_kind = BBQ and t_kind = meat
 .prompt
     ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
-    => Ok, I will place an order of bbq, meat pizza for you
+    => Ok, I will place an order of BBQ, meat pizza for you
 ```
 
-8. Prefix: __"?label_name"__  implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+## Prefix __"?"__  
+Implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in deduction history
 .prompt
     GREETING = Hello {?t_name} => Hello
 ```
 
-# 8. PIZZA2 BOT Example
-Let's consider PIZZA2 BOT example. In this example we will not use scipting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many usefull features of the platform. The project has 3 layers. 
-### Layer 1 - Slots
+# PIZZA2 BOT Example
+Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
+## Layer 1 Slots
 Layer 1 is named "slots" is dedicated to isolate types of the slots - __pizza kind__, __pizza toppings__,  __size__ and __delivery address__. Here is the configuration for the layer:
-```
+```json
 {
     "layer_name":"slots",
     "data_files":[ "base.h","slots.txt" ],
@@ -438,7 +486,7 @@ Layer 1 is named "slots" is dedicated to isolate types of the slots - __pizza ki
 ```
 It contains 2 files - ___base.h___ with useful macros, ___slots.txt___ is an actual training file. 
 Let's discuss 'bi_lstm' parameter.
-```
+```json
 "bi_lstm":true
 ```
 Consider sentence: "I would like cheese on top". It is clear that 'cheese' refers to the toppings not the pizza type. We get it only when we see 'on top' which comes at the end of the sentence. ___bi_lstm___ tells framework to 'read' utterances not only ___left to right___ but also ___right to left___ to get this information.
@@ -446,7 +494,7 @@ Consider sentence: "I would like cheese on top". It is clear that 'cheese' refer
 ```"toth":true``` will be discussed later 
 
 __slots.txt__ file:
-```    
+```
 .regex
     // Replace and leave it as such
     &and:(as well as|and also)
@@ -469,7 +517,7 @@ __slots.txt__ file:
     (ORDER_PIZZA|) @i live in @address{&P_ADDRESS}
 ```
 It is not always makes sense to use machine learning training models in all layers. Sometimes it is sufficient to use direct replacement mechanism like regular expressions. __You can, but you don't have to.__
-Developers of knowledge domains are faced with the challege to come up with as many variations of utterances as possible so the system can understand all users - the ways they talk. From one side - we want to have lots of utterances to achive that, but on the other hand it leads to longer training times.
+Developers of knowledge domains are faced with the challenge to come up with as many variations of utterances as possible, so the system can understand all users - the ways they talk. From one side - we want to have lots of utterances to achieve that, but on the other hand it leads to longer training times.
 ```
 .define
     @and = and|also|as well as
@@ -490,7 +538,7 @@ Lets review regex section.
 ```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final deduction.
 ```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final deduction result. 
 ___NOTE!___ Regex section is used for both - __training__ and __prediction__ modes.
-___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc so next layer that supposed to deduce user intents would not deal with them.
+___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc. so next layer that supposed to deduce user intents would not deal with them.
 __base.h__ file:
 ```
 .define
@@ -501,7 +549,7 @@ __base.h__ file:
     @want = want|need|would like
     @and = and|and also|as well as
     @small = small|large|medium
-    @kind = pepperoni|meat|hawaiian|bbq|meat|cheese
+    @kind = pepperoni|meat|Hawaiian|BBQ|meat|cheese
     @toppings = ham|cheese|tomato|meat|cheese
     @address = seattle|vancouver
     @extra = extra|
@@ -518,10 +566,10 @@ I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOP
 ```
 Latter is an input utterance to next layer called 'Pizza'
 
-### Layer 2 - Pizza
+## Layer 2 Pizza
 
 Config for this layer:
-```
+```json
 {
     "layer_name":"pizza",
     "data_files":["base.h","pizza.txt"],
@@ -548,7 +596,7 @@ __pizza.txt__ file:
     R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt
     // Generate Prompt that contains only one(!) missing slot to train next dialog layer
-    // With the prompt dedinition below one of:
+    // With the prompt definition below one of:
     //   if t_kind is missing
     //   if t_size is missing
     //   if t_toppings is missing
@@ -563,13 +611,13 @@ __pizza.txt__ file:
     // NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
     // the deduction history, thus to forget what user said before.
     R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R$ORDER_PIZZA_NO = Sure, maybe next time
 ```
 Now time to discuss:
 ```
 "toth":true
 ```
-It tells that ___this___ layer wants to receive ___last intent___ intent as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make deductions more accurate. __NOTE!__ Intents can be generaged by any layers in the stack and be passed to next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value(See explanation if Chapter 7) is passed to the next layer. Consider the following training utterance:
+It tells that ___this___ layer wants to receive ___last intent___ intent as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make deductions more accurate. __NOTE!__ Intents can be generated by any layers in the stack and be passed to next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value (See explanation if Chapter 7) is passed to the next layer. Consider the following training utterance:
 ```
 .train
     ORDER_PIZZA: ASK_TOPPINGS I want pizza with P_TOPPINGS{t_toppings}
@@ -587,7 +635,7 @@ Now, what is next? Next - is to figure out which question we need to ask. To do 
 .prompt
     ORDER_PIZZA = {$!t_kind|t_size|t_toppings|t_address|none}
 ```
-This way we costruct prompts providing sufficient information to the next layer to decide - what to ask next. 
+This way we build prompts providing sufficient information to the next layer to decide - what to ask next. 
 Layer 'Pizza' generates prompts => utterances for next layer:
 ```
 if t_size is missing
@@ -597,9 +645,9 @@ if t_address is missing
 ```
 Next layer is called 'Bot'.
 
-### Layer 3 - Bot
+## Layer 3 Bot
 Configuration:
-```
+```json
     {
         "layer_name":"bot",
         "data_files":"bot.txt"
@@ -614,14 +662,14 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_ADDRESS: if t_address is missing
     ASK_TO_CONFIRM: if None is missing
 .prompt
-    ASK_KIND = What kind of pizza would you like. For example, hawaiian, bbq, etc.?
+    ASK_KIND = What kind of pizza would you like. For example, Hawaiian, BBQ, etc.?
     ASK_SIZE = Small, medium or large?
     ASK_TOPPINGS = What do you want on top. For example: tomato, ham, cheese, etc.?
     ASK_ADDRESS = What is delivery address?
     ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatevly you can use ___.gates___ section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use ___.gates___ section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
@@ -641,20 +689,20 @@ if t_address is missing
 What is the delivery address?
 ```
 
-I hope it is clear why the 1st quesion is 'What is the delivery address'. It is because user already provided ___t_kind___, ___t_toppings___ and ___t_size___ in the origincal sentence.
+I hope it is clear why the 1st question is 'What is the delivery address'. It is because user already provided ___t_kind___, ___t_toppings___ and ___t_size___ in the original sentence.
 
-## Deduction history
+# Deduction history
 This information is useful to understand platform operation under the hood. Deduction history could be simply described as the "things user said before". All deductions are collected in the ```history``` or ```stack```. Those terms will be used interchangeably. The deduction history contains:
 * Layer's input utterance with predefined slot name ```t_utt```
 * Layer's intent with predefined slot name ```t_intent```, if any
 * Layer's deduced ```slots``` and their ```values```, if any
 * Layer's prompt with predefined slot name ```t_prompt```, if any
 
-## How to control deduction history
+# How to control deduction history
 
-At some point we need to collect all slots values in the stack to build a aggregative deduction(pizza order), or forget a deduction, because it is self contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". All of above are pieces of __ToTh__ method. It is done via intent prefixes:
+At some point we need to collect all slots values in the stack to build a aggregative deduction(pizza order), or forget a deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". All of above are pieces of __ToTh__ method. It is done via intent prefixes:
 
-* ### Intent Prefixes
+* ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
 R$ - Return all collected slots values in the deduction history and clean the history. "Return" command.
@@ -664,14 +712,14 @@ C$ - Change value of a slot. "Change" command.
 X$ - Clean the deduction history. "Cross" command.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
-* ### `Empty` prefix
+* ## `Empty` prefix
 Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
 `t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along
 
 
-* ### `R$` prefix
+* ## `R$` prefix
 In 'Pizza' layer we have:
 ```
 .train
@@ -679,19 +727,19 @@ In 'Pizza' layer we have:
     R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt:
     R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R$ORDER_PIZZA_NO = Sure, maybe next time
 ```
 Intents with ```'R$'``` prefix tell the framework to collect all slots and their values and return them to user as a deduction in json format. After that deduction history will be cleaned.
-```
+```json
 {
     "t_size":"small", 
     "t_kind":"pepperoni", 
     "t_toppings": ["cheese", "ham"]
 }
 ```
-* ### `F$` prefix
-```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self contained statement and depending on the domain there may be no need to keep it in the history. So the resulting deduction will be returned and it will not be remembered in the stack.
-```
+* ## `F$` prefix
+```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there maybe no need to keep it in the history. So, the resulting deduction will be returned and it will not be remembered in the stack.
+```json
 {
     "t_intent":"GET_TIME",
     "t_prompt":"It is 1:38PM"
@@ -699,8 +747,8 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
 ```
 This is actually tricky example. __zCymatix platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
-* ### `B$` prefix
-`B$` prefix tells the framework to go back one step in the history and return that deduction. It is usefull for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
+* ## `B$` prefix
+`B$` prefix tells the framework to go back one step in the history and return that deduction. It is useful for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
 ```
 Bot>What type of pizza would you like?
 User>What?
@@ -716,16 +764,18 @@ There is an alternative to achieve the same result. Consider training sample:
 ```
 `*` means to use the last value of `t_prompt` saved in the history. It is up to you to choose which method to use.
 
-* ### `C$` prefix
+* ## `C$` prefix
 `C$` prefix tells the framework to change the value of the slot in the history
-```
-User> Take me to Seattle
+`User> Take me to Seattle`
+
+```json
 {
     "t_intent":"NAVIGATE",
     "t_destination":"Seattle"
 }
-
-User> No, change it to Vancouver
+```
+```User> No, change it to Vancouver```
+```json
 {
     "t_intent":"C$NAVIGATE",
     "t_destination":"Vancouver"
@@ -733,10 +783,10 @@ User> No, change it to Vancouver
 ```
 The `t_destination` slot value `Seattle` will be replaced with 'Vancouver' in the history stack
 
-* ### `X$` prefix
+* ## `X$` prefix
 `X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
 
-# 9. Handling `it` or `there` - frequetly used indirect references
+# Indirect references `it` or `there`
 
 Consider the training samples:
 ```
@@ -747,62 +797,104 @@ Consider the training samples:
     I_DISTANCE_INFO: how far is P_PLACE{t_destination}
     I_NAVIGATE/t_place/t_destinationr:take me there
 ```
-First four training samples reply on explict name of the place we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
+First four training samples reply on explicit name of the place we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
 `I_NAVIGATE/t_place/t_destinationr:take me there`
 Why list of slots? The intuition is - search for either `t_place` or `t_destination`, whichever comes first in the deduction history.
 
-# 10. Recommendations, tips and tricks
-* Do not use intent names that can be confused for words. I recommend to use something like INT_DO_SOMETHING
-* Slot name template `t_<name>` keeping in mind that `t_intent`, `t_utt` and `t_prompt` are reserved.
-* Consider 2 training sets:
+# Events, States, Sensors Information Embedding
+This is another tool of ToTh technology.
+Language operates by `symbols`. In essence, these symbols are indirect references to things that we can experience and understand. Keeping this in mind - we can `encode` any `contextual information` such as `events` or `states` or even `sensors information` using symbols, which we can use in the `training set` expanding our samples with those symbols. That's it. 
+Let's review an example. I have my phone that controls multi room home music system via WiFi and I say: "Play Def Leppard". It seems that it is self-contained clear statement telling that I want playing music :) But there is a problem - where to play it? In which room? I did not say it explicitly. Going step by step:
 
-from `one layer project`:
+Phone gets my intent:
+```json
+{
+    "t_intent":"PLAY_MUSIC",
+    "t_artist":"Def Leppard"
+}
 ```
+and now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor` data available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. I don't like this solution and here is why: 
+1. The decision is made by client device 
+2. The decision is based on hardcoded logic
+
+With `zCymatix` platform it is possible to encode and use sensor's real-time data "when I am in living" room as `__living_room__`:
+```
+.train
+    PLAY_MUSIC: __living_room__{t_location} play P_ARTIST{t_artist}
+```
+and deduction result would be:
+```json
+{
+    "t_intent":"PLAY_MUSIC",
+    "t_artist":"Def Leppard",
+    "t_location":"__living_room__"
+}
+```
+__NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
+So what?:
+1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment".
+2. This is not hardcoded logic, because the model that generated the intent with slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
+
+This makes client application __cleaner, focusing on its task__. In our example it only __`acts`__ on the intent by playing `Def Leppard` in `living room`.
+
+# Recommendations, tips and tricks
+- Before you start creating your project or knowledge domain important to remember:
+There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will produce `GREETING` intent! Why? Because example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
+    ```
     .train
-        INT_NAVIGATE:take me to (Los Angeles){t_target} and to (New York){target}
-```
-with deduction for the sample:
-```
-    {
-        "t_intent":"INT_NAVIGATE",
-        "t_destination":["Los", "Angeles", "New", "York"]
-    }
-```
+        INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
+        don't show me flights to Seattle
+    ```
+    Second sample does not have an intent or slot deduction. This means that this statement will be __`just ignored`__ and no deduction will be made. So, the training process will teach the model to remember the difference between these samples.
+- Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
+- Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
+- Consider 2 training sets:
+ `Single layer project`:
+    ```
+        .train
+            INT_NAVIGATE:take me to (Los Angeles){t_target} and to (New York){target}
+    ```
+    with deduction for the sample above:
+    ```json
+        {
+            "t_intent":"INT_NAVIGATE",
+            "t_destination":["Los", "Angeles", "New", "York"]
+        }
+    ```
+    vs `Two layers project`:
+    ```
+        # Layer 1 - type training
+        .train 
+            take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE}
+    ```
+    ```
+        # Layer 2 - intents and slots deduction
+        .train
+            INT_NAVIGATE:take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
+    ```
+    with deduction for the sample:
+    ```json
+        {
+            "t_intent":"INT_NAVIGATE",
+            "t_destination":["Los Angeles", "New York"]
+        }
+    ```
+    You can clearly see the advantage of second approach, where names are correctly isolated.
 
-vs `two layers project`:
-```
-    # Layer 1 - type training
-    .train
-        take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE}
-```
-```
-    # Layer 2 - intents and slots deduction
-    .train
-        INT_NAVIGATE:take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
-```
-with deduction for the sample:
-```
-    {
-        "t_intent":"INT_NAVIGATE",
-        "t_destination":["Los Angeles", "New York"]
-    }
-```
-You can clearly see the advantage of second aproatch, where names are correctly isolated.
 
-
-# 11. Optional configuration parameters
+# Optional configuration parameters
 
 __NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
 
-To use bidirectional LSTM models. By default it is unidirectional model.
+To use bidirectional LSTM models. By default, it is unidirectional model.
 ```
     "bi_lstm":false
 ```
-To enable passing previous intent in the history as utterance prefix. By default it is `False`
+To enable passing previous intent in the history as utterance prefix. By default, it is `False`
 ```
     "toth":True
 ```
-For layer to be engaged if current intent starts with `R$` prefix. By default is it `False`. This gating condition for the layer to be included into the deduction pipeline. Useful for expert systems, where it would process lots of slots values and should not be bothered with questions in the middle conversation collecting these slots.
+For layer to be engaged if current intent starts with `R$` prefix. By default, is it `False`. This gating condition for the layer to be included into the deduction pipeline. Useful for expert systems, where it would process lots of slots values and should not be bothered with questions in the middle conversation collecting these slots.
 ```
     "accept_r_intents_only":True
 ```
@@ -814,43 +906,43 @@ To change version number of the training set define `version` parameter.
 ```
     "version":"0000.0000.0000"
 ```
-To include vendor name into the deductions. By default it is `False`
+To include vendor name into the deductions. By default, it is `False`
 ```
     "include_vendor":False
 ```
-To include version number into the deductions. By default it is `False`
+To include version number into the deductions. By default, it is `False`
 ```
     "include_version":False
 ```
-To include layer name into the deductions. By default it is `False`
+To include layer name into the deductions. By default, it is `False`
 ```
     "include_layer_name":False
 ```
-To include intents into the deductions. By default it is `True`
+To include intents into the deductions. By default,it is `True`
 ```
     "include_intents":True
 ```
-To include prompt into the deductions. By default it is `True`
+To include prompt into the deductions. By default, it is `True`
 ```
     "include_prompts":True
 ```
-To include utterance into the deductions. By default it is `True`
+To include utterance into the deductions. By default, it is `True`
 ```
     "include_utt":True
 ```
-To keep last intent only in the deductions. By default it is `True`
+To keep last intent only in the deductions. By default, it is `True`
 ```
     "keep_last_intent":True
 ```
-To keep last prompt only in the deductions. By default it is `True`
+To keep last prompt only in the deductions. By default, it is `True`
 ```
     "keep_last_prompt":True
 ```
-To keep last utterance only in the deductions. By default it is `True`
+To keep last utterance only in the deductions. By default, it is `True`
 ```
     "keep_last_utterance":True
 ```
-To convert the intent to an utterance for the next layer in the deduction pipeline. By default it is `False`. This is quite useful feature. Example: We want to inerpret user's loose answer that would be considered `yes` or `no`.
+To convert the intent to an utterance for the next layer in the deduction pipeline. By default, it is `False`. This is quite useful feature. Example: We want to interpret user's loose answer that would be considered `yes` or `no`.
 ```
 .train
     INT_YES:I guess so|it is rather yes then no|...
@@ -860,9 +952,9 @@ If the intent was `INT_YES` it will become an utterance for next layer(!) reduci
     "intent_to_utterance":False
 ```
 
-# 12. Advanced configuration parameters
+# Advanced configuration parameters
 __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or drop me a note. Keep in mind they are optional.
-To forse backend to use GPUs for training. Default is CPU.
+To force backend to use GPUs for training. Default is CPU.
 ```
     "hw":"gpu"
 ```
@@ -874,7 +966,7 @@ Accuracy metrics to stop training early. Defaults in the same order: `accuracy =
 ```
     "stop_accuracy_metrics":[ 1.0, 0.01, 1.0, 0.01 ]
 ```
-The training model by default returns sequences of labels. However, in case when you have only intents deduced it makes sense to change it to disable the sequence, thus to return only final result.
+The training model by default, returns sequences of labels. However, in case when you have only intents deduced it makes sense to change it to disable the sequence, thus to return only final result.
 ```
     "return_sequences":True
 ```
@@ -885,27 +977,27 @@ Example:
         INT_NO: no|nope|I don't think so|negative|no way|...
 ```
 
-Number of epochs to train. By default it is `100000`
+Number of epochs to train. By default, it is `100000`
 ```
     "n_epochs":100000
 ```
-Embedding vector size. By default it is `50`
+Embedding vector size. By default, it is `50`
 ```
     "emb_dimension":50
 ```
-Number of hidden units. By default it is `100`
+Number of hidden units. By default, it is `100`
 ```
     "n_hidden":100
 ```
-Dropout coefficient for feature vector. By default it is `0.1`
+Dropout coefficient for feature vector. By default, it is `0.1`
 ```
     "dropout_W":0.1
 ```
-Dropout coefficient for hidden units. By default it is `0.1`
+Dropout coefficient for hidden units. By default, it is `0.1`
 ```
     "dropout_U":0.1
 ```
-Optimizer name. By default `Adam`
+Optimizer name. By default, `Adam`
 ```
     "optimizer":"Adam"
 ```
@@ -922,9 +1014,9 @@ List of optimizers and their parameters. Defaults are listed below.
     ]
 ```
 
-# 13. Comments in training files
-To add comments to the training files use either `#` or `//` prefixes
+# Comments in training files
+To add comments to the training files, use either `#` or `//` prefixes
 
-# 14. Long lines continuation
+# Long lines continuation
 Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
 
