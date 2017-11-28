@@ -116,17 +116,17 @@ So, this is it. Literally, 3 lines of code get you there. The deduction of the p
 ```json
     {"t_intent":"GREETING"}
 ```
-To get E2E how-to feeling go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
+To get E2E how-to experience go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
-After login, upload the project by choosing your project folder - ***hello***. Remember - **folder name ___IS___ the project name**
+After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the JSON __confguration file__
 ![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
 
 When project is uploaded, you need to train it. Choose ***Training*** option and press launch.
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
-Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail with the ***PROJECT ID***. Please store it, because you need to pass it with ***project launch*** request to the server.
+Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail notification with the ***PROJECT ID***. Please store it, because you need to pass it with ***project launch*** request to the backend.
 What's next after project training is finished? Two options:
 1. __Use NLU service via REST API__
     * ***Project Launch request:***
@@ -140,13 +140,14 @@ What's next after project training is finished? Two options:
         ```json
         { "code":200, "msg":"806bb67b"}
         ```
-        In the response you will receive dynamic ___session_id___ which has to be used in deduction requests. Given value 806bb67b is an example.
+        In the response you will receive dynamic ___session_id___ which must be used in deduction requests. In this example `session_id = 806bb67b`.
     * ***Deduction:***
         ***<https://nlp2.zcymatix.com/?action=deduce&session_id=806bb67b&query=hello+world>***
         Parameters: 
         ```json
             action = deduce
-            session_id = 806bb67b // Example value
+            session_id = 806bb67b
+            query = hello world
         ```
         The response:
         ```json
@@ -163,7 +164,7 @@ What's next after project training is finished? Two options:
         ```
 
     
-2. __Use Web interface for training verification__
+2. __Use Web interface for verification__
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
@@ -178,17 +179,17 @@ What if we want AI system to respond to user query? Let's use the 'Hello World' 
     GREETING = Hello!
     GREETING = Hi!    
 ```
-By add section ***.prompt*** we can define user prompts: 
+By adding section ***.prompt*** we can define user prompts: 
 ```
 INTENT=<PROMPT VARIANT>
 ```
-In the example above you can see that GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
+In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
 .prompts
     NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
 ```
 Where ___t_destination___ and ___t_car___ are slots/parameters.
-Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is a key for creating expert systems.
+Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in `expert systems` layers.
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
 .prompts
