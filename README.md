@@ -2,19 +2,19 @@
 + Please watch the repo updates. I am in process of creating documentation and examples
 ```
 
-# zCymatix Natural Language Understanding(NLU) Voice/text UI platform (www.zcymatix.com)
+# zCymatix Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform (www.zcymatix.com)
 
-For:
+Designed for:
 
     - Healthcare 
     - Finance
     - Electronics
     - Wearables
     - Automotive
-    - Web sites for blind
-    - ...
+    - Web sites for blind or more
+    
 
-#### Machine learning NLU system designed for dialogues and expert systems. The platform uses Toth(Train Of Thought) contextual method of conversation flow tracking and many other features...
+#### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking with many other features...
 ### ___"...Context IS everything ..."___
 ## Features Highlights
 - ***Train Of Thought technology***
