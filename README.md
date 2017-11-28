@@ -21,8 +21,8 @@ For:
     * Literaly maintains a train of thought of the conversation
 - State of the Art ***deduction pipeline*** to efficiently resolve ambiguity
 - Ability to create ***1000s of utterances*** in few minutes
-- Supports method of ***embedding states, events, sensors information to maintain flow of the conversation***
-- Conversation instance with the ***context is maintained on the backend*** leaving client focusing only on the application itself
+- ***States, events, sensors information embedding to maintain conversation flow***
+- Session based conversation instances.  ***Context is maintained on the backend*** leaving client focusing only on the application itself
 - Regex layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional scripting support.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make changes based on the context. See examples.
