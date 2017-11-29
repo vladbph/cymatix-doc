@@ -792,7 +792,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
+This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ## `B$` prefix. Step back command
 `B$` prefix tells the framework to go back one step in the history and return that deduction. It is useful for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
@@ -860,7 +860,7 @@ Phone gets my intent:
     "t_artist":"Def Leppard"
 }
 ```
-and now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor data` available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. This is not 'good' solution and here is why: 
+now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor data` available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. This is not 'good' solution and here is why: 
 1. The decision is made by client device 
 2. The decision is based on hardcoded logic
 
@@ -877,15 +877,16 @@ and the deduction would be:
     "t_location":"__living_room__"
 }
 ```
-So what? Here:
+So what? Here the advantages:
 1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment".
-2. This is not hardcoded logic, because the model that generated the intent with slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
-__NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
+2. This is not hardcoded logic, because the model which deduced the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
 
-This makes client application __cleaner, focusing on its task__ and `backend` takes care of the session, its history and the context. In our example it only __`acts`__ on the intent by playing `Def Leppard` in `living room`.
+    __NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
+
+This makes client application __cleaner, focusing on its task__ and `backend` takes care of the session, its history and the context. In our example my phone would only __`act`__ on the intent by playing `Def Leppard` in `living room`.
 
 # Comments in training files
-To add comments to the training files, use either `#` or `//` prefixes
+Comment must start from a new line and be prefixed with either `#` or `//`
 
 # Long lines continuation
 Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
@@ -894,7 +895,7 @@ Use backslash `\` to break long line. NOTE, white spaces on next line are ignore
 __`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
 
 # Placement slot deduction
-`Placement slot deduction` is used when we don't know all the values of the slot that we want to deduce. What we can do in this case is to create utterances that make sufficient context to be sure that even unkown word is something that we are looking for.
+`Placement slot deduction` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unkown word is something that we are looking for at some particular place in the utterance. We will not be dicussing here whether this is good or bad way leaving it to developers.
 Example:
 ```
 .define
@@ -912,16 +913,19 @@ User> I want to order blah pizza
 
 # Recommendations, tips and tricks
 - Before starting creating a `project` or `knowledge domain` important to remember:
-There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
+There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
     ```
     .train
         INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
         don't show me flights to Seattle
     ```
     Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
+
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
+
 - Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
-- Consider 2 training sets:
+
+- Consider two training sets:
  `Single layer project`:
     ```
         .train
@@ -954,7 +958,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
     ```
     You can see the advantage of second approach, where names are correctly isolated.
     
-- [`zCymatix`](http://www.zcymatix.com) platform __does not__ provide `voice recognition services`. For mobile applications we recommend using [`Google service`](https://cloud.google.com/speech/), since it is superior of anything available on the market today.
+- [`zCymatix`](http://www.zcymatix.com) platform __does not__ provide `voice recognition services`. For web applications we recommend using [`Google service`](https://cloud.google.com/speech/), since it is superior of other products available on the market today. See also available solutions for [Android](https://developer.android.com/reference/android/speech/SpeechRecognizer.html) and [iOS](https://developer.apple.com/documentation/speech).
 
 # Optional configuration parameters
 
