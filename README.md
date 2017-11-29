@@ -407,7 +407,6 @@ Using `toth` and `intent_to_utterance` flags:
 or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users answers as a context for next deductions.
 
 # Regex section
-We already discussed the cases when it makes sense to have direct lookup substitution without using trainable Neural Networks. To recap:
 ## Irreversable replacement
 ```
 .regex
@@ -423,7 +422,7 @@ It is direct replacement of words in the utterance to simplify training sets.
     P_SIZE:@small
     P_ADDRESS: <regex to search for address>
 ```
-The actual value of small, medium or large is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples
+The actual value of `small`, `medium` or `large` is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See [pizza2 example](#pizza2-bot-example) for more details.
 
 # Prompt label prefixes
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
