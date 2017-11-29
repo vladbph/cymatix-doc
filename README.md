@@ -715,7 +715,7 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use ___.gates___ section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [___.gates___](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
@@ -746,8 +746,7 @@ This information is useful to understand platform operation under the hood. Dedu
 
 # How to control deduction history
 
-At some point we need to collect all slots values in the stack to build a aggregative deduction(pizza order), or forget a deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". All of above are pieces of __ToTh__ method. It is done via intent prefixes:
-
+At some point we need to collect all slots values in the stack to build a aggregative deduction(pizza order), or may be forget whole deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
@@ -762,8 +761,7 @@ X$ - Clean the deduction history. "Cross" command.
 Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
-`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along
-
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along to erase it.
 
 * ## `R$` prefix. Return command
 In 'Pizza' layer we have:
@@ -775,7 +773,7 @@ In 'Pizza' layer we have:
     R$ORDER_PIZZA_YES = Thank you for you order :)
     R$ORDER_PIZZA_NO = Sure, maybe next time
 ```
-Intents with ```'R$'``` prefix tell the framework to collect all slots and their values and return them to user as a deduction in json format. After that deduction history will be cleaned.
+Intents with ```'R$'``` prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.
 ```json
 {
     "t_size":"small", 
@@ -791,7 +789,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
+This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ## `B$` prefix. Step back command
 `B$` prefix tells the framework to go back one step in the history and return that deduction. It is useful for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
@@ -808,7 +806,7 @@ There is an alternative to achieve the same result. Consider training sample:
 .prompt:
 	F$REPEAT = *
 ```
-`*` means to use the last value of `t_prompt` saved in the history. It is up to you to choose which method to use.
+Star `*` symbol used a value of the prompt means to grab `t_prompt` last value from the history. It is up to you to choose which method to use.
 
 * ## `C$` prefix. Change slot value command
 `C$` prefix tells the framework to change the value of the slot in the history
@@ -827,39 +825,41 @@ There is an alternative to achieve the same result. Consider training sample:
     "t_destination":"Vancouver"
 }
 ```
-The `t_destination` slot value `Seattle` will be replaced with 'Vancouver' in the history stack
+The `t_destination` slot value `Seattle` will be replaced with `Vancouver` directly in the history
 
 * ## `X$` prefix. Reset command
 `X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
 
 # Indirect references `it` or `there`
 
-Consider the training samples:
+Consider the training samples using `P_PLACE` slot type:
 ```
 .train
-    I_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
-    I_SHOW_PLACE: where is P_PLACE{t_place}
-    I_SHOW_PLACE: I am looking for P_PLACE{t_place}
-    I_DISTANCE_INFO: how far is P_PLACE{t_destination}
-    I_NAVIGATE/t_place/t_destinationr:take me there
+    INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
+    INT_SHOW_PLACE: where is P_PLACE{t_place}
+    INT_SHOW_PLACE: I am looking for P_PLACE{t_place}
+    INT_DISTANCE_INFO: how far is P_PLACE{t_destination}
+    INT_NAVIGATE/t_place/t_destination:take me there
 ```
-First four training samples reply on explicit name of the place we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
-`I_NAVIGATE/t_place/t_destinationr:take me there`
-Why list of slots? The intuition is - search for either `t_place` or `t_destination`, whichever comes first in the deduction history.
+First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
+`INT_NAVIGATE/t_place/t_destination:take me there`
+Why list of slots? The intuition is this - search for either `t_place` or `t_destination` in that order in the deduction history and put its value to substitute `there`.
 
 # Events, States, Sensors Information Embedding
-This is another tool of ToTh technology.
-Language operates by `symbols`. In essence, these symbols are indirect references to things that we can experience and understand. Keeping this in mind - we can `encode` any `contextual information` such as `events` or `states` or even `sensors information` using symbols, which we can use in the `training set` expanding our samples with those symbols. That's it. 
-Let's review an example. I have my phone that controls multi room home music system via WiFi and I say: "Play Def Leppard". It seems that it is self-contained clear statement telling that I want playing music :) But there is a problem - where to play it? In which room? I did not say it explicitly. Going step by step:
-
-Phone gets my intent:
+Contextual information embedding into utterances and prompts is the foundation of ToTh technology.
+Language operates by `symbols`. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can `encode` any `contextual information` such as `events` or `states` or even `sensors information` using symbols, which we can use in the `training set` expanding our samples with those symbols. 
+Let's review an example:
+```
+I have my phone that controls multi room home music system via WiFi and I say: "Play Def Leppard". It seems that it is self-contained and clear statement telling that I want to play music:) But there is a problem - where to play it? In which room? I did not say it explicitly. 
+```
+Going step by step, phone gets my intent:
 ```json
 {
     "t_intent":"PLAY_MUSIC",
     "t_artist":"Def Leppard"
 }
 ```
-now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor data` available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that phone having the intent and proximity info to the closest speaker starts playing music there. Problem solved! Yes... but. This is not 'good' solution and here is why: 
+now it needs to decide where to play the music or should we ask user? Sure, we may ask, but what if we take the challenge of figuring out automatically. Assuming that we have speaker's `proximity sensor data` available on the phone - there are two ways to solve this. I said - `it needs to decide` meaning that the  __`phone`__ having the intent and proximity info to the closest speaker(let's say it is `living room`) starts playing music there. Problem solved! Yes... but. This is `not 'good'` solution and here is why: 
 1. The decision is made by client device 
 2. The decision is based on hardcoded logic
 
@@ -877,7 +877,7 @@ and the deduction would be:
 }
 ```
 So what? Here the advantages:
-1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment".
+1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment" == `living room`.
 2. This is not hardcoded logic, because the model which deduced the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
 
     __NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
@@ -922,10 +922,12 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
 
+- Do not use slot types names that can be confused for words. I recommend using something like `PIZZA_KIND` or similar
+
 - Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
 
-- Consider two training sets:
- `Single layer project`:
+- Slot deduction. Consider two training sets:
+ `Single layer project` which attempts not to use slot types isolation step:
     ```
         .train
             INT_NAVIGATE:take me to (Los Angeles){t_target} and to (New York){target}
@@ -937,7 +939,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
             "t_destination":["Los", "Angeles", "New", "York"]
         }
     ```
-    vs `Two layers project`:
+    vs `Two layers project` which uses type definition layer and a separate slot value deduction layer:
     ```
         # Layer 1 - type training
         .train 
