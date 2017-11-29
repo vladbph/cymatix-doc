@@ -1,5 +1,5 @@
 # [zCymatix](http://www.zcymatix.com) Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform 
-Designed for:
+#### Applications:
 - Healthcare
 - Finance
 - Electronics
