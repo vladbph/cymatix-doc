@@ -1,6 +1,6 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>README.md</title><script type="text/javascript">
 //<![CDATA[
-window.__cfRocketOptions = {byc:0,p:0,petok:"5a208aef08e16a02cd8e71b3bdbb4a76d8e5b187-1511937427-1800"};
+window.__cfRocketOptions = {byc:0,p:0,petok:"8aef45344da16795dd9bc516580815580a469f12-1511988712-1800"};
 //]]>
 </script>
 <script type="text/javascript" src="https://ajax.cloudflare.com/cdn-cgi/scripts/0e574bed/cloudflare-static/rocket.min.js"></script>
@@ -50,7 +50,7 @@ window.__cfRocketOptions = {byc:0,p:0,petok:"5a208aef08e16a02cd8e71b3bdbb4a76d8e
 <li><a href="#Prefix______479">Prefix “?$”</a></li>
 <li><a href="#Prefix______488">Prefix “.”</a></li>
 <li><a href="#Prefix______496">Prefix “?.”</a></li>
-<li><a href="#Empty_prefix_504">Empty prefix</a></li>
+<li><a href="#Empty_label_prefix_504">Empty label prefix</a></li>
 <li><a href="#Prefix______513">Prefix “?”</a></li>
 </ul>
 </li>
@@ -76,13 +76,13 @@ window.__cfRocketOptions = {byc:0,p:0,petok:"5a208aef08e16a02cd8e71b3bdbb4a76d8e
 </li>
 <li><a href="#Indirect_references_it_or_there_833">Indirect references IT or THERE</a></li>
 <li><a href="#Events_States_Sensors_Information_Embedding_848">Events, States, Sensors Information Embedding</a></li>
-<li><a href="#Comments_in_training_files_887">Comments in training files</a></li>
-<li><a href="#Long_lines_continuation_890">Long lines continuation</a></li>
-<li><a href="#Unkown_word_marker_893">Unkown word marker</a></li>
-<li><a href="#Placement_slot_deduction_896">Placement slot deduction</a></li>
-<li><a href="#Recommendations_tips_and_tricks_913">Recommendations, tips and tricks</a></li>
-<li><a href="#Optional_configuration_parameters_964">Optional configuration parameters</a></li>
-<li><a href="#Advanced_configuration_parameters_1035">Advanced configuration parameters</a></li>
+<li><a href="#Comments_in_training_files_890">Comments in training files</a></li>
+<li><a href="#Long_lines_continuation_893">Long lines continuation</a></li>
+<li><a href="#Unkown_word_marker_896">Unkown word marker</a></li>
+<li><a href="#Placement_slot_deduction_899">Placement slot deduction</a></li>
+<li><a href="#Recommendations_tips_and_tricks_916">Recommendations, tips and tricks</a></li>
+<li><a href="#Optional_configuration_parameters_967">Optional configuration parameters</a></li>
+<li><a href="#Advanced_configuration_parameters_1038">Advanced configuration parameters</a></li>
 <li><a href="https://github.com/vladbph/zcymatix">Github Samples</a></li>
 </ul>
 <h4><a id="Machine_learning_NLU_system_designed_for_dialogues_and_expert_systems_The_platform_utilizes_proprietary_TothTrain_Of_Thought_technology_for_conversation_flow_tracking_and_supports_many_other_features_61"></a>Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features…</h4>
@@ -521,7 +521,7 @@ Example:</p>
 .prompt
     GREETING = Hello {?.t_name} =&gt; Hello
 </code></pre>
-<h2><a id="Empty_prefix_504"></a>Empty prefix</h2>
+<h2><a id="Empty_label_prefix_504"></a>Empty label prefix</h2>
 <p>Implies using label’s <strong><em>values</em></strong> in <strong><em>whole deduction history</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_kind values are in whole deduction history, t_kind = BBQ and t_kind = meat
 .prompt
@@ -847,7 +847,10 @@ Why list of slots? The intuition is this - search for either <code>t_place</code
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
 Let’s review an example:</p>
-<pre><code>I have my phone that controls multi room home music system via WiFi and I say: &quot;Play Def Leppard&quot;. It seems that it is self-contained and clear statement telling that I want to play music:) But there is a problem - where to play it? In which room? I did not say it explicitly. 
+<pre><code>I have my phone that controls multi room home music system via WiFi and 
+I say: &quot;Play Def Leppard&quot;. It seems that it is self-contained and clear statement 
+telling that I want to play music:) But there is a problem - where to play it? 
+In which room? I did not say it explicitly. 
 </code></pre>
 <p>Going step by step, phone gets my intent:</p>
 <pre><code class="language-json">{
@@ -877,18 +880,18 @@ Let’s review an example:</p>
 <p>Client device <code>did NOT make the decision</code> where to play the music, but merely provided encoded sensor information or in this case it is a state - “where am I at the moment” == <code>living room</code>.</p>
 </li>
 <li>
-<p>This is not hardcoded logic, because the model which deduced the intent and slots <code>resides on the backend</code> and can be trained or re-trained at any time, so there is no need to “install new version” of the application just because of some changes in logic.</p>
+<p>This is <code>not hardcoded logic</code>, because the model which deduced the intent and slots <code>resides on the backend</code> and can be trained or re-trained at any time, so there is no need to “install new version” of the application just because of some changes in logic.</p>
 <p><strong>NOTE!</strong> You need to train your models with encoded events/states and modify user utterance in prediction mode.</p>
 </li>
 </ol>
 <p>This makes client application <strong>cleaner, focusing on its task</strong> and <code>backend</code> takes care of the session, its history and the context. In our example my phone would only <strong><code>act</code></strong> on the intent by playing <code>Def Leppard</code> in <code>living room</code>.</p>
-<h1><a id="Comments_in_training_files_887"></a>Comments in training files</h1>
+<h1><a id="Comments_in_training_files_890"></a>Comments in training files</h1>
 <p>Comment must start from a new line and be prefixed with either <code>#</code> or <code>//</code></p>
-<h1><a id="Long_lines_continuation_890"></a>Long lines continuation</h1>
+<h1><a id="Long_lines_continuation_893"></a>Long lines continuation</h1>
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
-<h1><a id="Unkown_word_marker_893"></a>Unkown word marker</h1>
+<h1><a id="Unkown_word_marker_896"></a>Unkown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Placement_slot_deduction_896"></a>Placement slot deduction</h1>
+<h1><a id="Placement_slot_deduction_899"></a>Placement slot deduction</h1>
 <p><code>Placement slot deduction</code> is used when we don’t know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unkown word is something that we are looking for at some particular place in the utterance. We will not be dicussing here whether this is good or bad way leaving it to developers.<br>
 Example:</p>
 <pre><code>.define
@@ -902,7 +905,7 @@ Example:</p>
     "<span class="hljs-attribute">t_kind</span>":<span class="hljs-value"><span class="hljs-string">"blah"</span>
 </span>}
 </code></pre>
-<h1><a id="Recommendations_tips_and_tricks_913"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_916"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -955,7 +958,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_964"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_967"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>To use bidirectional LSTM models. By default, it is unidirectional model.<pre><code>&quot;bi_lstm&quot;:false
@@ -1007,7 +1010,7 @@ This is quite useful feature. Example: We want to interpret user’s loose answe
 </code></pre>
 If the intent was <code>INT_YES</code> it will become an utterance for next layer(!) reducing training set of this layer to deal only with <code>INT_YES</code> or <code>INT_NO</code></li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1035"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1038"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>

@@ -32,7 +32,7 @@ Table of Contents
       * [Prefix "?$"](#prefix--3)
       * [Prefix "."](#prefix--4)
       * [Prefix "?."](#prefix--5)
-      * [Empty prefix](#empty-prefix)
+      * [Empty label prefix](#empty-label-prefix)
       * [Prefix "?"](#prefix--6)
    * [PIZZA2 BOT Example](#pizza2-bot-example)
       * [Layer 1 Slots](#layer-1-slots)
@@ -58,7 +58,7 @@ Table of Contents
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
    * [Github Samples](https://github.com/vladbph/zcymatix)
-   
+
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
 # Features Highlights
@@ -502,7 +502,7 @@ Example: t_name is absent in the last deduction.
     GREETING = Hello {?.t_name} => Hello
 ```
 
-## Empty prefix 
+## Empty label prefix 
 Implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_kind values are in whole deduction history, t_kind = BBQ and t_kind = meat
@@ -803,9 +803,9 @@ Bot>What type of pizza would you like?
 There is an alternative to achieve the same result. Consider training sample:
 ```
 .train
-	F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
+    F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
 .prompt:
-	F$REPEAT = *
+    F$REPEAT = *
 ```
 Star `*` symbol used a value of the prompt means to grab `t_prompt` last value from the history. It is up to you to choose which method to use.
 
@@ -851,7 +851,10 @@ Contextual information embedding into utterances and prompts is the foundation o
 Language operates by `symbols`. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can `encode` any `contextual information` such as `events` or `states` or even `sensors information` using symbols, which we can use in the `training set` expanding our samples with those symbols. 
 Let's review an example:
 ```
-I have my phone that controls multi room home music system via WiFi and I say: "Play Def Leppard". It seems that it is self-contained and clear statement telling that I want to play music:) But there is a problem - where to play it? In which room? I did not say it explicitly. 
+I have my phone that controls multi room home music system via WiFi and 
+I say: "Play Def Leppard". It seems that it is self-contained and clear statement 
+telling that I want to play music:) But there is a problem - where to play it? 
+In which room? I did not say it explicitly. 
 ```
 Going step by step, phone gets my intent:
 ```json
@@ -879,7 +882,7 @@ and the deduction would be:
 ```
 So what? Here the advantages:
 1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment" == `living room`.
-2. This is not hardcoded logic, because the model which deduced the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
+2. This is `not hardcoded logic`, because the model which deduced the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
 
     __NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
 
