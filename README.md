@@ -381,7 +381,7 @@ Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
 
 ## Strict Dialogs
-Strict dialog resembles traversing desicion tree. The idea is to ask questions based on the `previous answer results`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
+Strict dialog resembles traversing desicion tree. The idea is to ask questions based on the `values of previous answers`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
 Let's take as example visit to doctor. 
 ```
 Patient> I have a stomach ache
@@ -520,7 +520,7 @@ Example: t_name is absent in deduction history
 ```
 
 # PIZZA2 BOT Example
-Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
+Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. This implementation is also can be classified as [`loose dialog`](#loose-dialogs) type. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
 ## Layer 1 Slots
 Layer 1 is named "slots" is dedicated to isolate types of the slots - __pizza kind__, __pizza toppings__,  __size__ and __delivery address__. Here is the configuration for the layer:
 ```json
