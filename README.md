@@ -1,16 +1,13 @@
-```diff 
-+ Please watch the repo updates. I am in process of creating documentation and examples
-```
-
-# zCymatix Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform (www.zcymatix.com)
+# [zCymatix](http://www.zcymatix.com) Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform 
 Designed for:
 - Healthcare
 - Finance
 - Electronics
 - Wearables/IoT
 - Automotive
-- Interactive (Voice/text controlled) Web sites
-- Web sites for blind and more
+- Web sites for blind people
+- Interactive (Voice/text controlled) Web sites. 
+- Emails/text scans and more
 
 Table of Contents
 =================
@@ -25,6 +22,9 @@ Table of Contents
          * [Prototype section](#prototype-section)
          * [Gates section (script)](#gates-section-script)
       * [Strict Dialogs](#strict-dialogs)
+   * [Regex section](#regex-section)
+      * [Irreversable replacement](#irreversable-replacement)
+      * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
    * [Prompt label prefixes](#prompt-label-prefixes)
       * [Prefix "#"](#prefix-)
       * [Prefix "?#"](#prefix--1)
@@ -43,20 +43,17 @@ Table of Contents
    * [How to control deduction history](#how-to-control-deduction-history)
       * [Intent Prefixes](#intent-prefixes)
       * [Empty prefix](#empty-prefix-1)
-      * [R$ prefix](#r-prefix)
-      * [F$ prefix](#f-prefix)
-      * [B$ prefix](#b-prefix)
-      * [C$ prefix](#c-prefix)
-      * [X$ prefix](#x-prefix)
-   * [Indirect references it or there](#indirect-references-it-or-there)
+      * [R$ prefix. Return command](#r-prefix-return-command)
+      * [F$ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
+      * [B$ prefix. Step back command](#b-prefix-step-back-command)
+      * [C$ prefix. Change slot value command](#c-prefix-change-slot-value-command)
+      * [X$ prefix. Reset command](#x-prefix-reset-command)
+   * [Indirect references IT or THERE](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unkown word marker](#unkown-word-marker)
    * [Placement slot deduction](#placement-slot-deduction)
-   * [Regex section](#regex-section)
-      * [Irreversable replacement](#irreversable-replacement)
-      * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
@@ -103,7 +100,8 @@ Table of Contents
         * 'Take me there'
 - ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
     * This is not NLU specific feature which enables platform utilization in any field of knowledge
-    
+- Platform DOES NOT provide voice recognition servives
+
    ### So, Let's do it!
 # 'Hello Word' Example
 * Create and enter **hello** folder
@@ -121,7 +119,7 @@ So, this is it. Literally, 3 lines of code get you there. The deduction of the p
 ```json
     {"t_intent":"GREETING"}
 ```
-To get E2E how-to experience go to www.zcymatix.com and sign up. Press ***Sign In*** and then ***Sign Up***. 
+To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
@@ -246,7 +244,7 @@ The deduction will look like:
 This way we deduce the meaning of the utterance.
 
 # Introduction to Layers
-`zCymatix` platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is upto developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is upto developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -318,7 +316,7 @@ So, this mechanism enables smaller context needed to train the layer to extract 
 .train
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
-So, having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** zCymatix platform gives the tools to go either way.
+So, having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** [`zCymatix`](http://www.zcymatix.com) platform gives the tools to go either way.
 # Dialogs
 There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
 ## Loose Dialogs
@@ -407,6 +405,25 @@ Using `toth` and `intent_to_utterance` flags:
     "intent_to_utterance":true
 ```
 or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users answers as a context for next deductions.
+
+# Regex section
+We already discussed the cases when it makes sense to have direct lookup substitution without using trainable Neural Networks. To recap:
+## Irreversable replacement
+```
+.regex
+    &and:(as well as|and also)
+```
+It is direct replacement of words in the utterance to simplify training sets.
+
+## Reversable replacement or lookup lables
+```
+.define
+    @small = small|medium|large
+.regex
+    P_SIZE:@small
+    P_ADDRESS: <regex to search for address>
+```
+The actual value of small, medium or large is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples
 
 # Prompt label prefixes
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
@@ -749,7 +766,7 @@ where
 `t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along
 
 
-* ## `R$` prefix
+* ## `R$` prefix. Return command
 In 'Pizza' layer we have:
 ```
 .train
@@ -767,7 +784,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_toppings": ["cheese", "ham"]
 }
 ```
-* ## `F$` prefix
+* ## `F$` prefix. Deduce and Forget command
 ```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there maybe no need to keep it in the history. So, the resulting deduction will be returned and it will not be remembered in the stack.
 ```json
 {
@@ -775,9 +792,9 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. __zCymatix platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
+This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests__. It only deduces the intents and slots and follows the conversation flows => `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
-* ## `B$` prefix
+* ## `B$` prefix. Step back command
 `B$` prefix tells the framework to go back one step in the history and return that deduction. It is useful for cases when user asks 'Please repeat that.' or 'Could you repeat it please?'
 ```
 Bot>What type of pizza would you like?
@@ -794,7 +811,7 @@ There is an alternative to achieve the same result. Consider training sample:
 ```
 `*` means to use the last value of `t_prompt` saved in the history. It is up to you to choose which method to use.
 
-* ## `C$` prefix
+* ## `C$` prefix. Change slot value command
 `C$` prefix tells the framework to change the value of the slot in the history
 `User> Take me to Seattle`
 
@@ -813,7 +830,7 @@ There is an alternative to achieve the same result. Consider training sample:
 ```
 The `t_destination` slot value `Seattle` will be replaced with 'Vancouver' in the history stack
 
-* ## `X$` prefix
+* ## `X$` prefix. Reset command
 `X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
 
 # Indirect references `it` or `there`
@@ -847,7 +864,7 @@ and now it needs to decide where to play the music or should we ask user? Sure, 
 1. The decision is made by client device 
 2. The decision is based on hardcoded logic
 
-With `zCymatix` platform it is possible to encode and use sensor's real-time data "when I am in living" room as symbol `__living_room__`:
+With [`zCymatix`](http://www.zcymatix.com) platform it is possible to encode and use sensor's real-time data "when I am in living" room as symbol `__living_room__`:
 ```
 .train
     PLAY_MUSIC: __living_room__{t_location} play P_ARTIST{t_artist}
@@ -893,25 +910,6 @@ User> I want to order blah pizza
 }
 ```
 
-# Regex section
-We already discussed the cases when it makes sense to have direct lookup substitution without using trainable Neural Networks. To recap:
-## Irreversable replacement
-```
-.regex
-    &and:(as well as|and also)
-```
-It is direct replacement of words in the utterance to simplify training sets.
-
-## Reversable replacement or lookup lables
-```
-.define
-    @small = small|medium|large
-.regex
-    P_SIZE:@small
-    P_ADDRESS: <regex to search for address>
-```
-The actual value of small, medium or large is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples
-
 # Recommendations, tips and tricks
 - Before starting creating a `project` or `knowledge domain` important to remember:
 There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any other alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
@@ -955,6 +953,8 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
         }
     ```
     You can see the advantage of second approach, where names are correctly isolated.
+    
+- [`zCymatix`](http://www.zcymatix.com) platform __does not__ provide `voice recognition services`. For mobile applications we recommend using [`Google service`](https://cloud.google.com/speech/), since it is superior of anything available on the market today.
 
 # Optional configuration parameters
 
