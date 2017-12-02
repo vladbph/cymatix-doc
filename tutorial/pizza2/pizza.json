@@ -1,7 +1,7 @@
 [
     {
         "layer_name":"slots",
-        "hw":"gpu",
+        "gpu":true,
         "data_files":[
             "base.h",
             "slots.txt"
@@ -11,7 +11,7 @@
     },
     {
         "layer_name":"pizza",
-        "hw":"gpu",
+        "gpu":true,
         "data_files":[
             "base.h",
             "pizza.txt"
@@ -21,7 +21,7 @@
     },
     {
         "layer_name":"bot",
-        "hw":"gpu",
+        "gpu":true,
         "data_files":[
             "bot.txt"
             ],

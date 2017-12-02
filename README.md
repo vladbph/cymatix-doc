@@ -66,8 +66,8 @@ Table of Contents
     * Literally maintains a train of thought of the conversation
 - State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
-- ***`States, Events and Sensors Data Embedding`*** contextual support
-- ***`Session based conversation instances`***.  Context is maintained on the `backend` leaving client focusing only on the application itself
+- ___`States, Events and Sensors Data Embedding`___ contextual support
+- ___`Session based conversation instances`___.  Context is maintained on the `backend` leaving client focusing only on the application itself
 - `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional `scripting support`.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
@@ -105,7 +105,7 @@ Table of Contents
 
    ### So, Let's do it!
 # 'Hello Word' Example
-* Create and enter **hello** folder
+* Create and enter **hello** folder. `Folder name is the name of the project.`
 * Create **hello.json** file
 ```json
 { "data_files":"hello.txt" }
@@ -124,7 +124,7 @@ To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and s
 ### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
-After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the JSON __confguration file__
+After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
 ![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
 
 When project is uploaded, you need to train it. Choose ***Training*** option and press launch.
