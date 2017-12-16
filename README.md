@@ -975,11 +975,11 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
 - To enable passing previous intent in the history as utterance prefix. By default, it is `False`
     ```
-    "toth":True
+    "toth":true
     ```
 - A layer can be optionally inlcuded into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
     ```
-    "accept_r_intents_only":True
+    "accept_r_intents_only":true
     ```
 - It is possible to change `vendor` name since you are the `vendor` of this project or knowledge domain
     ```
@@ -991,43 +991,43 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
 - To include vendor name into the deductions. By default, it is `False`
     ```
-    "include_vendor":False
+    "include_vendor":false
     ```
 - To include version number into the deductions. By default, it is `False`
     ```
-    "include_version":False
+    "include_version":false
     ```
 - To include layer name into the deductions. By default, it is `False`
     ```
-    "include_layer_name":False
+    "include_layer_name":false
     ```
 - To include intents into the deductions. By default,it is `True`
     ```
-    "include_intents":True
+    "include_intents":true
     ```
 - To include prompt into the deductions. By default, it is `True`
     ```
-    "include_prompts":True
+    "include_prompts":true
     ```
 - To include utterance into the deductions. By default, it is `True`
     ```
-    "include_utt":True
+    "include_utt":true
     ```
 - To keep last intent only in the deductions. By default, it is `True`
     ```
-    "keep_last_intent":True
+    "keep_last_intent":true
     ```
 - To keep last prompt only in the deductions. By default, it is `True`
     ```
-    "keep_last_prompt":True
+    "keep_last_prompt":true
     ```
 - To keep last utterance only in the deductions. By default, it is `True`
     ```
-    "keep_last_utterance":True
+    "keep_last_utterance":true
     ```
 - To convert the intent value to an utterance for the next layer in the deduction pipeline. By default, it is `False`. 
     ```
-    "intent_to_utterance":False
+    "intent_to_utterance":talse
     ```
     This is quite useful feature. Example: We want to interpret user's loose answer that would be considered `yes` or `no`.
     ```
@@ -1052,7 +1052,7 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ```
 - The training model by default, returns sequences of labels. However, in case when you have a layer which deals with only intents without any slots it makes sense to change it to disable the sequence, thus to return only final result. It leads to faster training times.
     ```
-    "return_sequences":True
+    "return_sequences":true
     ```
     Example:
     ```
