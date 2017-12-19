@@ -166,6 +166,8 @@ What's next after project training is finished? Two options:
             101 - Authentication error
             100 - Invalid parameters
         ```
+        It may take few seconds for a project to be launched(if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
+        This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
 
     
 2. __Use Web interface for verification__
@@ -842,7 +844,7 @@ Consider the training samples using `P_PLACE` slot type:
     INT_DISTANCE_INFO: how far is P_PLACE{t_destination}
     INT_NAVIGATE/t_place/t_destination:take me there
 ```
-First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and list of slot names to look in the history to choose to resolve `it`:
+First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
 `INT_NAVIGATE/t_place/t_destination:take me there`
 Why list of slots? The intuition is this - search for either `t_place` or `t_destination` in that order in the deduction history and put its value to substitute `there`.
 
