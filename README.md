@@ -134,6 +134,7 @@ Depending on project complexity it may take from few seconds to few hours to tra
 What's next after project training is finished? Two options:
 1. __Use NLU service via REST API__
     * ***Project Launch request***`Example`
+    
         ***<https://nlp2.zcymatix.com/?action=launch&project_id=c7df223a3b97>*** 
         Parameters: 
         ```json
@@ -141,13 +142,16 @@ What's next after project training is finished? Two options:
             project_id = c7df223a3b97
         ```
         NOTE! `c7df223a3b97` is fake project id
+        
         The response has fixed format consisting of two fields ***code*** and ***msg***:
         ```json
         { "code":200, "msg":"806bb67b"}
         ```
         NOTE! `806bb67b` is fake session id.
+        
         In the response you will receive dynamic ___session_id___, which must be used in the deduction requests. In this example `session_id = 806bb67b`.
     * ***Deduction***`Example`
+    
         ***<https://nlp2.zcymatix.com/?action=deduce&session_id=806bb67b&query=hello+world>***
         Parameters: 
         ```json
