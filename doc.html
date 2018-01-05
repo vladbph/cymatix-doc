@@ -1,6 +1,6 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><title>README.md</title><script type="text/javascript">
 //<![CDATA[
-window.__cfRocketOptions = {byc:0,p:0,petok:"04a8f826bfe11f75a1cbf4d41097b6fb33eb2d73-1514404794-1800"};
+window.__cfRocketOptions = {byc:0,p:0,petok:"0aaa431f583fd64b978241dd574d34b855f85828-1515117753-1800"};
 //]]>
 </script>
 <script type="text/javascript" src="https://ajax.cloudflare.com/cdn-cgi/scripts/9014afdb/cloudflare-static/rocket.min.js"></script>
@@ -214,24 +214,24 @@ What’s next after project training is finished? Two options:</p>
 <ul>
 <li>
 <p><strong><em>Project Launch request</em></strong><code>Example</code></p>
-<p><strong><em><a href="https://nlp2.zcymatix.com/?action=launch&amp;project_id=c7df223a3b97">https://nlp2.zcymatix.com/?action=launch&amp;project_id=c7df223a3b97</a></em></strong><br>
+<p><strong><em><a href="https://nlp2.zcymatix.com/?action=launch&amp;project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8">https://nlp2.zcymatix.com/?action=launch&amp;project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8</a></em></strong><br>
 Parameters:</p>
 <pre><code class="language-json">    action = launch
-    project_id = c7df223a3b97
+    project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
 </code></pre>
-<p>NOTE! <code>c7df223a3b97</code> is fake project id</p>
+<p>NOTE! <code>f38360cd-08c5-482b-8c22-c2bc67194ab8</code> is fake project id</p>
 <p>The response has fixed format consisting of two fields <strong><em>code</em></strong> and <strong><em>msg</em></strong>:</p>
-<pre><code class="language-json">{ "<span class="hljs-attribute">code</span>":<span class="hljs-value"><span class="hljs-number">200</span></span>, "<span class="hljs-attribute">msg</span>":<span class="hljs-value"><span class="hljs-string">"806bb67b"</span></span>}
+<pre><code class="language-json">{ "<span class="hljs-attribute">code</span>":<span class="hljs-value"><span class="hljs-number">200</span></span>, "<span class="hljs-attribute">msg</span>":<span class="hljs-value"><span class="hljs-string">"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"</span></span>}
 </code></pre>
-<p>NOTE! <code>806bb67b</code> is fake session id.</p>
-<p>In the response you will receive dynamic <strong><em>session_id</em></strong>, which must be used in the deduction requests. In this example <code>session_id = 806bb67b</code>.</p>
+<p>NOTE! <code>2cb3b87d-e29c-4743-bab1-0fc5cb98db6d</code> is fake session id.</p>
+<p>In the response you will receive dynamic <strong><em>session_id</em></strong>, which must be used in the deduction requests.</p>
 </li>
 <li>
 <p><strong><em>Deduction</em></strong><code>Example</code></p>
-<p><strong><em><a href="https://nlp2.zcymatix.com/?action=deduce&amp;session_id=806bb67b&amp;query=hello+world">https://nlp2.zcymatix.com/?action=deduce&amp;session_id=806bb67b&amp;query=hello+world</a></em></strong><br>
+<p><strong><em><a href="https://nlp2.zcymatix.com/?action=deduce&amp;session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&amp;query=Hello+World">https://nlp2.zcymatix.com/?action=deduce&amp;session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&amp;query=Hello+World</a></em></strong><br>
 Parameters:</p>
 <pre><code class="language-json">    action = deduce
-    session_id = 806bb67b
+    session_id = 2cb3b87d-e29c-4743-bab1-0fc5cb98db6d
     query = hello world
 </code></pre>
 <p>The response:</p>
