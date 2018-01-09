@@ -19,6 +19,7 @@ Table of Contents
    * [Use NLU service via REST API](#use-nlu-service-via-rest-api)
       * [Launch request](#launch-request)
       * [Deduction example](#deduction-example)
+      * [List of response codes](#list-of-response-codes)
    * [Use Web interface for verification](#use-web-interface-for-verification)
    * [Using prompts](#using-prompts)
    * [Using macros](#using-macros)
@@ -64,6 +65,7 @@ Table of Contents
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
+
 
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
@@ -137,11 +139,11 @@ When project is uploaded, you need to train it. Choose ***Training*** option and
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
 # Training time
-Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail notification with the ***PROJECT ID***. Please store it, because you need to use it in ***project launch*** request to load it to be active.
-What's next after project training is finished? Two options:
+Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch** REST request. 
 
 # Use NLU service via REST API
 ## Launch request
+This is initial handshake request.
 ***https://nlp2.zcymatix.com/?cmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
 Parameters: 
 ```json
@@ -149,13 +151,12 @@ Parameters:
     project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
 ```
 NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
-
-The response has fixed format consisting of two fields ***code*** and ***msg***:
+The response contains the dynamic ___session_id___, which must be used in the the following deduction requests. The response looks like this:
 ```json
 { "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
 ```
-NOTE! `2cb3b87d-e29c-4743-bab1-0fc5cb98db6d` is fake session id.
-In the response you will receive dynamic ___session_id___, which must be used in the deduction requests. 
+Session ID in this example is:`2cb3b87d-e29c-4743-bab1-0fc5cb98db6d`
+
 
 ## Deduction example
 
@@ -170,6 +171,8 @@ The response:
 ```json
 { "code":201, "msg":"{"t_intent":"GREETINGS"}"}
 ```
+
+## List of response codes
 ```
 List of codes:
     200 - Session id is provided in msg field as a string
