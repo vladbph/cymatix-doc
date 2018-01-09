@@ -139,7 +139,7 @@ When project is uploaded, you need to train it. Choose ***Training*** option and
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
 # Training time
-Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch** REST request. 
+Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch*** REST request. 
 
 # Use NLU service via REST API
 ## Launch request
