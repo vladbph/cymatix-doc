@@ -8,11 +8,18 @@
 - Web sites for blind people
 - Interactive (Voice/text controlled) Web sites. 
 - Emails/text scans and more
+ 
 
 Table of Contents
 =================
+
    * [Features Highlights](#features-highlights)
    * ['Hello Word' Example](#hello-word-example)
+   * [Training time](#training-time)
+   * [Use NLU service via REST API](#use-nlu-service-via-rest-api)
+      * [Launch request](#launch-request)
+      * [Deduction example](#deduction-example)
+   * [Use Web interface for verification](#use-web-interface-for-verification)
    * [Using prompts](#using-prompts)
    * [Using macros](#using-macros)
    * [Using Slots (parameters)](#using-slots-parameters)
@@ -26,14 +33,14 @@ Table of Contents
       * [Irreversable replacement](#irreversable-replacement)
       * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
    * [Prompt label prefixes](#prompt-label-prefixes)
-      * [Prefix "#"](#prefix-)
-      * [Prefix "?#"](#prefix--1)
-      * [Prefix "$"](#prefix--2)
-      * [Prefix "?$"](#prefix--3)
-      * [Prefix "."](#prefix--4)
-      * [Prefix "?."](#prefix--5)
+      * [Prefix <strong>"#"</strong>](#prefix-)
+      * [Prefix <strong>"?#"</strong>](#prefix--1)
+      * [Prefix <strong>"$"</strong>](#prefix--2)
+      * [Prefix <strong>"?$"</strong>](#prefix--3)
+      * [Prefix <strong>"."</strong>](#prefix--4)
+      * [Prefix <strong>"?."</strong>](#prefix--5)
       * [Empty label prefix](#empty-label-prefix)
-      * [Prefix "?"](#prefix--6)
+      * [Prefix <strong>"?"</strong>](#prefix--6)
    * [PIZZA2 BOT Example](#pizza2-bot-example)
       * [Layer 1 Slots](#layer-1-slots)
       * [Layer 2 Pizza](#layer-2-pizza)
@@ -42,13 +49,13 @@ Table of Contents
    * [Deduction history](#deduction-history)
    * [How to control deduction history](#how-to-control-deduction-history)
       * [Intent Prefixes](#intent-prefixes)
-      * [Empty prefix](#empty-prefix-1)
+      * [Empty prefix](#empty-prefix)
       * [R$ prefix. Return command](#r-prefix-return-command)
       * [F$ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
       * [B$ prefix. Step back command](#b-prefix-step-back-command)
       * [C$ prefix. Change slot value command](#c-prefix-change-slot-value-command)
       * [X$ prefix. Reset command](#x-prefix-reset-command)
-   * [Indirect references IT or THERE](#indirect-references-it-or-there)
+   * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
@@ -57,7 +64,6 @@ Table of Contents
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
-   * [Github Samples](https://github.com/vladbph/zcymatix)
 
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
@@ -103,7 +109,7 @@ Table of Contents
     * This is not NLU specific feature which enables platform utilization in any field of knowledge
 - Platform DOES NOT provide voice recognition servives
 
-   ### So, Let's do it!
+   ___So, Let's do it!___
 # 'Hello Word' Example
 * Create and enter **hello** folder. `Folder name is the name of the project.`
 * Create **hello.json** file
@@ -121,7 +127,7 @@ So, this is it. Literally, 3 lines of code get you there. The deduction of the p
     {"t_intent":"GREETING"}
 ```
 To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
-### ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
+***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup.png "Register")
 
 After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
@@ -130,53 +136,55 @@ After login, upload the project by choosing your project folder - ***hello***. R
 When project is uploaded, you need to train it. Choose ***Training*** option and press launch.
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
-Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail notification with the ***PROJECT ID***. Please store it, because you need to pass it with ***project launch*** request to the backend.
+# Training time
+Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive the e-mail notification with the ***PROJECT ID***. Please store it, because you need to use it in ***project launch*** request to load it to be active.
 What's next after project training is finished? Two options:
-1. __Use NLU service via REST API__
-    * ***Project Launch request***`Example`
-    
-        ***<https://nlp2.zcymatix.com/?action=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8>*** 
-        Parameters: 
-        ```json
-            action = launch
-            project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
-        ```
-        NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
-        
-        The response has fixed format consisting of two fields ***code*** and ***msg***:
-        ```json
-        { "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
-        ```
-        NOTE! `2cb3b87d-e29c-4743-bab1-0fc5cb98db6d` is fake session id.
-        
-        In the response you will receive dynamic ___session_id___, which must be used in the deduction requests. 
-    * ***Deduction***`Example`
-    
-        ***<https://nlp2.zcymatix.com/?action=deduce&session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&query=Hello+World>***
-        Parameters: 
-        ```json
-            action = deduce
-            session_id = 2cb3b87d-e29c-4743-bab1-0fc5cb98db6d
-            query = hello world
-        ```
-        The response:
-        ```json
-        { "code":201, "msg":"{"t_intent":"GREETINGS"}"}
-        ```
-        ```
-        List of codes:
-            200 - Session id is provided in msg field as a string
-            201 - Deduction is provided in msg field as a JSON string
-            202 - Info is provided in msg field as a string
-            102 - Project is loading
-            101 - Authentication error
-            100 - Invalid parameters
-        ```
-        It may take few seconds for a project to be launched(if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
+
+# Use NLU service via REST API
+## Launch request
+***https://nlp2.zcymatix.com/?cmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
+Parameters: 
+```json
+    cmd = launch
+    project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
+```
+NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
+
+The response has fixed format consisting of two fields ***code*** and ***msg***:
+```json
+{ "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
+```
+NOTE! `2cb3b87d-e29c-4743-bab1-0fc5cb98db6d` is fake session id.
+In the response you will receive dynamic ___session_id___, which must be used in the deduction requests. 
+
+## Deduction example
+
+***<https://nlp2.zcymatix.com/?cmd=deduce&session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&query=Hello+World>***
+Parameters: 
+```json
+    cmd = deduce
+    session_id = 2cb3b87d-e29c-4743-bab1-0fc5cb98db6d
+    query = hello world
+```
+The response:
+```json
+{ "code":201, "msg":"{"t_intent":"GREETINGS"}"}
+```
+```
+List of codes:
+    200 - Session id is provided in msg field as a string
+    201 - Deduction is provided in msg field as a JSON string
+    202 - Info is provided in msg field as a string
+    102 - Project is loading
+    101 - Authentication error
+    100 - Invalid parameters
+```
+
+It may take few seconds for a project to be launched(if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
         This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
 
     
-2. __Use Web interface for verification__
+# Use Web interface for verification
 
 ![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
 
