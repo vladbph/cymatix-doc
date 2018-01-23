@@ -57,7 +57,8 @@ Table of Contents
       * [F$ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
       * [B$ prefix. Step back command](#b-prefix-step-back-command)
       * [C$ prefix. Change slot value command](#c-prefix-change-slot-value-command)
-      * [X$ prefix. Reset command](#x-prefix-reset-command)
+      * [X$ prefix. Clean previous history command](#x-clean-previous-history-command)
+      * [I$ prefix. Clean previous history and restart command](#x-clean-previous-history-and-restart-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Comments in training files](#comments-in-training-files)
@@ -601,7 +602,7 @@ __slots.txt__ file:
     (ORDER_PIZZA|) (my|@the) address is @address{&P_ADDRESS}
     (ORDER_PIZZA|) @i live in @address{&P_ADDRESS}
 ```
-It is not always makes sense to use machine learning training models in all layers. Sometimes it is sufficient to use direct replacement mechanism like regular expressions. __You can, but you don't have to.__
+It is not always makes sense to use trainable models in all layers. Sometimes it is sufficient to use direct replacement mechanism like regular expressions. __You can, but you don't have to.__
 Developers of knowledge domains are faced with the challenge to come up with as many variations of utterances as possible, so the system can understand all users - the ways they talk. From one side - we want to have lots of utterances to achieve that, but on the other hand it leads to longer training times.
 ```
 .define
@@ -615,9 +616,15 @@ Lets review regex section.
 .define 
     @small = small|medium|large
 .regex
-    // Replace and leave it as such
+    // Prefix & is to indicate simple replacement
+    // Ex utterance:  
+    // 'I want bbq pizza as well as hawaiian' => 'I want bbq pizza and hawaiian'
     &and:(as well as|and also)
-    // Replace, but finally resolve to actual value
+
+    // Lookup label replacement
+    // Replace all values of @small definition by P_SIZE.
+    // At the end of deduction it will be replaced by its origial value.
+    // P_SIZE will be used for training instead of all values of @small
     P_SIZE:@small
 ```
 ```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final deduction.
@@ -754,7 +761,7 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [___.gates___](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gates](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
@@ -793,7 +800,7 @@ R$ - Return all collected slots values in the deduction history and clean the hi
 F$ - Do not remember this particular deduction in the history - "Deduce and forget" command.
 B$ - Step back in the deduction stack. "Back" command.
 C$ - Change value of a slot. "Change" command.
-X$ - Clean the deduction history. "Cross" command.
+X$ - Clean previous deduction history. "Cross" command.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
@@ -864,10 +871,28 @@ Star `*` symbol used a value of the prompt means to grab `t_prompt` last value f
     "t_destination":"Vancouver"
 }
 ```
-The `t_destination` slot value `Seattle` will be replaced with `Vancouver` directly in the history
+The `t_destination` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
 
-* ## `X$` prefix. Reset command
-`X$` prefix is for testing purposes. But if you find it useful in other cases, you can use it without restrictions.
+* ## `X$` prefix. Clean previous history command
+`X$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
+```
+.train
+    CONFIRMATION:Would you like to proceed with your order?
+    R$PLACE_ORDER: CONFIRMATION yes
+    X$CANCEL_ORDER: CONFIRMATION no
+.prompt
+    USER_CONFUSED: I'm sorry
+    // Collect all slots values in the collected history of the dialog and return to user
+    R$PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
+    
+    // Wipe out the history
+    X$CANCEL_ORDER: Sure, I am canceling your order
+```
+Note, current deduction slots,if any, will be returned to user in the deduction.
+
+* ## `I$` prefix. Clean previous history and restart command
+`I$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___
+
 
 # Indirect references `it` or `there`
 
