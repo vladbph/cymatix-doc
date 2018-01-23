@@ -1,19 +1,22 @@
 .define
-    @i = I|i|we
-    @i_want = @i @want
-    @pizza = pizza
-    @please = please|kindly
-    @nothing = <UNK>|<UNK> <UNK>|<UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK> <UNK> <UNK>
-    @want = want|need|would like
-    @and = and|and also|as well as
+    @i: I|i|we
+    @i_want: @i @want
+    @pizza: pizza
+    @please: please|kindly
+    @nothing: <UNK>|<UNK> <UNK>|<UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK> <UNK>|<UNK> <UNK> <UNK> <UNK> <UNK> <UNK>
+    @want: want|need|would like
+    @and: and|and also|as well as
 
-    @small = small|large|medium
-    @kind = pepperoni|meat|hawaiian|bbq|meat|cheese
-    @toppings = ham|cheese|tomato|meat|cheese
-    @address = seattle|vancouver
+    @bbq = barbecue|bbq
 
-    @extra = extra|
-    @the = the|a|
+    @small: small|large|medium
+    @kind: pepperoni|meat|hawaiian|@bbq|@bbq chicken|meat|cheese|@bbq pork
+    @toppings: meat|cheese|pepper|tomato|tomatos|tomatoes|anchovie|anchovies|beef|bacon|black (olive|olives)|chicken|ham|mushroom|mushrooms|onion|onions|pepperoni|pepperonis|pesto|pineapple|sausage|sausages|spinach
+    @address: seattle|vancouver
 
-    @yes = yes|sure|go ahead|you bet|sure why not
-    @no = no|no way|nope|changed my mind
+    @extra: extra|with
+    @the: the|a|
+
+    @yes: yes|sure|go ahead|you bet|sure why not
+    @no: no|no way|nope|changed my mind
+    @cancel:cancel|reset|start all over|i changed my mind

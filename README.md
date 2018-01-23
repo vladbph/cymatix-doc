@@ -10,6 +10,7 @@
 - Emails/text scans and more
  
 
+
 Table of Contents
 =================
 
@@ -33,7 +34,7 @@ Table of Contents
    * [Regex section](#regex-section)
       * [Irreversable replacement](#irreversable-replacement)
       * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
-   * [Prompt label prefixes](#prompt-label-prefixes)
+   * [Prompt label](#prompt-label)
       * [Prefix <strong>"#"</strong>](#prefix-)
       * [Prefix <strong>"?#"</strong>](#prefix--1)
       * [Prefix <strong>"$"</strong>](#prefix--2)
@@ -42,6 +43,7 @@ Table of Contents
       * [Prefix <strong>"?."</strong>](#prefix--5)
       * [Empty label prefix](#empty-label-prefix)
       * [Prefix <strong>"?"</strong>](#prefix--6)
+      * [Prompt label value access by index](#prompt-label-value-access-by-index)
    * [PIZZA2 BOT Example](#pizza2-bot-example)
       * [Layer 1 Slots](#layer-1-slots)
       * [Layer 2 Pizza](#layer-2-pizza)
@@ -75,7 +77,7 @@ Table of Contents
 - State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
-- ___`Session based conversation instances`___.  Context is maintained on the `backend` leaving client focusing only on the application itself
+- ___`Session based conversation instances`___  Context is maintained on the `backend` leaving client focusing only on the application itself
 - `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional `scripting support`.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
@@ -444,7 +446,7 @@ It is direct replacement of words in the utterance to simplify training sets.
 ```
 The actual value of `small`, `medium` or `large` is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See [pizza2 example](#pizza2-bot-example) for more details.
 
-# Prompt label prefixes
+# Prompt label
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
 ```
 utterance => 
@@ -470,7 +472,7 @@ Utterance: Take me to Seattle =>
 The values in the template are controlled by prompt's prefixes as described below:
 
 ## Prefix __"#"__
-Implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___name___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last deduction, t_age is absent
 .prompt
@@ -479,7 +481,7 @@ Example: t_name value is in the last deduction, t_age is absent
 ```
 
 ## Prefix __"?#"__  
-Implies using label's ___name___ instead of ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___name___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example:  t_name value is in the last deduction, t_age is absent
 .prompt
@@ -488,7 +490,7 @@ Example:  t_name value is in the last deduction, t_age is absent
 ```
 
 ## Prefix __"$"__  
-Implies using label's ___name___ instead of ___value___ in ___whole deduction history___. The approatch can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___name___ in ___whole deduction history___. The approatch can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
@@ -497,7 +499,7 @@ Example: t_name value is in all whole history, t_age is absent
 ```
 
 ## Prefix __"?$"__  
-Implies using label's ___name___ instead of ___value___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___name___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
@@ -537,6 +539,23 @@ Example: t_name is absent in deduction history
 .prompt
     GREETING = Hello {?t_name} => Hello
 ```
+
+## Prompt label value access by index  
+While building a prompt, the label value can be accessed by index in the deduction history, like so: `{t_utt-1}`. Index `-1` refers value of the label `t_utt` of in the previous deduction. 
+If previous deduction is not available, `None` value is used in the prompt. If you want the value to be ommited in such case use `{?t_utt-1}`
+
+```
+Example: 
+.train
+    ASKING_AGE: how old are you
+    R$RESP_YES: ASKING_AGE (yes|sure|of course)
+    R$RESP_NO: ASKING_AGE (no|nope|don't care)
+.prompt
+    ASKING_AGE: I don't know answer to the question, would you like to forward it to my parents?
+    R$RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
+    R$RESP_NO: Ok, no problem.
+```
+Side note: this particular example relies on `flag` toth to be enabled
 
 # PIZZA2 BOT Example
 Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. This implementation is also can be classified as [`loose dialog`](#loose-dialogs) type. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
@@ -781,7 +800,7 @@ X$ - Clean the deduction history. "Cross" command.
 Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
-`t_intent = ORDER_PIZZA` will be kelp in stack until `R$' or `X$' intent comes along to erase it.
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R$` or `X$` session based conversation intent comes along to erase it.
 
 * ## `R$` prefix. Return command
 In 'Pizza' layer we have:
@@ -1117,3 +1136,4 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ]
     ```
 
+Prompt label prefixes

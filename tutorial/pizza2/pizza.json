@@ -25,6 +25,6 @@
         "data_files":[
             "bot.txt"
             ],
-        "bi_lstm":true
+        "toth":false
     }
 ]
