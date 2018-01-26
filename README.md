@@ -9,6 +9,7 @@
 - Interactive (Voice/text controlled) Web sites. 
 - Emails/text scans and more
  
+
 Table of Contents
 =================
 
@@ -30,8 +31,8 @@ Table of Contents
          * [Gates section (script)](#gates-section-script)
       * [Strict Dialogs](#strict-dialogs)
    * [Regex section](#regex-section)
-      * [Irreversable replacement](#irreversable-replacement)
-      * [Reversable replacement or lookup lables](#reversable-replacement-or-lookup-lables)
+      * [Replacement](#replacement)
+      * [Lookup lables](#lookup-lables)
    * [Prompt label](#prompt-label)
       * [Prefix <strong>"#"</strong>](#prefix-)
       * [Prefix <strong>"?#"</strong>](#prefix--1)
@@ -68,6 +69,7 @@ Table of Contents
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
+
 
 
 
@@ -431,22 +433,20 @@ Using `toth` and `intent_to_utterance` flags:
 or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users answers as a context for next deductions.
 
 # Regex section
-## Irreversable replacement
+## Replacement
 ```
 .regex
-    &and:(as well as|and also)
+    &and:\b(as well as|and also)\b
 ```
-It is direct replacement of words in the utterance to simplify training sets.
+It is direct replacement of words in the utterance to simplify training sets. You can use this aproatch to prevent your training set to be extremely large. 
 
-## Reversable replacement or lookup lables
+## Lookup lables
 ```
-.define
-    @small = small|medium|large
 .regex
-    P_SIZE:@small
-    P_ADDRESS: <regex to search for address>
+    P_SIZE:\b(small|medium|large)\b
 ```
 The actual value of `small`, `medium` or `large` is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See [pizza2 example](#pizza2-bot-example) for more details.
+`IMPORTANT!` There must be one group deduced by the regular expression(!)
 
 # Prompt label
 Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
@@ -799,9 +799,11 @@ At some point we need to collect all slots values in the stack to build an aggre
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
 R$ - Return all collected slots values in the deduction history and clean the history. "Return" command.
 F$ - Do not remember this particular deduction in the history - "Deduce and forget" command.
-B$ - Step back in the deduction stack. "Back" command.
+P$ - One step back command. 'Can you repeat it please?'
+B$ - Two steps back command. 'What did you said before that?'
 C$ - Change value of a slot. "Change" command.
-X$ - Clean previous deduction history. "Cross" command.
+X$ - Clean previous deduction history and do not save current deduction in it.
+I$ - Clean previous deduction history and save current deduction in it.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
