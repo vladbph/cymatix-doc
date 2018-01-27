@@ -20,7 +20,11 @@
 
     ASK_KIND @kind{&P_KIND}
 
+    ASK_KIND @kind{&P_KIND} and @kind{&P_KIND}
+
     ASK_TOPPINGS @toppings{&P_TOPPINGS}
+
+    ASK_TOPPINGS @toppings{&P_TOPPINGS} and @toppings{&P_TOPPINGS}
 
     @want @toppings{&P_TOPPINGS} on top
 
@@ -59,3 +63,6 @@
     @i @want to order pizza
     @i @want to place an order for pizza
     pizza please
+
+    @yes
+    @no

@@ -10,9 +10,15 @@
 
     ORDER_PIZZA: P_KIND{t_kind}
 
+    ORDER_PIZZA: P_KIND{t_kind} and P_KIND{t_kind}
+
     ORDER_PIZZA: with P_TOPPINGS{t_toppings} (on top|)
 
-    ORDER_PIZZA: (live in|<UNK>|) P_ADDRESS{t_address}
+    ORDER_PIZZA: P_TOPPINGS{t_toppings}
+
+    ORDER_PIZZA: P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings}
+
+    ORDER_PIZZA: (ASK_ADDRESS|) P_ADDRESS{t_address}
 
     ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
 
