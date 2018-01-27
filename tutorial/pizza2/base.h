@@ -12,7 +12,7 @@
     @small: small|large|medium
     @kind: pepperoni|meat|hawaiian|@bbq|@bbq chicken|meat|cheese|@bbq pork
     @toppings: meat|cheese|pepper|tomato|tomatos|tomatoes|anchovie|anchovies|beef|bacon|black (olive|olives)|chicken|ham|mushroom|mushrooms|onion|onions|pepperoni|pepperonis|pesto|pineapple|sausage|sausages|spinach
-    @address: seattle|vancouver
+    @address: seattle|vancouver|burnaby|new york|los angeles
 
     @extra: extra|with
     @the: the|a|

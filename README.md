@@ -67,7 +67,7 @@ Table of Contents
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
-   * [Unkown word marker](#unkown-word-marker)
+   * [Unknown word marker](#unknown-word-marker)
    * [Placement slot deduction](#placement-slot-deduction)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
@@ -84,7 +84,7 @@ Table of Contents
 - State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
-- ___`Session based conversation instances`___  Context is maintained on the `backend` leaving client focusing only on the application itself
+- ___`Session-based conversation instances`___  Context is maintained on the `backend` leaving client focusing only on the application itself
 - `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional `scripting support`.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
@@ -149,12 +149,12 @@ Option ***Start/Restart*** launches the project in production mode. It should be
 ![Launch](http://www.zcymatix.com/img/launch_project1.png "Launch")
 
 # Project Layers
-Once a project has been uploaded it will apper in the list of projects. When you click on it, the list of layers will be displayed. Layer `All` represent the whole project. You can either build or train whole project using `All` layer or each layer separetely for debug purposes. The menu option for `All` layer is almost the same as each layer. Single layer has `Settings` options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.
-On the picture below you can see `project id` associated with the project. It is needed for REST api.
+Once a project has been uploaded it will appear in the list of projects. When you click on it, the list of layers will be displayed. Layer `All` represent the whole project. You can either build or train whole project using `All` layer or each layer separately for debug purposes. The menu option for `All` layer is almost the same as each layer. Single layer has `Settings` options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.
+On the picture below, you can see `project id` associated with the project. It is needed for REST API.
 
 ![Layer menu](http://www.zcymatix.com/img/layer_page1.png "Launch")
 
-NOTE! Launching all layer of the project separetely, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch 'All' layer to engage all layers in a stack to run in production mode.
+NOTE! Launching all layer of the project separately, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch 'All' layer to engage all layers in a stack to run in production mode.
 
 # Project ID
 By clicking on the project ID, you will see the REST API to use your project in production.
@@ -168,7 +168,7 @@ Web interface has color coded icons against project and each layer.
 
 RED - means that the project is NOT loaded
 
-GREEN - means that the project has been loaded in prodcution mdoe
+GREEN - means that the project has been loaded in production mode
 
 YELLOW - indicates that one of the project layer has been loaded, but not the whole project
 
@@ -182,7 +182,7 @@ Parameters:
     project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
 ```
 NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
-The response contains the dynamic ___session_id___, which must be used in the the following deduction requests. The response looks like this:
+The response contains the dynamic ___session_id___, which must be used in the following deduction requests. The response looks like this:
 ```json
 { "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
 ```
@@ -214,7 +214,7 @@ List of codes:
     100 - Invalid parameters
 ```
 
-It may take few seconds for a project to be launched(if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
+It may take few seconds for a project to be launched (if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
         This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
 
 # Using `prompts` 
@@ -290,7 +290,7 @@ The deduction will look like:
 This way we deduce the meaning of the utterance.
 
 # Introduction to Layers
-[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there maybe too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is upto developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layer. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -303,7 +303,7 @@ This way we deduce the meaning of the utterance.
     }
 ]
 ```
-I'll walk you through. First of all, let's put all the macros in one file ***macros.h*** and include it into both layers. It is optional however. So, let's take a look at ***kinds.txt*** file. One utterance in particular:
+I'll walk you through. First of all, let's put all the macros in one file ***macros.h*** and include it into both layers. It is optional however. So, let's look at ***kinds.txt*** file. One utterance in particular:
 ```
 I would like to place an order for a small BBQ chicken and large meat pizza
 ```
@@ -319,7 +319,7 @@ For simplicity sake, let's ignore pizza sizes deduction.
 ***PIZZA_KIND = BBQ chicken***
 ***PIZZA_KIND = meat***
 
-This is a mechanism to label multiple words with specific `lookup label` and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further, lets take a look at the next layer and file 
+This is a mechanism to label multiple words with specific `lookup label` and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further, let's look at the next layer and file 
 ***order_pizza.txt***:
 ```
 .train
@@ -355,7 +355,7 @@ Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Ima
 ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and \
              @pizza_kind{t_kind} pizza
 ```
-So, this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So,I would put into training file something like this:
+So, this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So, I would put into training file something like this:
 ```
 .define 
     @pizza_kind = BBQ chicken|meat|pepperoni|Hawaiian
@@ -398,13 +398,13 @@ Pizza example:
 This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
 
 ### `Gates` section (script)
-Gates are the condictions to produce new intent. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
+Gate is a small script to generate new intent. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
 .gates
-    'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and o.t_kind is None
-    'ASK_SIZE'        if o.t_intent == 'ORDER_PIZZA' and o.t_size is None
-    'ASK_TOPPINGS'    if o.t_intent == 'ORDER_PIZZA' and o.t_toppings is None
-    'ASK_ADDRESS'     if o.t_intent == 'ORDER_PIZZA' and o.t_address is None
+    'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_kind' )
+    'ASK_SIZE'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_size' )
+    'ASK_TOPPINGS'    if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_toppings' )
+    'ASK_ADDRESS'     if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_address' )
     'ASK_TO_CONFIRM'  if o.t_intent == 'ORDER_PIZZA'
     'R$THANKS_YES'    if o.t_intent == 'ORDER_PIZZA_YES'
     'R$THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
@@ -423,11 +423,18 @@ Gates are the condictions to produce new intent. The syntax uses python style `i
 The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the `prompt` section.
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quotes surrounding the intent name.**
-Please ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
-It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make the judgement call which way to go. Note, though, gates do not require training.
+Gates are executed in the sequential order and they must be `mutually exclusive`. The sequence of the gates execution stops when first one returns not empty intent.
+Ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
+It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.
+Consider another example:
+```
+.gates
+    'ASK_CITY' if o.t_intent == 'Q42' and not hasattr( o, 't_city' )
+```
+Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is `Q42`, but the t_city was not provided, return intent which would tell user something like: 'You did not provide the city'. You can argue the rational of this, saying why can't I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.
 
 ## Strict Dialogs
-Strict dialog resembles traversing desicion tree. The idea is to ask questions based on the `values of previous answers`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
+Strict dialog resembles traversing decision tree. The idea is to ask questions based on the `values of previous answers`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
 Let's take as example visit to doctor. 
 ```
 Patient> I have a stomach ache
@@ -458,7 +465,7 @@ or/and `prompts templates` we can follow __`train of thought`__ of the conversat
 .regex
     &and:\b(as well as|and also)\b
 ```
-It is direct replacement of words in the utterance to simplify training sets. You can use this aproatch to prevent your training set to be extremely large. 
+It is direct replacement of words in the utterance to simplify training sets. You can use this approach to prevent your training set to be extremely large. 
 
 ## Lookup lables
 ```
@@ -512,7 +519,7 @@ Example:  t_name value is in the last deduction, t_age is absent
 ```
 
 ## Prefix __"$"__  
-Implies using label's ___name___ in ___whole deduction history___. The approatch can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___name___ in ___whole deduction history___. The approach can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
@@ -564,7 +571,7 @@ Example: t_name is absent in deduction history
 
 ## Prompt label value access by index  
 While building a prompt, the label value can be accessed by index in the deduction history, like so: `{t_utt-1}`. Index `-1` refers value of the label `t_utt` of in the previous deduction. 
-If previous deduction is not available, `None` value is used in the prompt. If you want the value to be ommited in such case use `{?t_utt-1}`
+If previous deduction is not available, `None` value is used in the prompt. If you want the value to be omitted in such case use `{?t_utt-1}`
 
 ```
 Example: 
@@ -724,7 +731,7 @@ __pizza.txt__ file:
     // NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
     // the deduction history, thus to forget what user said before.
     R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, maybe next time
+    R$ORDER_PIZZA_NO = Sure, may be next time
 ```
 Now time to discuss:
 ```
@@ -782,7 +789,7 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self explainatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gates](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self-explanatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gates](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
@@ -813,14 +820,14 @@ This information is useful to understand platform operation under the hood. Dedu
 
 # How to control deduction history
 
-At some point we need to collect all slots values in the stack to build an aggregative deduction(pizza order), or may be forget whole deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
+At some point we need to collect all slots values in the stack to build an aggregative deduction (pizza order), or may be forget whole deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
 R$ - Return all collected slots values in the deduction history and clean the history. "Return" command.
 F$ - Do not remember this particular deduction in the history - "Deduce and forget" command.
 P$ - One step back command. 'Can you repeat it please?'
-B$ - Two steps back command. 'What did you said before that?'
+B$ - Two steps back command. 'What did you say before that?'
 C$ - Change value of a slot. "Change" command.
 X$ - Clean previous deduction history and do not save current deduction in it.
 I$ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
@@ -830,7 +837,7 @@ I$ - Clean previous deduction history and save current deduction in it. 'Tertis'
 Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
-`t_intent = ORDER_PIZZA` will be kelp in stack until `R$` or `X$` session based conversation intent comes along to erase it.
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R$` or `X$` session-based conversation intent comes along to erase it.
 
 * ## `R$` prefix. Return command
 In 'Pizza' layer we have:
@@ -840,7 +847,7 @@ In 'Pizza' layer we have:
     R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt:
     R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, maybe next time
+    R$ORDER_PIZZA_NO = Sure, may be next time
 ```
 Intents with ```'R$'``` prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.
 ```json
@@ -851,7 +858,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
 }
 ```
 * ## `F$` prefix. Deduce and Forget command
-```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there maybe no need to keep it in the history. So, the resulting deduction will be returned and it will not be remembered in the stack.
+```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.
 ```json
 {
     "t_intent":"GET_TIME",
@@ -861,7 +868,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
 This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ## `P$` prefix. One step back command
-`P$` prefix tells the framework to take last deduction in the history and return it. It is useful for cases when user asks 'What did you say?' 'Repeat please?'
+`P$` prefix tells the framework to take last deduction in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'
 ```
 Bot>What type of pizza would you like?
 User>What?
@@ -875,7 +882,7 @@ There is an alternative to achieve the same result if only a previous prompt is 
 .prompt:
     F$REPEAT = *
 ```
-Star `*` symbol tells to grab last value of the `t_prompt` in history. NOTE! It is only prompt that will be changed. All other slots in the curren deduction will state intact.
+Star `*` symbol tells to grab last value of the `t_prompt` in history. NOTE! It is only prompt that will be changed. All other slots in the current deduction will state intact.
 
 
 * ## `B$` prefix. Two steps back command
@@ -916,7 +923,7 @@ The `t_destination` slot value `Seattle` will be replaced with `Vancouver` direc
     X$CANCEL_ORDER: Sure, I am canceling your order
 ```
 Note, current deduction slots, if any, will be returned to user in the deduction. 
-This prefix should be used for self-contrained deduction, meaning it has all information needed to make confident conclusion, plus no futher deduction should rely on it.
+This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.
 
 * ## `I$` prefix. Clean previous history and restart command
 `I$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
@@ -997,11 +1004,11 @@ Comment must start from a new line and be prefixed with either `#` or `//`
 # Long lines continuation
 Use backslash `\` to break long line. NOTE, white spaces on next line are ignored.
 
-# Unkown word marker
+# Unknown word marker
 __`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
 
 # Placement slot deduction
-`Placement slot deduction` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unkown word is something that we are looking for at some particular place in the utterance. We will not be dicussing here whether this is good or bad way leaving it to developers.
+`Placement slot deduction` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.
 Example:
 ```
 .define
@@ -1080,7 +1087,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "toth":true
     ```
-- A layer can be optionally inlcuded into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
+- A layer can be optionally included into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
     ```
     "accept_r_intents_only":true
     ```
@@ -1104,7 +1111,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "include_layer_name":false
     ```
-- To include intents into the deductions. By default,it is `True`
+- To include intents into the deductions. By default, it is `True`
     ```
     "include_intents":true
     ```

@@ -12,7 +12,7 @@
 
     ORDER_PIZZA: with P_TOPPINGS{t_toppings} (on top|)
 
-    ORDER_PIZZA: (live in|) P_ADDRESS{t_address}
+    ORDER_PIZZA: (live in|<UNK>|) P_ADDRESS{t_address}
 
     ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
 

@@ -18,7 +18,9 @@
     // All values of @kind are used for training
     @kind{&P_KIND} pizza
 
-    @kind{&P_KIND} <UNK>
+    ASK_KIND @kind{&P_KIND}
+
+    ASK_TOPPINGS @toppings{&P_TOPPINGS}
 
     @want @toppings{&P_TOPPINGS} on top
 
@@ -28,7 +30,7 @@
 
     @want (P_SIZE|) @kind{&P_KIND} @pizza
 
-    @want @kind{&P_KIND}
+    @want @kind{&P_KIND} @pizza
     
     @and @kind{&P_KIND} @pizza
 
@@ -49,6 +51,10 @@
     live in @address{&P_ADDRESS}
 
     address is @address{&P_ADDRESS}
+
+    ASK_ADDRESS @address{&P_ADDRESS}
+
+    ASK_ADDRESS @address{&P_ADDRESS} this is where i live
 
     @i @want to order pizza
     @i @want to place an order for pizza
