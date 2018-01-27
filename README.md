@@ -165,8 +165,11 @@ Depending on project complexity it may take from few seconds to few hours to tra
 
 # Project WEB UI indicators
 Web interface has color coded icons against project and each layer. 
+
 RED - means that the project is NOT loaded
+
 GREEN - means that the project has been loaded in prodcution mdoe
+
 YELLOW - indicates that one of the project layer has been loaded, but not the whole project
 
 # Use NLU service via REST API
