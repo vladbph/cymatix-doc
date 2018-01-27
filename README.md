@@ -217,11 +217,6 @@ List of codes:
 It may take few seconds for a project to be launched(if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
         This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
 
-    
-# Use Web interface for verification
-
-![Deduction](http://www.zcymatix.com/img/deduction_page.png "Deduction")
-
 # Using `prompts` 
 
 What if we want AI system to respond to user query? Let's use the 'Hello World' code:
