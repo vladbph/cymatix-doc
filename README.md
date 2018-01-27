@@ -139,20 +139,20 @@ So, this is it. Literally, 3 lines of code get you there. The deduction of the p
 ```
 To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
-![Register](http://www.zcymatix.com/img/signup.png "Register")
+![Register](http://www.zcymatix.com/img/signup1.png "Register")
 
 After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
-![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
+![Upload](http://www.zcymatix.com/img/upload_page1.png "Upload")
 
 When project is uploaded, you need to train it. Choose ***Build*** option for that. When project was stopped and/or you want to continue building it, press ***Continue Build***. However, keep in mind that if you changed the training files, continuing building the project DOES NOT always means faster training times. So, we suggest to use ***Build*** option when training files have changed.
 Option ***Start/Restart*** launches the project in production mode. It should be used when project has been already built. NOTE! You ___can___ start building the project while it is in launched/production mode (we use these terms interchangeably). Once the building is finished, the project will `go online without distrupting client applications`.
-![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
+![Launch](http://www.zcymatix.com/img/launch_project1.png "Launch")
 
 # Project Layers
 Once a project has been uploaded it will apper in the list of projects. When you click on it, the list of layers will be displayed. Layer `All` represent the whole project. You can either build or train whole project using `All` layer or each layer separetely for debug purposes. The menu option for `All` layer is almost the same as each layer. Single layer has `Settings` options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.
 On the picture below you can see `project id` associated with the project. It is needed for REST api.
 
-![Layer menu](http://www.zcymatix.com/img/layer_page.png "Launch")
+![Layer menu](http://www.zcymatix.com/img/layer_page1.png "Launch")
 
 NOTE! Launching all layer of the project separetely, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch 'All' layer to engage all layers in a stack to run in production mode.
 
