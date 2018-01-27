@@ -15,7 +15,10 @@ Table of Contents
 
    * [Features Highlights](#features-highlights)
    * ['Hello Word' Example](#hello-word-example)
+   * [Project Layers](#project-layers)
+   * [Project ID](#project-id)
    * [Training time](#training-time)
+   * [Project WEB UI indicators](#project-web-ui-indicators)
    * [Use NLU service via REST API](#use-nlu-service-via-rest-api)
       * [Launch request](#launch-request)
       * [Deduction example](#deduction-example)
@@ -141,11 +144,30 @@ To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and s
 After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
 ![Upload](http://www.zcymatix.com/img/upload_page.png "Upload")
 
-When project is uploaded, you need to train it. Choose ***Training*** option and press launch.
+When project is uploaded, you need to train it. Choose ***Build*** option for that. When project was stopped and/or you want to continue building it, press ***Continue Build***. However, keep in mind that if you changed the training files, continuing building the project DOES NOT always means faster training times. So, we suggest to use ***Build*** option when training files have changed.
+Option ***Start/Restart*** launches the project in production mode. It should be used when project has been already built. NOTE! You ___can___ start building the project while it is in launched/production mode (we use these terms interchangeably). Once the building is finished, the project will `go online without distrupting client applications`.
 ![Launch](http://www.zcymatix.com/img/launch_project.png "Launch")
 
+# Project Layers
+Once a project has been uploaded it will apper in the list of projects. When you click on it, the list of layers will be displayed. Layer `All` represent the whole project. You can either build or train whole project using `All` layer or each layer separetely for debug purposes. The menu option for `All` layer is almost the same as each layer. Single layer has `Settings` options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.
+On the picture below you can see `project id` associated with the project. It is needed for REST api.
+
+![Layer menu](http://www.zcymatix.com/img/layer_page.png "Launch")
+
+NOTE! Launching all layer of the project separetely, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch 'All' layer to engage all layers in a stack to run in production mode.
+
+# Project ID
+By clicking on the project ID, you will see the REST API to use your project in production.
+![Using project id](http://www.zcymatix.com/img/rest_info.png "Launch")
+
 # Training time
-Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch*** REST request. 
+Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch*** REST request. When training, project's or layer's icon is blinking.
+
+# Project WEB UI indicators
+Web interface has color coded icons against project and each layer. 
+RED - means that the project is NOT loaded
+GREEN - means that the project has been loaded in prodcution mdoe
+YELLOW - indicates that one of the project layer has been loaded, but not the whole project
 
 # Use NLU service via REST API
 ## Launch request
@@ -803,7 +825,7 @@ P$ - One step back command. 'Can you repeat it please?'
 B$ - Two steps back command. 'What did you said before that?'
 C$ - Change value of a slot. "Change" command.
 X$ - Clean previous deduction history and do not save current deduction in it.
-I$ - Clean previous deduction history and save current deduction in it.
+I$ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
@@ -895,10 +917,11 @@ The `t_destination` slot value `Seattle` will be replaced with `Vancouver` direc
     // Wipe out the history
     X$CANCEL_ORDER: Sure, I am canceling your order
 ```
-Note, current deduction slots,if any, will be returned to user in the deduction.
+Note, current deduction slots, if any, will be returned to user in the deduction. 
+This prefix should be used for self-contrained deduction, meaning it has all information needed to make confident conclusion, plus no futher deduction should rely on it.
 
 * ## `I$` prefix. Clean previous history and restart command
-`I$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___
+`I$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
 
 # Idioms interpretation. Intent prefix `$`
 
