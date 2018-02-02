@@ -19,7 +19,7 @@ Table of Contents
    * [Project ID](#project-id)
    * [Training time](#training-time)
    * [Project WEB UI indicators](#project-web-ui-indicators)
-   * [Use NLU service via REST API](#use-nlu-service-via-rest-api)
+   * [Use NLU service via REST API](#nlu-service-rest-api)
       * [Launch request](#launch-request)
       * [Deduction example](#deduction-example)
       * [List of response codes](#list-of-response-codes)
@@ -172,7 +172,7 @@ GREEN - means that the project has been loaded in production mode
 
 YELLOW - indicates that one of the project layer has been loaded, but not the whole project
 
-# Use NLU service via REST API
+# NLU service REST API
 ## Launch request
 This is initial handshake request.
 ***https://nlp2.zcymatix.com/?cmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
