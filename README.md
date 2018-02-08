@@ -421,9 +421,14 @@ Gate is a small script to generate new intent. The syntax uses python style `if`
     R$THANKS_NO = Sure, I will cancel the order for you
 ```
 The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the `prompt` section.
-***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section
+***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section.
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quotes surrounding the intent name.**
-Gates are executed in the sequential order and they must be `mutually exclusive`. The sequence of the gates execution stops when first one returns not empty intent.
+Gates are executed in the sequential order and they must be `mutually exclusive`. The sequence of the gates execution stops when first one returns not empty intent. 
+Be aware of the following case. It WILL cause a break in the model function, because it will return either `INTENT_2` or `INTENT_3` ___always___. 
+```
+.gate
+    'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
+```
 Ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.
 Consider another example:
@@ -571,7 +576,7 @@ Example: t_name is absent in deduction history
 
 ## Prompt label value access by index  
 While building a prompt, the label value can be accessed by index in the deduction history, like so: `{t_utt-1}`. Index `-1` refers value of the label `t_utt` of in the previous deduction. 
-If previous deduction is not available, `None` value is used in the prompt. If you want the value to be omitted in such case use `{?t_utt-1}`
+If previous deduction is not available, `None` value is used in the prompt. If you want the value to be omitted in such case, use `{?t_utt-1}`.
 
 ```
 Example: 
@@ -858,7 +863,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
 }
 ```
 * ## `F$` prefix. Deduce and Forget command
-```F$``` prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.
+The prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.
 ```json
 {
     "t_intent":"GET_TIME",
@@ -868,28 +873,27 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
 This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ## `P$` prefix. One step back command
-`P$` prefix tells the framework to take last deduction in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'
+The prefix tells the framework to take last/previous deduction in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
 ```
 Bot>What type of pizza would you like?
 User>What?
 Bot>What type of pizza would you like?
 ```
 
-There is an alternative to achieve the same result if only a previous prompt is of interest. Consider training sample:
+Please note, if previous intent was either R$ or I$ or X$, there will be no history records available. To have access  previous prompt always - consider training sample:
 ```
 .train
     F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
 .prompt:
     F$REPEAT = *
 ```
-Star `*` symbol tells to grab last value of the `t_prompt` in history. NOTE! It is only prompt that will be changed. All other slots in the current deduction will state intact.
-
+Star `*` symbol tells to grab last value of the `t_prompt` in the history. 
 
 * ## `B$` prefix. Two steps back command
-`B$` prefix tells the framework to take `top-1` deduction from the history. It is useful for cases when user asks 'What did you say BEFORE that?'
+The prefix tells the framework to take `top-1` deduction from the history. It is useful for cases when user asks 'What did you say BEFORE that?'
 
 * ## `C$` prefix. Change slot value command
-`C$` prefix tells the framework to change the value of the slot in the history
+The prefix tells the framework to change the value of the slot in the history
 `User> Take me to Seattle`
 
 ```json
@@ -908,7 +912,7 @@ Star `*` symbol tells to grab last value of the `t_prompt` in history. NOTE! It 
 The `t_destination` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
 
 * ## `X$` prefix. Clean previous history command
-`X$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
+The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
 ```
 .train
     CONFIRMATION:Would you like to proceed with your order?
@@ -926,7 +930,7 @@ Note, current deduction slots, if any, will be returned to user in the deduction
 This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.
 
 * ## `I$` prefix. Clean previous history and restart command
-`I$` prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
+The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
 
 # Idioms interpretation. Intent prefix `$`
 
@@ -939,7 +943,8 @@ To support truly natural language understanding, we have a mechanism to interpre
     $NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
     $NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
 ```
-Prefix `$` must be a first one in the intent. It __can__ be used in combination with previously described prefixes. Let's look at `$I$_NAV` intent. It means that prompt contains additional slots. `I$` tells framework to reset previous history and put current intent in it as described [above](#i-prefix-clean-previous-history-and-restart-command).
+Prefix `$` must be first one in the intent. It __can__ be used in combination with previously described prefixes. For example `$I$_NAV`. It means that prompt contains additional slots. `I$` tells framework to restart collecting the history, while previous history will be lost. See [above](#i-prefix-clean-previous-history-and-restart-command).
+Please also note the separator `;` between slots-value pairs
 
 # Indirect references `it` or `there`
 
@@ -1034,7 +1039,9 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
     ```
     Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
 
-- Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING` or `INT_SOMETHING_HAPPENED`
+- Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING`. 
+
+- Call intents refering what to do next, rather then what already happened. While following train of though of the dialog, it is much easier.
 
 - Do not use slot types names that can be confused for words. I recommend using something like `PIZZA_KIND` or similar
 
