@@ -73,9 +73,6 @@ Table of Contents
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
 
-
-
-
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
 # Features Highlights
@@ -1090,9 +1087,38 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "bi_lstm":false
     ```
-- To enable passing previous intent in the history as utterance prefix. By default, it is `False`
+
+- Confidence level. By default, `0.9` - 90%. Level to consider deduction reliable. If deduced intent has lower probability, it will be replaced with `error_intent` if it is set.
     ```
-    "toth":true
+    "confidence":0.9
+    ```
+- Learning rate value. By default, `0.01`. 
+    ```
+    "lr":0.01
+    ```
+- Minimum Learning rate value. By default, `0.001`. 
+    ```
+    "lr_min":0.001
+    ```
+- Learning rate increase factor value. By default, `0.01`. 
+    ```
+    "lr_increase_factor":0.01
+    ```
+- Learning rate reduce factor value. By default, `-0.2`. 
+    ```
+    "lr_reduce_factor":-0.2
+    ```
+- Number of training epoches before reducing learning rate by `lr_reduce_factor`. By default, `3`. 
+    ```
+    "not_converge_max_epochs":3
+    ```
+- To enable passing previous intent in the history as utterance prefix. By default, it is `true`
+    ```
+    "toth":false
+    ```
+- Toth fallback mode . By default, it is `true`. If true, and the deduction probability of the intent is lower than confidence level, `toth` mode will be turned off for this deduction.
+    ```
+    "toth_fallback_mode":true
     ```
 - A layer can be optionally included into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
     ```
@@ -1223,4 +1249,44 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
         'Adadelta(lr = 1.0, rho = 0.95, epsilon = 1e-08, decay = 0.0)',
         'Adamax(lr = 0.002, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, decay = 0.0)'    
     ]
+    ```
+- Use convolutional layer. By default, `false`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+    ```
+    "conv":false
+    ```
+- Convolutional layer outputs. By default, `128`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+    ```
+    "conv_outputs":128
+    ```    
+- Convolutional layer kernel size. By default, `5`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+    ```
+    "conv_kernel_size ":128
+    ```    
+- Convolutional layer activation function. By default, `relu`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+    ```
+    "conv_activation ":"relu"
+    ```    
+- Convolutional layer padding method. By default, `same`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+    ```
+    "conv_padding ":"same"
+    ```
+- Use dropout layer. By default, `false`.
+    ```
+    "dropout_layer ":"false"
+    ```
+- Dropout layer value. By default, `0.3`.
+    ```
+    "dropout_layer_value ":0.3
+    ```
+- Ignore signle words. By default, `false`. If true, all single words are added to the training set without any labels.
+    ```
+    "ignore_single_words":false
+    ```
+- Ignore intents. By default, `false`. If true, all intents are added to the training set without any labels.
+    ```
+    "ignore_intent_words":false
+    ```
+- Error intent. By default, ``. If set, this is the intent to be used if deduction probability did not reach confidence level.
+    ```
+    "error_intent":""
     ```
