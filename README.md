@@ -290,7 +290,7 @@ The deduction will look like:
 This way we deduce the meaning of the utterance.
 
 # Introduction to Layers
-[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course one can use [`placement slot deduction`](#placement-slot-deduction), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot deduction`](#placement-slot-deduction), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -1051,13 +1051,13 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
  `Single layer project` which attempts not to use slot types isolation step:
     ```
         .train
-            INT_NAVIGATE:take me to (Los Angeles){t_target} and to (New York){target}
+            INT_NAVIGATE:take me to (Los Angeles){t_dest} and to (New York){t_dest}
     ```
     with deduction for the sample above:
     ```json
         {
             "t_intent":"INT_NAVIGATE",
-            "t_destination":["Los", "Angeles", "New", "York"]
+            "t_dest":["Los", "Angeles", "New", "York"]
         }
     ```
     vs `Two layers project` which uses type definition layer and a separate slot value deduction layer:
@@ -1075,7 +1075,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
     ```json
         {
             "t_intent":"INT_NAVIGATE",
-            "t_destination":["Los Angeles", "New York"]
+            "t_dest":["Los Angeles", "New York"]
         }
     ```
     You can see the advantage of second approach, where names are correctly isolated.
