@@ -134,7 +134,7 @@
 <li>
 <p>Idioms interpretation mechanism</p>
 <ul>
-<li>“I would really want to grab a bite and then go back home” =&gt; <code>{ 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' }</code></li>
+<li>“I would really want to grab a bite and then go back home” =&gt; <code>{ 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_dest':'Home' }</code></li>
 </ul>
 </li>
 <li>
@@ -150,7 +150,7 @@
 <ul>
 <li><strong>“Play the latest from Def Leppard”</strong> =&gt;<br>
 <code>{ 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard', 't_attr':'latest' }</code></li>
-<li><strong>“Show flights to Seattle”</strong> =&gt;  <code>{ 't_intent':'SHOW_FLIGHT, 't_destination':'Seattle' }</code></li>
+<li><strong>“Show flights to Seattle”</strong> =&gt;  <code>{ 't_intent':'SHOW_FLIGHT, 't_dest':'Seattle' }</code></li>
 </ul>
 </li>
 <li><code>AI Bot asks User</code> questions. Example: Order pizza bot
@@ -286,9 +286,9 @@ This is the ‘worst’ case scenario, because projects must be loaded in predic
 </code></pre>
 <p>In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - ‘when user greets me reply this’. Prompt text may contain slots/parameters values.</p>
 <pre><code>.prompts
-    NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
+    NAVIGATE: Ok, I am starting navigation to {t_dest} by {t_car}
 </code></pre>
-<p>Where <strong><em>t_destination</em></strong> and <strong><em>t_car</em></strong> are slots/parameters.<br>
+<p>Where <strong><em>t_dest</em></strong> and <strong><em>t_car</em></strong> are slots/parameters.<br>
 Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in <code>expert systems</code> layers.<br>
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the ‘utterance’ for the next model.</p>
 <pre><code class="language-json">.prompts
@@ -324,12 +324,12 @@ Training file:</p>
     @take = take|bring
     @me = me|us|them
 .train
-    NAVIGATE: @take @me to Seattle{t_destination} by car{t_transport}
+    NAVIGATE: @take @me to Seattle{t_dest} by car{t_transport}
 .prompt
-    NAVIGATE = Sure, I am starting navigation to {t_destination} by {t_transport}
+    NAVIGATE = Sure, I am starting navigation to {t_dest} by {t_transport}
 </code></pre>
 <p>The deduction will look like:</p>
-<pre><code class="language-json">{"<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"NAVIGATE"</span></span>, "<span class="hljs-attribute">t_destination</span>":<span class="hljs-value"><span class="hljs-string">"Seattle"</span></span>, "<span class="hljs-attribute">t_transport</span>":<span class="hljs-value"><span class="hljs-string">"car"</span></span>}
+<pre><code class="language-json">{"<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"NAVIGATE"</span></span>, "<span class="hljs-attribute">t_dest</span>":<span class="hljs-value"><span class="hljs-string">"Seattle"</span></span>, "<span class="hljs-attribute">t_transport</span>":<span class="hljs-value"><span class="hljs-string">"car"</span></span>}
 </code></pre>
 <p>This way we deduce the meaning of the utterance.</p>
 <h1><a id="Introduction_to_Layers_291"></a>Introduction to Layers</h1>
@@ -508,10 +508,10 @@ Example:</p>
     [Address Layer] =&gt; 
         Utterance: Take me to P_PLACE =&gt; 
             [Intent layer] =&gt; 
-                prompt:Sure, I will nagivate you to {t_destination}
+                prompt:Sure, I will nagivate you to {t_dest}
                 {
                     't_intent':NAVIGATE
-                    't_destination':Seattle
+                    't_dest':Seattle
                     't_prompt':Sure, I will navigate you to Seattle
                 }
 </code></pre>
@@ -876,16 +876,16 @@ Bot&gt;What type of pizza would you like?
 <code>User&gt; Take me to Seattle</code></p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"NAVIGATE"</span></span>,
-    "<span class="hljs-attribute">t_destination</span>":<span class="hljs-value"><span class="hljs-string">"Seattle"</span>
+    "<span class="hljs-attribute">t_dest</span>":<span class="hljs-value"><span class="hljs-string">"Seattle"</span>
 </span>}
 </code></pre>
 <p><code>User&gt; No, change it to Vancouver</code></p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"C$NAVIGATE"</span></span>,
-    "<span class="hljs-attribute">t_destination</span>":<span class="hljs-value"><span class="hljs-string">"Vancouver"</span>
+    "<span class="hljs-attribute">t_dest</span>":<span class="hljs-value"><span class="hljs-string">"Vancouver"</span>
 </span>}
 </code></pre>
-<p>The <code>t_destination</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
+<p>The <code>t_dest</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
 <ul>
 <li>
 <h2><a id="X_prefix_Clean_previous_history_command_913"></a><code>X$</code> prefix. Clean previous history command</h2>
@@ -929,12 +929,12 @@ Please also note the separator <code>;</code> between slots-value pairs</p>
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
     INT_SHOW_PLACE: where is P_PLACE{t_place}
     INT_SHOW_PLACE: I am looking for P_PLACE{t_place}
-    INT_DISTANCE_INFO: how far is P_PLACE{t_destination}
-    INT_NAVIGATE/t_place/t_destination:take me there
+    INT_DISTANCE_INFO: how far is P_PLACE{t_dest}
+    INT_NAVIGATE/t_place/t_dest:take me there
 </code></pre>
 <p>First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve <code>it</code>:<br>
-<code>INT_NAVIGATE/t_place/t_destination:take me there</code><br>
-Why list of slots? The intuition is this - search for either <code>t_place</code> or <code>t_destination</code> in that order in the deduction history and put its value to substitute <code>there</code>.</p>
+<code>INT_NAVIGATE/t_place/t_dest:take me there</code><br>
+Why list of slots? The intuition is this - search for either <code>t_place</code> or <code>t_dest</code> in that order in the deduction history and put its value to substitute <code>there</code>.</p>
 <h1><a id="Events_States_Sensors_Information_Embedding_963"></a>Events, States, Sensors Information Embedding</h1>
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
@@ -1003,7 +1003,7 @@ Example:</p>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
 There are two ways to describe something. <strong><code>What it IS</code></strong> and <strong><code>what it IS NOT</code></strong>. Remember <strong>Hello</strong> example in this tutorial? Does not matter what you say, it will <code>always</code> produce <code>GREETING</code> intent! Why? Because the example does not have any alternative samples to tell apart ‘Hello World’ from any other things user may say. Consider the example:</p>
 <pre><code>.train
-    INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
+    INT_FLIGHT_INFO:show me flights to Seattle{t_dest}
     don't show me flights to Seattle
 </code></pre>
 <p>Second sample does not have an intent or slots to deduce. This means that this statement will be <strong><code>just ignored</code></strong> and no deduction will be made, <strong>if we wish</strong>. So, the training process will teach the model to remember the difference between these samples.</p>
@@ -1039,7 +1039,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 </code></pre>
 <pre><code>    # Layer 2 - intents and slots deduction
     .train
-        INT_NAVIGATE:take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
+        INT_NAVIGATE:take me to P_PLACE{t_dest} and to P_PLACE{t_dest}
 </code></pre>
 <p>with deduction for the sample:</p>
 <pre><code class="language-json">    {

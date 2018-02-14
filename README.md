@@ -89,14 +89,14 @@ Table of Contents
 - Optional `scripting support`.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
 - Idioms interpretation mechanism
-    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_destination':'Home' } ```
+    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_dest':'Home' } ```
 - Lookup labels support
     * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
 - NLU tasks:
     - `Self-contained` deductions:
         * __"Play the latest from Def Leppard"__ =>  
             ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard', 't_attr':'latest' } ```
-        * __"Show flights to Seattle"__ =>  ``` { 't_intent':'SHOW_FLIGHT, 't_destination':'Seattle' } ```
+        * __"Show flights to Seattle"__ =>  ``` { 't_intent':'SHOW_FLIGHT, 't_dest':'Seattle' } ```
     - `AI Bot asks User` questions. Example: Order pizza bot
         * User> __I am hungry for pizza.__
         * __Bot__> What kind of pizza would you like?
@@ -235,9 +235,9 @@ INTENT=<PROMPT VARIANT>
 In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
 .prompts
-    NAVIGATE: Ok, I am starting navigation to {t_destination} by {t_car}
+    NAVIGATE: Ok, I am starting navigation to {t_dest} by {t_car}
 ```
-Where ___t_destination___ and ___t_car___ are slots/parameters.
+Where ___t_dest___ and ___t_car___ are slots/parameters.
 Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in `expert systems` layers.
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
@@ -278,14 +278,14 @@ Training file:
     @take = take|bring
     @me = me|us|them
 .train
-    NAVIGATE: @take @me to Seattle{t_destination} by car{t_transport}
+    NAVIGATE: @take @me to Seattle{t_dest} by car{t_transport}
 .prompt
-    NAVIGATE = Sure, I am starting navigation to {t_destination} by {t_transport}
+    NAVIGATE = Sure, I am starting navigation to {t_dest} by {t_transport}
 ```
 
 The deduction will look like:
 ```json
-{"t_intent":"NAVIGATE", "t_destination":"Seattle", "t_transport":"car"}
+{"t_intent":"NAVIGATE", "t_dest":"Seattle", "t_transport":"car"}
 ```
 This way we deduce the meaning of the utterance.
 
@@ -496,10 +496,10 @@ Utterance: Take me to Seattle =>
     [Address Layer] => 
         Utterance: Take me to P_PLACE => 
             [Intent layer] => 
-                prompt:Sure, I will nagivate you to {t_destination}
+                prompt:Sure, I will nagivate you to {t_dest}
                 {
                     't_intent':NAVIGATE
-                    't_destination':Seattle
+                    't_dest':Seattle
                     't_prompt':Sure, I will navigate you to Seattle
                 }
 ```
@@ -899,17 +899,17 @@ The prefix tells the framework to change the value of the slot in the history
 ```json
 {
     "t_intent":"NAVIGATE",
-    "t_destination":"Seattle"
+    "t_dest":"Seattle"
 }
 ```
 ```User> No, change it to Vancouver```
 ```json
 {
     "t_intent":"C$NAVIGATE",
-    "t_destination":"Vancouver"
+    "t_dest":"Vancouver"
 }
 ```
-The `t_destination` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
+The `t_dest` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
 
 * ## `X$` prefix. Clean previous history command
 The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
@@ -954,12 +954,12 @@ Consider the training samples using `P_PLACE` slot type:
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
     INT_SHOW_PLACE: where is P_PLACE{t_place}
     INT_SHOW_PLACE: I am looking for P_PLACE{t_place}
-    INT_DISTANCE_INFO: how far is P_PLACE{t_destination}
-    INT_NAVIGATE/t_place/t_destination:take me there
+    INT_DISTANCE_INFO: how far is P_PLACE{t_dest}
+    INT_NAVIGATE/t_place/t_dest:take me there
 ```
 First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
-`INT_NAVIGATE/t_place/t_destination:take me there`
-Why list of slots? The intuition is this - search for either `t_place` or `t_destination` in that order in the deduction history and put its value to substitute `there`.
+`INT_NAVIGATE/t_place/t_dest:take me there`
+Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the deduction history and put its value to substitute `there`.
 
 # Events, States, Sensors Information Embedding
 Contextual information embedding into utterances and prompts is the foundation of ToTh technology.
@@ -1034,7 +1034,7 @@ User> I want to order blah pizza
 There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
     ```
     .train
-        INT_FLIGHT_INFO:show me flights to Seattle{t_destination}
+        INT_FLIGHT_INFO:show me flights to Seattle{t_dest}
         don't show me flights to Seattle
     ```
     Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
@@ -1069,7 +1069,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
     ```
         # Layer 2 - intents and slots deduction
         .train
-            INT_NAVIGATE:take me to P_PLACE{t_destination} and to P_PLACE{t_destination}
+            INT_NAVIGATE:take me to P_PLACE{t_dest} and to P_PLACE{t_dest}
     ```
     with deduction for the sample:
     ```json
