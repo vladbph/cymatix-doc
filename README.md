@@ -1096,7 +1096,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "lr":0.01
     ```
-- Minimum Learning rate value. By default, `0.001`. 
+- Minimum learning rate value. By default, `0.001`. 
     ```
     "lr_min":0.001
     ```
