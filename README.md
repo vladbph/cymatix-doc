@@ -24,14 +24,15 @@ Table of Contents
       * [Deduction example](#deduction-example)
       * [List of response codes](#list-of-response-codes)
    * [Use Web interface for verification](#use-web-interface-for-verification)
-   * [Using prompts](#using-prompts)
-   * [Using macros](#using-macros)
-   * [Using Slots (parameters)](#using-slots-parameters)
+   * [train section](#train-section)
+   * [prompt section](#prompt-section)
+   * [define section](#define-section)
+   * [Slots (parameters)](#slots-parameters)
    * [Introduction to Layers](#introduction-to-layers)
    * [Dialogs](#dialogs)
       * [Loose Dialogs](#loose-dialogs)
-         * [Prototype section](#prototype-section)
-         * [Gates section (script)](#gates-section-script)
+         * [gate section](#gate-section)
+         * [proto section](#proto-section)
       * [Strict Dialogs](#strict-dialogs)
    * [Regex section](#regex-section)
       * [Replacement](#replacement)
@@ -213,8 +214,26 @@ List of codes:
 
 It may take few seconds for a project to be launched (if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
         This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
+        
+# `train` section 
+The section contains training samples. Formal syntax is:
+```
+.train
+    <INTENT>: <utterance with or without slot labels>
+```
+Note, the intent is optional. In this case the utterance may be used to slot fitting:
+```
+.train
+    I want pizza with (extra cheese){t_toppings} and ham{t_toppings}
+```
+The following example teaches to ingore the utterace all together:
+```
+.train
+    I am not sure what I want
+```
+This example is quite important to demonstrate the key concept, while building a training set. One thing can be descrided `what it is` and `what it is not`! Keeping this in mind, you can create more accurate training sets.
 
-# Using `prompts` 
+# `prompt` section
 
 What if we want AI system to respond to user query? Let's use the 'Hello World' code:
 ```
@@ -231,18 +250,18 @@ INTENT=<PROMPT VARIANT>
 ```
 In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
-.prompts
+.prompt
     NAVIGATE: Ok, I am starting navigation to {t_dest} by {t_car}
 ```
 Where ___t_dest___ and ___t_car___ are slots/parameters.
 Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in `expert systems` layers.
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
-.prompts
+.prompt
     R$READY = {t_param1} {t_param2} {t_param3}...
 ```
 
-# Using `macros`
+# `define` section
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
 ```json
 .define
@@ -267,7 +286,7 @@ Please note the last OR in ***@guys*** definition reads like ***empty string***.
 - ***folk(s|)*** is INVALID
 - ***(folk|folks)*** is VALID
 
-# Using `Slots` (parameters)
+# `Slots` (parameters)
 In the training set we can assign intent and mark/label words with slot names for each utterance.
 Training file:
 ```json
@@ -381,23 +400,11 @@ In such conversation there is no strict sequence of questions to be ask. The con
     User> Yes
 ```
 There are few things to know before we can create such dialog.
-### Prototype section
-Syntax:
-```
-.protos
-    <List of intents separated by commas> : <list of slot names separated by commas>
-```
-Pizza example:
-```
-.protos
-    ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
-```
-This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
 
-### `Gates` section (script)
-Gate is a small script to generate new intent. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
+### `gate` section
+Gate is a small script for generating new intent based on the deduction history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
-.gates
+.gate
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_kind' )
     'ASK_SIZE'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_size' )
     'ASK_TOPPINGS'    if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_toppings' )
@@ -407,7 +414,7 @@ Gate is a small script to generate new intent. The syntax uses python style `if`
     'R$THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
 ```
 ```
-.prompts
+.prompt
     ASK_KIND = What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
     ASK_SIZE = What size? (large, medium, small, etc)
     ASK_TOPPINGS = Anything on top?(ham, cheese, tomatoes, etc)
@@ -427,13 +434,28 @@ Be aware of the following case. It WILL cause a break in the model function, bec
     'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
 ```
 Ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
-It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gates***. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.
+It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gate***. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.
 Consider another example:
 ```
-.gates
+.gate
     'ASK_CITY' if o.t_intent == 'Q42' and not hasattr( o, 't_city' )
 ```
 Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is `Q42`, but the t_city was not provided, return intent which would tell user something like: 'You did not provide the city'. You can argue the rational of this, saying why can't I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.
+
+### `proto` section
+Prototype section is used to specify, which intents and slots should be linked together. Such association is needed for the [gate section](#gate-section) to build an object with the slots and their values from the deduction history, so that the gate is using the only subset of data from the history. The deduction history may contain lots of previous deductions and they might not be related to each other. In other words, the prototype mechanism enables context isolation for the gate.
+Syntax:
+```
+.proto
+    <List of intents separated by commas> : <list of slot names separated by commas>
+```
+Pizza example:
+```
+.proto
+    ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
+```
+This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
+
 
 ## Strict Dialogs
 Strict dialog resembles traversing decision tree. The idea is to ask questions based on the `values of previous answers`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
@@ -791,7 +813,7 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self-explanatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gates](#gates-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self-explanatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gate](#gate-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
 
 ## Pizza project Final Deduction
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
@@ -1096,7 +1118,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "lr":0.01
     ```
-- Minimum learning rate value. By default, `0.001`. 
+- Minimum Learning rate value. By default, `0.001`. 
     ```
     "lr_min":0.001
     ```
