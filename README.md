@@ -27,6 +27,7 @@ Table of Contents
    * [train section](#train-section)
    * [prompt section](#prompt-section)
    * [define section](#define-section)
+   * [list section](#list-section)
    * [Slots (parameters)](#slots-parameters)
    * [Introduction to Layers](#introduction-to-layers)
    * [Dialogs](#dialogs)
@@ -285,6 +286,32 @@ GREETING:hi
 Please note the last OR in ***@guys*** definition reads like ***empty string***. So, __@guys__ it is either ***guys*** or ***folks*** or ***World*** or ***empty string***. It is similar to regular expression, but limited at the words level only. Examples:
 - ***folk(s|)*** is INVALID
 - ***(folk|folks)*** is VALID
+ 
+# `list` section
+
+This section is very much the same as define with different syntax:
+```
+.list=<define name>
+    item1
+    item2
+    ...
+```
+Example:
+```
+.list=us_state
+    Alabama
+    Alaska
+    Arizona
+    Arkansas
+    California
+    ...
+```
+It is the same as:
+```
+.define
+    @us_state = Alabama|Alaska|Arizona|Arkansas|California|...
+```
+Imagine you want to train `named entity recognizer`. Usually you get the text file with the list of items. `.list` section lets you quickly transform text file into the training file by adding the section header to the top.
 
 # `Slots` (parameters)
 In the training set we can assign intent and mark/label words with slot names for each utterance.
