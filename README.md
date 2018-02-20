@@ -514,14 +514,20 @@ or/and `prompts templates` we can follow __`train of thought`__ of the conversat
 ## Replacement
 ```
 .regex
-    &and:\b(as well as|and also)\b
+    &and:\b(?:as well as|and also)\b
 ```
-It is direct replacement of words in the utterance to simplify training sets. You can use this approach to prevent your training set to be extremely large. 
+It is a direct replacement of words in the utterance to simplify training sets. You can use the section to prevent your training set to be extremely large. Please note, there should be one and only one group - `0`, full match. To achive that use non-capturing groups - (?:regex). As in the example above, matching group `0` equals either: 'as well as' or 'and also'. Refer to the [here](https://www.regular-expressions.info/refcapture.html) for details. 
+
+More complex example:
+```
+.regex
+    &1 hours and 30 minutes : \bone\s+(?:and|\&)\s+(?:(?:a|the)\s+)?half\s+(?:an?\s+)?h(?:ou)?r?s?\b
+```
 
 ## Lookup lables
 ```
 .regex
-    P_SIZE:\b(small|medium|large)\b
+    P_SIZE:\b(?:small|medium|large)\b
 ```
 The actual value of `small`, `medium` or `large` is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See [pizza2 example](#pizza2-bot-example) for more details.
 `IMPORTANT!` There must be one group deduced by the regular expression(!)
@@ -662,9 +668,9 @@ __slots.txt__ file:
 ```
 .regex
     // Replace and leave it as such
-    &and:(as well as|and also)
+    &and:\b(?:as well as|and also)\b
     // Replace, but finally resolve to actual value
-    P_SIZE:@small
+    P_SIZE: (?:@small)
 .train
     // The goal is isolate slot types(!) and replace them by the type name, so next layer - has
     // less samples to be trained with
@@ -698,13 +704,13 @@ Lets review regex section.
     // Prefix & is to indicate simple replacement
     // Ex utterance:  
     // 'I want bbq pizza as well as hawaiian' => 'I want bbq pizza and hawaiian'
-    &and:(as well as|and also)
+    &and: (?:as well as|and also)
 
     // Lookup label replacement
     // Replace all values of @small definition by P_SIZE.
     // At the end of deduction it will be replaced by its origial value.
     // P_SIZE will be used for training instead of all values of @small
-    P_SIZE:@small
+    P_SIZE: (?:@small)
 ```
 ```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final deduction.
 ```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final deduction result. 
