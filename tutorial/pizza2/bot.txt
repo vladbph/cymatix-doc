@@ -5,9 +5,9 @@
     ASK_ADDRESS: t_address
     ASK_TO_CONFIRM: None
 
-    R$PLACE_ORDER: cmd_agreed
-    R$DONT_PLACE_ORDER: cmd_disagreed
-    R$CANCEL: cmd_cancel
+    R~PLACE_ORDER: cmd_agreed
+    R~DONT_PLACE_ORDER: cmd_disagreed
+    R~CANCEL: cmd_cancel
 
 .prompt
     ASK_KIND: What kind of pizza would you like. For example, hawaiian, bbq chicken, etc.?
@@ -16,7 +16,7 @@
     ASK_ADDRESS: What is delivery address?
     ASK_TO_CONFIRM: Your order is {?t_cnt} [{t_size}] [{t_kind}] pizza with [{t_toppings}] to be delivered to [{t_address}]. Would you like to go ahead with the order?
 
-    R$PLACE_ORDER: Thank you for you order
-    R$DONT_PLACE_ORDER: Sure, may be next time
-    R$CANCEL: Sure, I will cancel the order for you
+    R~PLACE_ORDER: Thank you for you order
+    R~DONT_PLACE_ORDER: Sure, may be next time
+    R~CANCEL: Sure, I will cancel the order for you
 

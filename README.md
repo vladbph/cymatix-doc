@@ -57,14 +57,14 @@ Table of Contents
    * [How to control deduction history](#how-to-control-deduction-history)
       * [Intent Prefixes](#intent-prefixes)
       * [Empty prefix](#empty-prefix)
-      * [R$ prefix. Return command](#r-prefix-return-command)
-      * [F$ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
-      * [P$ prefix. One step back command](#p-prefix-one-step-back-command)
-      * [B$ prefix. Two steps back command](#b-prefix-two-steps-back-command)
-      * [C$ prefix. Change slot value command](#c-prefix-change-slot-value-command)
-      * [X$ prefix. Clean previous history command](#x-prefix-clean-previous-history-command)
-      * [I$ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
-   * [Idioms interpretation. Intent prefix $](#idioms-interpretation-intent-prefix-)
+      * [R~ prefix. Return command](#r-prefix-return-command)
+      * [F~ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
+      * [P~ prefix. One step back command](#p-prefix-one-step-back-command)
+      * [B~ prefix. Two steps back command](#b-prefix-two-steps-back-command)
+      * [C~ prefix. Change slot value command](#c-prefix-change-slot-value-command)
+      * [X~ prefix. Clean previous history command](#x-prefix-clean-previous-history-command)
+      * [I~ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
+   * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
    * [Remove slot value from deduction history. $del command](#remove-slot-value-from-deduction-history-del-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
@@ -260,7 +260,7 @@ Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a temp
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
 .prompt
-    R$READY = {t_param1} {t_param2} {t_param3}...
+    R~READY = {t_param1} {t_param2} {t_param3}...
 ```
 
 # `define` section
@@ -438,8 +438,8 @@ Gate is a small script for generating new intent based on the deduction history.
     'ASK_TOPPINGS'    if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_toppings' )
     'ASK_ADDRESS'     if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_address' )
     'ASK_TO_CONFIRM'  if o.t_intent == 'ORDER_PIZZA'
-    'R$THANKS_YES'    if o.t_intent == 'ORDER_PIZZA_YES'
-    'R$THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
+    'R~THANKS_YES'    if o.t_intent == 'ORDER_PIZZA_YES'
+    'R~THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
 ```
 ```
 .prompt
@@ -449,8 +449,8 @@ Gate is a small script for generating new intent based on the deduction history.
     ASK_ADDRESS = What is your address?
     ASK_TO_CONFIRM = Your order is {t_size} {t_kind} pizza with {t_topping} \
                      to be delivered to {t_address} Should I go ahead and place the order?
-    R$THANKS_YES = Thank you for your order
-    R$THANKS_NO = Sure, I will cancel the order for you
+    R~THANKS_YES = Thank you for your order
+    R~THANKS_NO = Sure, I will cancel the order for you
 ```
 The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the `prompt` section.
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section.
@@ -461,7 +461,7 @@ Be aware of the following case. It WILL cause a break in the model function, bec
 .gate
     'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
 ```
-Ignore for now prefix ***R$*** of the ***R$THANKS_YES*** and ***R$THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
+Ignore for now prefix ***R~*** of the ***R~THANKS_YES*** and ***R~THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
 It was mentioned earlier that ***prompt's template*** can be used to pass information to the next layer. That would eliminate the need to have scripted ***.gate***. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.
 Consider another example:
 ```
@@ -635,12 +635,12 @@ If previous deduction is not available, `None` value is used in the prompt. If y
 Example: 
 .train
     ASKING_AGE: how old are you
-    R$RESP_YES: ASKING_AGE (yes|sure|of course)
-    R$RESP_NO: ASKING_AGE (no|nope|don't care)
+    R~RESP_YES: ASKING_AGE (yes|sure|of course)
+    R~RESP_NO: ASKING_AGE (no|nope|don't care)
 .prompt
     ASKING_AGE: I don't know answer to the question, would you like to forward it to my parents?
-    R$RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
-    R$RESP_NO: Ok, no problem.
+    R~RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
+    R~RESP_NO: Ok, no problem.
 ```
 Side note: this particular example relies on `flag` toth to be enabled
 
@@ -770,8 +770,8 @@ __pizza.txt__ file:
     ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings} on top
     ORDER_PIZZA: ASK_ADDRESS P_ADDRESS{t_address}
     ORDER_PIZZA: ASK_ADDRESS @i live in P_ADDRESS{t_address}
-    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
-    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+    R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt
     // Generate Prompt that contains only one(!) missing slot to train next dialog layer
     // With the prompt definition below one of:
@@ -786,10 +786,10 @@ __pizza.txt__ file:
     // See bot.txt file.
     ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
 
-    // NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
+    // NOTE! Prefix R~(==return) is an instruction to collect all slots values and clean up
     // the deduction history, thus to forget what user said before.
-    R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R~ORDER_PIZZA_YES = Thank you for you order :)
+    R~ORDER_PIZZA_NO = Sure, may be next time
 ```
 Now time to discuss:
 ```
@@ -882,32 +882,32 @@ At some point we need to collect all slots values in the stack to build an aggre
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
-R$ - Return all collected slots values in the deduction history and clean the history. "Return" command.
-F$ - Do not remember this particular deduction in the history - "Deduce and forget" command.
-P$ - One step back command. 'Can you repeat it please?'
-B$ - Two steps back command. 'What did you say before that?'
-C$ - Change value of a slot. "Change" command.
-X$ - Clean previous deduction history and do not save current deduction in it.
-I$ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
+R~ - Return all collected slots values in the deduction history and clean the history. "Return" command.
+F~ - Do not remember this particular deduction in the history - "Deduce and forget" command.
+P~ - One step back command. 'Can you repeat it please?'
+B~ - Two steps back command. 'What did you say before that?'
+C~ - Change value of a slot. "Change" command.
+X~ - Clean previous deduction history and do not save current deduction in it.
+I~ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
 Intent without prefix with deduced slots and their values are saved in the deduction history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
-`t_intent = ORDER_PIZZA` will be kelp in stack until `R$` or `X$` session-based conversation intent comes along to erase it.
+`t_intent = ORDER_PIZZA` will be kelp in stack until `R~` or `X~` session-based conversation intent comes along to erase it.
 
-* ## `R$` prefix. Return command
+* ## `R~` prefix. Return command
 In 'Pizza' layer we have:
 ```
 .train
-    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
-    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+    R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt:
-    R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R~ORDER_PIZZA_YES = Thank you for you order :)
+    R~ORDER_PIZZA_NO = Sure, may be next time
 ```
-Intents with ```'R$'``` prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.
+Intents with ```'R~'``` prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.
 ```json
 {
     "t_size":"small", 
@@ -915,7 +915,7 @@ Intents with ```'R$'``` prefix tell the framework to collect all slots and their
     "t_toppings": ["cheese", "ham"]
 }
 ```
-* ## `F$` prefix. Deduce and Forget command
+* ## `F~` prefix. Deduce and Forget command
 The prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.
 ```json
 {
@@ -925,7 +925,7 @@ The prefix is used to prevent saving the deduction in the history. For instance:
 ```
 This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
-* ## `P$` prefix. One step back command
+* ## `P~` prefix. One step back command
 The prefix tells the framework to take last/previous deduction in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
 ```
 Bot>What type of pizza would you like?
@@ -933,19 +933,19 @@ User>What?
 Bot>What type of pizza would you like?
 ```
 
-Please note, if previous intent was either R$ or I$ or X$, there will be no history records available. To have access  previous prompt always - consider training sample:
+Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:
 ```
 .train
-    F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
+    F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
 .prompt:
-    F$REPEAT = *
+    F~REPEAT = *
 ```
 Star `*` symbol tells to grab last value of the `t_prompt` in the history. 
 
-* ## `B$` prefix. Two steps back command
+* ## `B~` prefix. Two steps back command
 The prefix tells the framework to take `top-1` deduction from the history. It is useful for cases when user asks 'What did you say BEFORE that?'
 
-* ## `C$` prefix. Change slot value command
+* ## `C~` prefix. Change slot value command
 The prefix tells the framework to change the value of the slot in the history
 `User> Take me to Seattle`
 
@@ -958,60 +958,60 @@ The prefix tells the framework to change the value of the slot in the history
 ```User> No, change it to Vancouver```
 ```json
 {
-    "t_intent":"C$NAVIGATE",
+    "t_intent":"C~NAVIGATE",
     "t_dest":"Vancouver"
 }
 ```
 The `t_dest` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
 
-* ## `X$` prefix. Clean previous history command
+* ## `X~` prefix. Clean previous history command
 The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
 ```
 .train
     CONFIRMATION:Would you like to proceed with your order?
-    R$PLACE_ORDER: CONFIRMATION yes
-    X$CANCEL_ORDER: CONFIRMATION no
+    R~PLACE_ORDER: CONFIRMATION yes
+    X~CANCEL_ORDER: CONFIRMATION no
 .prompt
     USER_CONFUSED: I'm sorry
     // Collect all slots values in the collected history of the dialog and return to user
-    R$PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
+    R~PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
     
     // Wipe out the history
-    X$CANCEL_ORDER: Sure, I am canceling your order
+    X~CANCEL_ORDER: Sure, I am canceling your order
 ```
 Note, current deduction slots, if any, will be returned to user in the deduction. 
 This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.
 
-* ## `I$` prefix. Clean previous history and restart command
+* ## `I~` prefix. Clean previous history and restart command
 The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
 
-# Idioms interpretation. Intent prefix `$`
+# Idioms interpretation. Intent prefix `~`
 
 To support truly natural language understanding, we have a mechanism to interpret idioms and enable `slot filling` with semantic values ***not found in the original utterance***. Here is an example:
 ```
 .train
-    $NAV: take me to a place where i can have a nice meal
-    $NAV_01: I am starving, walk me to a closest place where I can have a nice meal
+    ~NAV: take me to a place where i can have a nice meal
+    ~NAV_01: I am starving, walk me to a closest place where I can have a nice meal
 .prompt:
-    $NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
-    $NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
+    ~NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
+    ~NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
 ```
-Prefix `$` must be first one in the intent. It __can__ be used in combination with previously described prefixes. For example `$I$_NAV`. It means that prompt contains additional slots. `I$` tells framework to restart collecting the history, while previous history will be lost. See [above](#i-prefix-clean-previous-history-and-restart-command).
+Prefix `~` must be first one in the intent. It __can__ be used in combination with previously described prefixes. For example `~I~NAV`. It means that prompt contains additional slots. `I~` tells framework to restart collecting the history, while previous history will be lost. See [above](#i-prefix-clean-previous-history-and-restart-command).
 Please also note the separator `;` between slots-value pairs. 
 
 # Remove slot value from deduction history. `$del` command
 Lets say you want to delete a slot value from the history. Consider the example:
 ```
 .train
-    C$_PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
-    $C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
-    $C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
+    C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
+    ~C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
+    ~C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
 .prompt:
-    C$_PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
-    $C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
-    $C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
+    C~PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
+    ~C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
+    ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
 ```
-In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, $C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.
+In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.
 
 # Indirect references `it` or `there`
 
@@ -1190,7 +1190,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "toth_fallback_mode":true
     ```
-- A layer can be optionally included into the deduction pipeline. When `accept_r_intents_only` is True , only  `R$` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
+- A layer can be optionally included into the deduction pipeline. When `accept_r_intents_only` is True , only  `R~` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
     ```
     "accept_r_intents_only":true
     ```

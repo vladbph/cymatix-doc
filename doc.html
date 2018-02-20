@@ -82,16 +82,16 @@
 <ul>
 <li><a href="#Intent_Prefixes_881">Intent Prefixes</a></li>
 <li><a href="#Empty_prefix_893">Empty prefix</a></li>
-<li><a href="#R_prefix_Return_command_899">R$ prefix. Return command</a></li>
-<li><a href="#F_prefix_Deduce_and_Forget_command_917">F$ prefix. Deduce and Forget command</a></li>
-<li><a href="#P_prefix_One_step_back_command_927">P$ prefix. One step back command</a></li>
-<li><a href="#B_prefix_Two_steps_back_command_944">B$ prefix. Two steps back command</a></li>
-<li><a href="#C_prefix_Change_slot_value_command_947">C$ prefix. Change slot value command</a></li>
-<li><a href="#X_prefix_Clean_previous_history_command_966">X$ prefix. Clean previous history command</a></li>
-<li><a href="#I_prefix_Clean_previous_history_and_restart_command_984">I$ prefix. Clean previous history and restart command</a></li>
+<li><a href="#R_prefix_Return_command_899">R~ prefix. Return command</a></li>
+<li><a href="#F_prefix_Deduce_and_Forget_command_917">F~ prefix. Deduce and Forget command</a></li>
+<li><a href="#P_prefix_One_step_back_command_927">P~ prefix. One step back command</a></li>
+<li><a href="#B_prefix_Two_steps_back_command_944">B~ prefix. Two steps back command</a></li>
+<li><a href="#C_prefix_Change_slot_value_command_947">C~ prefix. Change slot value command</a></li>
+<li><a href="#X_prefix_Clean_previous_history_command_966">X~ prefix. Clean previous history command</a></li>
+<li><a href="#I_prefix_Clean_previous_history_and_restart_command_984">I~ prefix. Clean previous history and restart command</a></li>
 </ul>
 </li>
-<li><a href="#Idioms_interpretation_Intent_prefix__987">Idioms interpretation. Intent prefix $</a></li>
+<li><a href="#Idioms_interpretation_Intent_prefix__987">Idioms interpretation. Intent prefix ~</a></li>
 <li><a href="#Remove_slot_value_from_deduction_history_del_command_1001">Remove slot value from deduction history. $del command</a></li>
 <li><a href="#indirect-references-it-or-there">Indirect references it or &lt;code&gt;there&lt;/code&gt;</a></li>
 <li><a href="#Events_States_Sensors_Information_Embedding_1030">Events, States, Sensors Information Embedding</a></li>
@@ -309,7 +309,7 @@ This is the ‘worst’ case scenario, because projects must be loaded in predic
 Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in <code>expert systems</code> layers.<br>
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the ‘utterance’ for the next model.</p>
 <pre><code class="language-json">.prompt
-    R$READY = {t_param1} {t_param2} {t_param3}...
+    R~READY = {t_param1} {t_param2} {t_param3}...
 </code></pre>
 <h1><a id="define_section_265"></a><code>define</code> section</h1>
 <p>Let’s update <strong><em>hello.txt</em></strong> file a little. Add <strong><em>.define</em></strong> section.</p>
@@ -460,8 +460,8 @@ The resulting deduction after applying both layers will be:</p>
     <span class="hljs-string">'ASK_TOPPINGS'</span>    <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> hasattr( o, <span class="hljs-string">'t_toppings'</span> )
     <span class="hljs-string">'ASK_ADDRESS'</span>     <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> hasattr( o, <span class="hljs-string">'t_address'</span> )
     <span class="hljs-string">'ASK_TO_CONFIRM'</span>  <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA'</span>
-    <span class="hljs-string">'R$THANKS_YES'</span>    <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA_YES'</span>
-    <span class="hljs-string">'R$THANKS_NO'</span>     <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA_NO'</span>
+    <span class="hljs-string">'R~THANKS_YES'</span>    <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA_YES'</span>
+    <span class="hljs-string">'R~THANKS_NO'</span>     <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA_NO'</span>
 </code></pre>
 <pre><code>.prompt
     ASK_KIND = What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
@@ -470,8 +470,8 @@ The resulting deduction after applying both layers will be:</p>
     ASK_ADDRESS = What is your address?
     ASK_TO_CONFIRM = Your order is {t_size} {t_kind} pizza with {t_topping} \
                      to be delivered to {t_address} Should I go ahead and place the order?
-    R$THANKS_YES = Thank you for your order
-    R$THANKS_NO = Sure, I will cancel the order for you
+    R~THANKS_YES = Thank you for your order
+    R~THANKS_NO = Sure, I will cancel the order for you
 </code></pre>
 <p>The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don’t know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the <code>prompt</code> section.<br>
 <strong><em>ORDER of gates IS important!!!</em></strong> Gates are applied in the same order listed in the section.<br>
@@ -481,7 +481,7 @@ Be aware of the following case. It WILL cause a break in the model function, bec
 <pre><code>.gate
     'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
 </code></pre>
-<p>Ignore for now prefix <strong><em>R$</em></strong> of the <strong><em>R$THANKS_YES</em></strong> and <strong><em>R$THANKS_NO</em></strong>. It has special meaning to be discussed <a href="#r-prefix">later</a>.<br>
+<p>Ignore for now prefix <strong><em>R~</em></strong> of the <strong><em>R~THANKS_YES</em></strong> and <strong><em>R~THANKS_NO</em></strong>. It has special meaning to be discussed <a href="#r-prefix">later</a>.<br>
 It was mentioned earlier that <strong><em>prompt’s template</em></strong> can be used to pass information to the next layer. That would eliminate the need to have scripted <strong><em>.gate</em></strong>. In each particular case developer has to make their judgement call which way to go. Note, though, gates do not require training.<br>
 Consider another example:</p>
 <pre><code>.gate
@@ -618,12 +618,12 @@ If previous deduction is not available, <code>None</code> value is used in the p
 <pre><code>Example: 
 .train
     ASKING_AGE: how old are you
-    R$RESP_YES: ASKING_AGE (yes|sure|of course)
-    R$RESP_NO: ASKING_AGE (no|nope|don't care)
+    R~RESP_YES: ASKING_AGE (yes|sure|of course)
+    R~RESP_NO: ASKING_AGE (no|nope|don't care)
 .prompt
     ASKING_AGE: I don't know answer to the question, would you like to forward it to my parents?
-    R$RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
-    R$RESP_NO: Ok, no problem.
+    R~RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
+    R~RESP_NO: Ok, no problem.
 </code></pre>
 <p>Side note: this particular example relies on <code>flag</code> toth to be enabled</p>
 <h1><a id="PIZZA2_BOT_Example_646"></a>PIZZA2 BOT Example</h1>
@@ -736,8 +736,8 @@ I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOP
     ORDER_PIZZA: ASK_TOPPINGS P_TOPPINGS{t_toppings} and P_TOPPINGS{t_toppings} on top
     ORDER_PIZZA: ASK_ADDRESS P_ADDRESS{t_address}
     ORDER_PIZZA: ASK_ADDRESS @i live in P_ADDRESS{t_address}
-    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
-    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+    R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt
     // Generate Prompt that contains only one(!) missing slot to train next dialog layer
     // With the prompt definition below one of:
@@ -751,10 +751,10 @@ I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOP
     //   ASK_KIND: if t_kind is missing
     // See bot.txt file.
     ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
-    // NOTE! Prefix R$(==return) is an instruction to collect all slots values and clean up
+    // NOTE! Prefix R~(==return) is an instruction to collect all slots values and clean up
     // the deduction history, thus to forget what user said before.
-    R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R~ORDER_PIZZA_YES = Thank you for you order :)
+    R~ORDER_PIZZA_NO = Sure, may be next time
 </code></pre>
 <p>Now time to discuss:</p>
 <pre><code>&quot;toth&quot;:true
@@ -837,13 +837,13 @@ What is the delivery address?
 </li>
 </ul>
 <pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history
-R$ - Return all collected slots values in the deduction history and clean the history. &quot;Return&quot; command.
-F$ - Do not remember this particular deduction in the history - &quot;Deduce and forget&quot; command.
-P$ - One step back command. 'Can you repeat it please?'
-B$ - Two steps back command. 'What did you say before that?'
-C$ - Change value of a slot. &quot;Change&quot; command.
-X$ - Clean previous deduction history and do not save current deduction in it.
-I$ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
+R~ - Return all collected slots values in the deduction history and clean the history. &quot;Return&quot; command.
+F~ - Do not remember this particular deduction in the history - &quot;Deduce and forget&quot; command.
+P~ - One step back command. 'Can you repeat it please?'
+B~ - Two steps back command. 'What did you say before that?'
+C~ - Change value of a slot. &quot;Change&quot; command.
+X~ - Clean previous deduction history and do not save current deduction in it.
+I~ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
 ?? - We are open to discuss any other prefixes to control the history.
 </code></pre>
 <ul>
@@ -854,21 +854,21 @@ I$ - Clean previous deduction history and save current deduction in it. 'Tertis'
 <p>Intent without prefix with deduced slots and their values are saved in the deduction history.<br>
 <code>ORDER_PIZZA: @i @want some @pizza @please</code><br>
 where<br>
-<code>t_intent = ORDER_PIZZA</code> will be kelp in stack until <code>R$</code> or <code>X$</code> session-based conversation intent comes along to erase it.</p>
+<code>t_intent = ORDER_PIZZA</code> will be kelp in stack until <code>R~</code> or <code>X~</code> session-based conversation intent comes along to erase it.</p>
 <ul>
 <li>
-<h2><a id="R_prefix_Return_command_899"></a><code>R$</code> prefix. Return command</h2>
+<h2><a id="R_prefix_Return_command_899"></a><code>R~</code> prefix. Return command</h2>
 </li>
 </ul>
 <p>In ‘Pizza’ layer we have:</p>
 <pre><code>.train
-    R$ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
-    R$ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
+    R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
+    R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt:
-    R$ORDER_PIZZA_YES = Thank you for you order :)
-    R$ORDER_PIZZA_NO = Sure, may be next time
+    R~ORDER_PIZZA_YES = Thank you for you order :)
+    R~ORDER_PIZZA_NO = Sure, may be next time
 </code></pre>
-<p>Intents with <code>'R$'</code> prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.</p>
+<p>Intents with <code>'R~'</code> prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.</p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">t_size</span>":<span class="hljs-value"><span class="hljs-string">"small"</span></span>, 
     "<span class="hljs-attribute">t_kind</span>":<span class="hljs-value"><span class="hljs-string">"pepperoni"</span></span>, 
@@ -877,7 +877,7 @@ where<br>
 </code></pre>
 <ul>
 <li>
-<h2><a id="F_prefix_Deduce_and_Forget_command_917"></a><code>F$</code> prefix. Deduce and Forget command</h2>
+<h2><a id="F_prefix_Deduce_and_Forget_command_917"></a><code>F~</code> prefix. Deduce and Forget command</h2>
 </li>
 </ul>
 <p>The prefix is used to prevent saving the deduction in the history. For instance: <code>What time is it?</code> This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.</p>
@@ -889,7 +889,7 @@ where<br>
 <p>This is actually tricky example. <a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. <code>t_prompt</code>'s time value above must be provided by the client application. The framework returns the prompt template from the training set: <code>&quot;It is {t_time}&quot;</code>, so user application should replace <code>t_time</code> with its value.</p>
 <ul>
 <li>
-<h2><a id="P_prefix_One_step_back_command_927"></a><code>P$</code> prefix. One step back command</h2>
+<h2><a id="P_prefix_One_step_back_command_927"></a><code>P~</code> prefix. One step back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take last/previous deduction in the history and return it. It is useful for cases when user asks, ‘What did you say?’ ‘Repeat please?’.</p>
@@ -897,22 +897,22 @@ where<br>
 User&gt;What?
 Bot&gt;What type of pizza would you like?
 </code></pre>
-<p>Please note, if previous intent was either R$ or I$ or X$, there will be no history records available. To have access  previous prompt always - consider training sample:</p>
+<p>Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:</p>
 <pre><code>.train
-    F$REPEAT:what|what did you say|come again|repeat (please|)|pardon me
+    F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
 .prompt:
-    F$REPEAT = *
+    F~REPEAT = *
 </code></pre>
 <p>Star <code>*</code> symbol tells to grab last value of the <code>t_prompt</code> in the history.</p>
 <ul>
 <li>
-<h2><a id="B_prefix_Two_steps_back_command_944"></a><code>B$</code> prefix. Two steps back command</h2>
+<h2><a id="B_prefix_Two_steps_back_command_944"></a><code>B~</code> prefix. Two steps back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take <code>top-1</code> deduction from the history. It is useful for cases when user asks ‘What did you say BEFORE that?’</p>
 <ul>
 <li>
-<h2><a id="C_prefix_Change_slot_value_command_947"></a><code>C$</code> prefix. Change slot value command</h2>
+<h2><a id="C_prefix_Change_slot_value_command_947"></a><code>C~</code> prefix. Change slot value command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to change the value of the slot in the history<br>
@@ -924,60 +924,60 @@ Bot&gt;What type of pizza would you like?
 </code></pre>
 <p><code>User&gt; No, change it to Vancouver</code></p>
 <pre><code class="language-json">{
-    "<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"C$NAVIGATE"</span></span>,
+    "<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"C~NAVIGATE"</span></span>,
     "<span class="hljs-attribute">t_dest</span>":<span class="hljs-value"><span class="hljs-string">"Vancouver"</span>
 </span>}
 </code></pre>
 <p>The <code>t_dest</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
 <ul>
 <li>
-<h2><a id="X_prefix_Clean_previous_history_command_966"></a><code>X$</code> prefix. Clean previous history command</h2>
+<h2><a id="X_prefix_Clean_previous_history_command_966"></a><code>X~</code> prefix. Clean previous history command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current deduction suggests that the previous history must not be kept any longer. <strong><em>Current deduction is not saved in the history.</em></strong></p>
 <pre><code>.train
     CONFIRMATION:Would you like to proceed with your order?
-    R$PLACE_ORDER: CONFIRMATION yes
-    X$CANCEL_ORDER: CONFIRMATION no
+    R~PLACE_ORDER: CONFIRMATION yes
+    X~CANCEL_ORDER: CONFIRMATION no
 .prompt
     USER_CONFUSED: I'm sorry
     // Collect all slots values in the collected history of the dialog and return to user
-    R$PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
+    R~PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
     
     // Wipe out the history
-    X$CANCEL_ORDER: Sure, I am canceling your order
+    X~CANCEL_ORDER: Sure, I am canceling your order
 </code></pre>
 <p>Note, current deduction slots, if any, will be returned to user in the deduction.<br>
 This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.</p>
 <ul>
 <li>
-<h2><a id="I_prefix_Clean_previous_history_and_restart_command_984"></a><code>I$</code> prefix. Clean previous history and restart command</h2>
+<h2><a id="I_prefix_Clean_previous_history_and_restart_command_984"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current deduction suggests that the previous history must not be kept any longer. <strong><em>Current deduction is saved in the history.</em></strong> Think of this command’s effect as ‘Tertis’ effect.</p>
-<h1><a id="Idioms_interpretation_Intent_prefix__987"></a>Idioms interpretation. Intent prefix <code>$</code></h1>
+<h1><a id="Idioms_interpretation_Intent_prefix__987"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
 <p>To support truly natural language understanding, we have a mechanism to interpret idioms and enable <code>slot filling</code> with semantic values <strong><em>not found in the original utterance</em></strong>. Here is an example:</p>
 <pre><code>.train
-    $NAV: take me to a place where i can have a nice meal
-    $NAV_01: I am starving, walk me to a closest place where I can have a nice meal
+    ~NAV: take me to a place where i can have a nice meal
+    ~NAV_01: I am starving, walk me to a closest place where I can have a nice meal
 .prompt:
-    $NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
-    $NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
+    ~NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
+    ~NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
 </code></pre>
-<p>Prefix <code>$</code> must be first one in the intent. It <strong>can</strong> be used in combination with previously described prefixes. For example <code>$I$_NAV</code>. It means that prompt contains additional slots. <code>I$</code> tells framework to restart collecting the history, while previous history will be lost. See <a href="#i-prefix-clean-previous-history-and-restart-command">above</a>.<br>
+<p>Prefix <code>~</code> must be first one in the intent. It <strong>can</strong> be used in combination with previously described prefixes. For example <code>~I~NAV</code>. It means that prompt contains additional slots. <code>I~</code> tells framework to restart collecting the history, while previous history will be lost. See <a href="#i-prefix-clean-previous-history-and-restart-command">above</a>.<br>
 Please also note the separator <code>;</code> between slots-value pairs.</p>
 <h1><a id="Remove_slot_value_from_deduction_history_del_command_1001"></a>Remove slot value from deduction history. <code>$del</code> command</h1>
 <p>Lets say you want to delete a slot value from the history. Consider the example:</p>
 <pre><code>.train
-    C$_PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
-    $C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
-    $C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
+    C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
+    ~C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
+    ~C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
 .prompt:
-    C$_PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
-    $C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
-    $C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
+    C~PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
+    ~C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
+    ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
 </code></pre>
-<p>In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, $C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.</p>
+<p>In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.</p>
 <h1><a id="Indirect_references_it_or_there_1015"></a>Indirect references <code>it</code> or <code>there</code></h1>
 <p>Consider the training samples using <code>P_PLACE</code> slot type:</p>
 <pre><code>.train
@@ -1157,7 +1157,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 </code></pre>
 </li>
 <li>
-<p>A layer can be optionally included into the deduction pipeline. When <code>accept_r_intents_only</code> is True , only  <code>R$</code> prefixed intent produced by one of the <strong>previous layers</strong> will enable this layer to be included in the deduction. By default, is it <code>False</code>.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.</p>
+<p>A layer can be optionally included into the deduction pipeline. When <code>accept_r_intents_only</code> is True , only  <code>R~</code> prefixed intent produced by one of the <strong>previous layers</strong> will enable this layer to be included in the deduction. By default, is it <code>False</code>.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.</p>
 <pre><code>&quot;accept_r_intents_only&quot;:true
 </code></pre>
 </li>
