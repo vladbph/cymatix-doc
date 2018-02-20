@@ -65,6 +65,7 @@ Table of Contents
       * [X$ prefix. Clean previous history command](#x-prefix-clean-previous-history-command)
       * [I$ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
    * [Idioms interpretation. Intent prefix $](#idioms-interpretation-intent-prefix-)
+   * [Remove slot value from deduction history. $del command](#remove-slot-value-from-deduction-history-del-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Comments in training files](#comments-in-training-files)
@@ -79,7 +80,7 @@ Table of Contents
 ### ___"...Context IS everything ..."___
 # Features Highlights
 - ***`Train Of Thought technology`***
-    * Literally maintains a train of thought of the conversation
+    * Maintains a train of thought of the conversation using proprietary mechanism and deductions history
 - State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
@@ -996,7 +997,21 @@ To support truly natural language understanding, we have a mechanism to interpre
     $NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
 ```
 Prefix `$` must be first one in the intent. It __can__ be used in combination with previously described prefixes. For example `$I$_NAV`. It means that prompt contains additional slots. `I$` tells framework to restart collecting the history, while previous history will be lost. See [above](#i-prefix-clean-previous-history-and-restart-command).
-Please also note the separator `;` between slots-value pairs
+Please also note the separator `;` between slots-value pairs. 
+
+# Remove slot value from deduction history. `$del` command
+Lets say you want to delete a slot value from the history. Consider the example:
+```
+.train
+    C$_PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
+    $C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
+    $C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
+.prompt:
+    C$_PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
+    $C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
+    $C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
+```
+In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, $C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.
 
 # Indirect references `it` or `there`
 
