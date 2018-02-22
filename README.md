@@ -555,7 +555,7 @@ As you can see here, the same question 'How?' gives contextual adequate response
 .regex
     &and:\b(?:as well as|and also)\b
 ```
-It is a direct replacement of words in the utterance to simplify training sets. You can use the section to prevent your training set to be extremely large. Please note, there should be one and only one group - `0`, full match. To achive that use non-capturing groups - (?:regex). As in the example above, matching group `0` equals either: 'as well as' or 'and also'. Refer to the [here](https://www.regular-expressions.info/refcapture.html) for details. 
+It is a direct replacement of words in the utterance to simplify training sets. You can use the section to prevent your training set to be extremely large. Please note, there should be one and only one group - `0`, full match. To achive that use non-capturing groups - (?:regex). As in the example above, matching group `0` equals either: 'as well as' or 'and also'. Refer  [here](https://www.regular-expressions.info/refcapture.html) for details. 
 
 More complex example:
 ```
