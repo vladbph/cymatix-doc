@@ -526,15 +526,17 @@ Training file:
     INTRO: what can you do for me
     INTRO: what is your (purpose|goal|task|agenda)
     INTRO: how you can help me
+    INTRO: how can you help me
     INTRO: <...>
     
-    DO_CREATE_PROJECT: INTO how?
-    DO_CREATE_PROJECT: INTO how should I do that?
-    DO_CREATE_PROJECT: INTO any guidance (please|)?
+    DO_CREATE_PROJECT: INTRO how?
+    DO_CREATE_PROJECT: INTRO how can I do that?
+    DO_CREATE_PROJECT: INTRO what should I do?
+    DO_CREATE_PROJECT: INTRO any guidance (please|)?
     DO_CREATE_PROJECT: <...>
     
     MIN_PROJECT: DO_CREATE_PROJECT how?
-    MIN_PROJECT: DO_CREATE_PROJECT how should I do that?
+    MIN_PROJECT: DO_CREATE_PROJECT how can I do that?
     MIN_PROJECT: DO_CREATE_PROJECT any guidance (please|)?
     MIN_PROJECT: <...>
 
