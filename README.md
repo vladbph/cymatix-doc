@@ -19,11 +19,10 @@ Table of Contents
    * [Project ID](#project-id)
    * [Training time](#training-time)
    * [Project WEB UI indicators](#project-web-ui-indicators)
-   * [Use NLU service via REST API](#nlu-service-rest-api)
+   * [NLU service REST API](#nlu-service-rest-api)
       * [Launch request](#launch-request)
       * [Deduction example](#deduction-example)
       * [List of response codes](#list-of-response-codes)
-   * [Use Web interface for verification](#use-web-interface-for-verification)
    * [train section](#train-section)
    * [prompt section](#prompt-section)
    * [define section](#define-section)
@@ -31,10 +30,10 @@ Table of Contents
    * [Slots (parameters)](#slots-parameters)
    * [Introduction to Layers](#introduction-to-layers)
    * [Dialogs](#dialogs)
-      * [Loose Dialogs](#loose-dialogs)
+      * [AI system asks questions](#ai-system-asks-questions)
          * [gate section](#gate-section)
          * [proto section](#proto-section)
-      * [Strict Dialogs](#strict-dialogs)
+      * [User asks questions](#user-asks-questions)
    * [Regex section](#regex-section)
       * [Replacement](#replacement)
       * [Lookup lables](#lookup-lables)
@@ -75,6 +74,7 @@ Table of Contents
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
+
 
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
@@ -408,9 +408,34 @@ So, this mechanism enables smaller context needed to train the layer to extract 
 ```
 So, having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** [`zCymatix`](http://www.zcymatix.com) platform gives the tools to go either way.
 # Dialogs
-There are two types of dialogs supported by the platform ***Loose Dialogs*** and ***Strict dialogs***. And third one is the combination of these two.
-## Loose Dialogs
-This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. `Presence of the slots values` is sufficient for the system to consider conversation complete. Example: ordering pizza. User can freely provide the information about the pizza without following script flow of the conversation:
+There are two types of dialogs supported by the platform ***AI system asks questions*** and ***User asks questions***. And third one is the combination of these two.
+## AI system asks questions
+This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. `Presence of the slots values` is sufficient for the system to consider conversation complete. 
+Let's take as example a visit to doctor. 
+```
+Patient> I have a stomach ache
+AI Doctor> Did you take any medications?
+Patient> Yes
+AI Doctor> What kind of medication did you take?
+Patient>...
+```
+Or
+```
+Patient> I have a stomach ache
+AI Doctor> Did you take any medications?
+Patient> No
+AI Doctor> How bad is the pain on the scale of 1 to 10?
+Patient>...
+```
+As you can see based on the patient answer, conversation goes different routes. 
+Using `toth` flags:
+```
+    "toth":True
+    "intent_to_utterance":true
+```
+or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users intents and answers as a context for next deductions. Intents of the previous statements are embedded into next user utterances. It allows to have multiturn dialogs.
+
+Another example: pizza assistant. User can freely provide the information about the pizza without following strict order of the conversation:
 ```
     User> I want to order some pizza
     Bot> What kind would you like?
@@ -421,7 +446,7 @@ This type of dialog assumes that AI system knows the set of slots/parameters to 
     User> you bet!
     Bot> Great, thank you!!!
 ```
-In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So, the conversation could go like this:
+The conversation flow depends on already provided parameters and system would ask only those questions to retrieve missing parameters. So, the conversation could go like this:
 ```
     User> I want small BBQ chicken with extra cheese and tomatoes on top and my address is ...
     Bot> Here is you order... Should I go ahead and place your order?
@@ -456,9 +481,10 @@ The intuition is simple. It reads like this - when current intent is ORDER_PIZZA
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section.
 **Please note a mandatory prefix 'o.' in front of slot and intent label and also single quotes surrounding the intent name.**
 Gates are executed in the sequential order and they must be `mutually exclusive`. The sequence of the gates execution stops when first one returns not empty intent. 
-Be aware of the following case. It WILL cause a break in the model function, because it will return either `INTENT_2` or `INTENT_3` ___always___. 
+Be aware of the following case. It WILL cause a break in the model, because the return value will be always either `INTENT_2` or `INTENT_3`. 
 ```
 .gate
+    // ERROR!!!
     'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
 ```
 Ignore for now prefix ***R~*** of the ***R~THANKS_YES*** and ***R~THANKS_NO***. It has special meaning to be discussed [later](#r-prefix).
@@ -484,32 +510,40 @@ Pizza example:
 ```
 This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
 
+## User asks questions
+The best example of such dialog would be Frequetly Asked Questions of a website. Again toth mechanism allows following handling questions differently depending on the context. Example of our web service:
+```
+User> What can you do for me?
+Service> I am a Natural Language Understanding platform and I can help you to create AI assistants
+User> How?
+Service> First, you need to create a project
+User> How?
+Service> Minimalistic project consists of two files - configuration file and training file
+```
+Training file:
+```
+.train
+    INTRO: what can you do for me
+    INTRO: what is your (purpose|goal|task|agenda)
+    INTRO: how you can help me
+    INTRO: <...>
+    
+    DO_CREATE_PROJECT: INTO how?
+    DO_CREATE_PROJECT: INTO how should I do that?
+    DO_CREATE_PROJECT: INTO any guidance (please|)?
+    DO_CREATE_PROJECT: <...>
+    
+    MIN_PROJECT: DO_CREATE_PROJECT how?
+    MIN_PROJECT: DO_CREATE_PROJECT how should I do that?
+    MIN_PROJECT: DO_CREATE_PROJECT any guidance (please|)?
+    MIN_PROJECT: <...>
 
-## Strict Dialogs
-Strict dialog resembles traversing decision tree. The idea is to ask questions based on the `values of previous answers`, __not on the fact that the value of the slot was provided or not__, unlike loose dialog, pizza example.
-Let's take as example visit to doctor. 
+.prompt
+    INTRO: I am a Natural Language Understanding platform and I can help you to create AI assistants
+    DO_CREATE_PROJECT: First, you need to create a project
+    MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
 ```
-Patient> I have a stomach ache
-Doctor> Did you take any medications?
-Patient> Yes
-Doctor> What kind of medication did you take?
-Patient>...
-```
-Or
-```
-Patient> I have a stomach ache
-Doctor> Did you take any medications?
-Patient> No
-Doctor> How bad is the pain on the scale of 1 to 10?
-Patient>...
-```
-As you can see based on the patient answer, conversation goes different routes. 
-Using `toth` and `intent_to_utterance` flags:
-```
-    "toth":True
-    "intent_to_utterance":true
-```
-or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users answers as a context for next deductions.
+As you can see here, the same question 'How?' gives contextual adequate response.
 
 # Regex section
 ## Replacement

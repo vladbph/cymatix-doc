@@ -25,14 +25,13 @@
 <li><a href="#Project_ID_158">Project ID</a></li>
 <li><a href="#Training_time_162">Training time</a></li>
 <li><a href="#Project_WEB_UI_indicators_165">Project WEB UI indicators</a></li>
-<li><a href="#nlu-service-rest-api">Use NLU service via REST API</a>
+<li><a href="#NLU_service_REST_API_174">NLU service REST API</a>
 <ul>
 <li><a href="#Launch_request_175">Launch request</a></li>
 <li><a href="#Deduction_example_191">Deduction example</a></li>
 <li><a href="#List_of_response_codes_205">List of response codes</a></li>
 </ul>
 </li>
-<li><a href="#use-web-interface-for-verification">Use Web interface for verification</a></li>
 <li><a href="#train_section_219">train section</a></li>
 <li><a href="#prompt_section_237">prompt section</a></li>
 <li><a href="#define_section_265">define section</a></li>
@@ -41,22 +40,22 @@
 <li><a href="#Introduction_to_Layers_335">Introduction to Layers</a></li>
 <li><a href="#Dialogs_409">Dialogs</a>
 <ul>
-<li><a href="#Loose_Dialogs_411">Loose Dialogs</a>
+<li><a href="#AI_system_asks_questions_411">AI system asks questions</a>
 <ul>
-<li><a href="#gate_section_431">gate section</a></li>
-<li><a href="#proto_section_472">proto section</a></li>
+<li><a href="#gate_section_456">gate section</a></li>
+<li><a href="#proto_section_498">proto section</a></li>
 </ul>
 </li>
-<li><a href="#Strict_Dialogs_487">Strict Dialogs</a></li>
+<li><a href="#User_asks_questions_512">User asks questions</a></li>
 </ul>
 </li>
-<li><a href="#Regex_section_513">Regex section</a>
+<li><a href="#Regex_section_547">Regex section</a>
 <ul>
-<li><a href="#Replacement_514">Replacement</a></li>
-<li><a href="#Lookup_lables_527">Lookup lables</a></li>
+<li><a href="#Replacement_548">Replacement</a></li>
+<li><a href="#Lookup_lables_561">Lookup lables</a></li>
 </ul>
 </li>
-<li><a href="#Prompt_label_535">Prompt label</a>
+<li><a href="#Prompt_label_569">Prompt label</a>
 <ul>
 <li><a href="#prefix-">Prefix &lt;strong&gt;&quot;#&quot;&lt;/strong&gt;</a></li>
 <li><a href="#prefix--1">Prefix &lt;strong&gt;&quot;?#&quot;&lt;/strong&gt;</a></li>
@@ -64,44 +63,44 @@
 <li><a href="#prefix--3">Prefix &lt;strong&gt;&quot;?$&quot;&lt;/strong&gt;</a></li>
 <li><a href="#prefix--4">Prefix &lt;strong&gt;&quot;.&quot;&lt;/strong&gt;</a></li>
 <li><a href="#prefix--5">Prefix &lt;strong&gt;&quot;?.&quot;&lt;/strong&gt;</a></li>
-<li><a href="#Empty_label_prefix_612">Empty label prefix</a></li>
+<li><a href="#Empty_label_prefix_646">Empty label prefix</a></li>
 <li><a href="#prefix--6">Prefix &lt;strong&gt;&quot;?&quot;&lt;/strong&gt;</a></li>
-<li><a href="#Prompt_label_value_access_by_index_629">Prompt label value access by index</a></li>
+<li><a href="#Prompt_label_value_access_by_index_663">Prompt label value access by index</a></li>
 </ul>
 </li>
-<li><a href="#PIZZA2_BOT_Example_646">PIZZA2 BOT Example</a>
+<li><a href="#PIZZA2_BOT_Example_680">PIZZA2 BOT Example</a>
 <ul>
-<li><a href="#Layer_1_Slots_648">Layer 1 Slots</a></li>
-<li><a href="#Layer_2_Pizza_746">Layer 2 Pizza</a></li>
-<li><a href="#Layer_3_Bot_825">Layer 3 Bot</a></li>
-<li><a href="#Pizza_project_Final_Deduction_851">Pizza project Final Deduction</a></li>
+<li><a href="#Layer_1_Slots_682">Layer 1 Slots</a></li>
+<li><a href="#Layer_2_Pizza_780">Layer 2 Pizza</a></li>
+<li><a href="#Layer_3_Bot_859">Layer 3 Bot</a></li>
+<li><a href="#Pizza_project_Final_Deduction_885">Pizza project Final Deduction</a></li>
 </ul>
 </li>
-<li><a href="#Deduction_history_871">Deduction history</a></li>
-<li><a href="#How_to_control_deduction_history_878">How to control deduction history</a>
+<li><a href="#Deduction_history_905">Deduction history</a></li>
+<li><a href="#How_to_control_deduction_history_912">How to control deduction history</a>
 <ul>
-<li><a href="#Intent_Prefixes_881">Intent Prefixes</a></li>
-<li><a href="#Empty_prefix_893">Empty prefix</a></li>
-<li><a href="#R_prefix_Return_command_899">R~ prefix. Return command</a></li>
-<li><a href="#F_prefix_Deduce_and_Forget_command_917">F~ prefix. Deduce and Forget command</a></li>
-<li><a href="#P_prefix_One_step_back_command_927">P~ prefix. One step back command</a></li>
-<li><a href="#B_prefix_Two_steps_back_command_944">B~ prefix. Two steps back command</a></li>
-<li><a href="#C_prefix_Change_slot_value_command_947">C~ prefix. Change slot value command</a></li>
-<li><a href="#X_prefix_Clean_previous_history_command_966">X~ prefix. Clean previous history command</a></li>
-<li><a href="#I_prefix_Clean_previous_history_and_restart_command_984">I~ prefix. Clean previous history and restart command</a></li>
+<li><a href="#Intent_Prefixes_915">Intent Prefixes</a></li>
+<li><a href="#Empty_prefix_927">Empty prefix</a></li>
+<li><a href="#R_prefix_Return_command_933">R~ prefix. Return command</a></li>
+<li><a href="#F_prefix_Deduce_and_Forget_command_951">F~ prefix. Deduce and Forget command</a></li>
+<li><a href="#P_prefix_One_step_back_command_961">P~ prefix. One step back command</a></li>
+<li><a href="#B_prefix_Two_steps_back_command_978">B~ prefix. Two steps back command</a></li>
+<li><a href="#C_prefix_Change_slot_value_command_981">C~ prefix. Change slot value command</a></li>
+<li><a href="#X_prefix_Clean_previous_history_command_1000">X~ prefix. Clean previous history command</a></li>
+<li><a href="#I_prefix_Clean_previous_history_and_restart_command_1018">I~ prefix. Clean previous history and restart command</a></li>
 </ul>
 </li>
-<li><a href="#Idioms_interpretation_Intent_prefix__987">Idioms interpretation. Intent prefix ~</a></li>
-<li><a href="#Remove_slot_value_from_deduction_history_del_command_1001">Remove slot value from deduction history. $del command</a></li>
+<li><a href="#Idioms_interpretation_Intent_prefix__1021">Idioms interpretation. Intent prefix ~</a></li>
+<li><a href="#Remove_slot_value_from_deduction_history_del_command_1035">Remove slot value from deduction history. $del command</a></li>
 <li><a href="#indirect-references-it-or-there">Indirect references it or &lt;code&gt;there&lt;/code&gt;</a></li>
-<li><a href="#Events_States_Sensors_Information_Embedding_1030">Events, States, Sensors Information Embedding</a></li>
-<li><a href="#Comments_in_training_files_1072">Comments in training files</a></li>
-<li><a href="#Long_lines_continuation_1075">Long lines continuation</a></li>
-<li><a href="#Unknown_word_marker_1078">Unknown word marker</a></li>
-<li><a href="#Placement_slot_deduction_1081">Placement slot deduction</a></li>
-<li><a href="#Recommendations_tips_and_tricks_1098">Recommendations, tips and tricks</a></li>
-<li><a href="#Optional_configuration_parameters_1151">Optional configuration parameters</a></li>
-<li><a href="#Advanced_configuration_parameters_1261">Advanced configuration parameters</a></li>
+<li><a href="#Events_States_Sensors_Information_Embedding_1064">Events, States, Sensors Information Embedding</a></li>
+<li><a href="#Comments_in_training_files_1106">Comments in training files</a></li>
+<li><a href="#Long_lines_continuation_1109">Long lines continuation</a></li>
+<li><a href="#Unknown_word_marker_1112">Unknown word marker</a></li>
+<li><a href="#Placement_slot_deduction_1115">Placement slot deduction</a></li>
+<li><a href="#Recommendations_tips_and_tricks_1132">Recommendations, tips and tricks</a></li>
+<li><a href="#Optional_configuration_parameters_1185">Optional configuration parameters</a></li>
+<li><a href="#Advanced_configuration_parameters_1295">Advanced configuration parameters</a></li>
 </ul>
 <h4><a id="Machine_learning_NLU_system_designed_for_dialogues_and_expert_systems_The_platform_utilizes_proprietary_TothTrain_Of_Thought_technology_for_conversation_flow_tracking_and_supports_many_other_features_78"></a>Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features…</h4>
 <h3><a id="___Context_IS_everything_____79"></a><strong><em>“…Context IS everything …”</em></strong></h3>
@@ -434,9 +433,30 @@ The resulting deduction after applying both layers will be:</p>
 </code></pre>
 <p>So, having a context consisting only surrounding words is enough? You decide. But be careful though. <strong><em>False positives one of the biggest issues in NLU systems</em></strong>, finding the balance between training time, number of utterances and sufficient context is not easy task to create <strong><em>high quality training set.</em></strong> <a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform gives the tools to go either way.</p>
 <h1><a id="Dialogs_409"></a>Dialogs</h1>
-<p>There are two types of dialogs supported by the platform <strong><em>Loose Dialogs</em></strong> and <strong><em>Strict dialogs</em></strong>. And third one is the combination of these two.</p>
-<h2><a id="Loose_Dialogs_411"></a>Loose Dialogs</h2>
-<p>This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. <code>Presence of the slots values</code> is sufficient for the system to consider conversation complete. Example: ordering pizza. User can freely provide the information about the pizza without following script flow of the conversation:</p>
+<p>There are two types of dialogs supported by the platform <strong><em>AI system asks questions</em></strong> and <strong><em>User asks questions</em></strong>. And third one is the combination of these two.</p>
+<h2><a id="AI_system_asks_questions_411"></a>AI system asks questions</h2>
+<p>This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. <code>Presence of the slots values</code> is sufficient for the system to consider conversation complete.<br>
+Let’s take as example a visit to doctor.</p>
+<pre><code>Patient&gt; I have a stomach ache
+AI Doctor&gt; Did you take any medications?
+Patient&gt; Yes
+AI Doctor&gt; What kind of medication did you take?
+Patient&gt;...
+</code></pre>
+<p>Or</p>
+<pre><code>Patient&gt; I have a stomach ache
+AI Doctor&gt; Did you take any medications?
+Patient&gt; No
+AI Doctor&gt; How bad is the pain on the scale of 1 to 10?
+Patient&gt;...
+</code></pre>
+<p>As you can see based on the patient answer, conversation goes different routes.<br>
+Using <code>toth</code> flags:</p>
+<pre><code>    &quot;toth&quot;:True
+    &quot;intent_to_utterance&quot;:true
+</code></pre>
+<p>or/and <code>prompts templates</code> we can follow <strong><code>train of thought</code></strong> of the conversation and use users intents and answers as a context for next deductions. Intents of the previous statements are embedded into next user utterances. It allows to have multiturn dialogs.</p>
+<p>Another example: pizza assistant. User can freely provide the information about the pizza without following strict order of the conversation:</p>
 <pre><code>    User&gt; I want to order some pizza
     Bot&gt; What kind would you like?
     User&gt; I want small BBQ chicken with extra cheese and tomatoes
@@ -446,13 +466,13 @@ The resulting deduction after applying both layers will be:</p>
     User&gt; you bet!
     Bot&gt; Great, thank you!!!
 </code></pre>
-<p>In such conversation there is no strict sequence of questions to be ask. The conversation flow depends on already provided parameters and system would ask only those questions helping to get missing parameters. So, the conversation could go like this:</p>
+<p>The conversation flow depends on already provided parameters and system would ask only those questions to retrieve missing parameters. So, the conversation could go like this:</p>
 <pre><code>    User&gt; I want small BBQ chicken with extra cheese and tomatoes on top and my address is ...
     Bot&gt; Here is you order... Should I go ahead and place your order?
     User&gt; Yes
 </code></pre>
 <p>There are few things to know before we can create such dialog.</p>
-<h3><a id="gate_section_431"></a><code>gate</code> section</h3>
+<h3><a id="gate_section_456"></a><code>gate</code> section</h3>
 <p>Gate is a small script for generating new intent based on the deduction history. The syntax uses python style <code>if</code> statements. It is better to demonstrate on <code>Pizza</code> example:</p>
 <pre><code class="language-python">.gate
     <span class="hljs-string">'ASK_KIND'</span>        <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> hasattr( o, <span class="hljs-string">'t_kind'</span> )
@@ -477,8 +497,9 @@ The resulting deduction after applying both layers will be:</p>
 <strong><em>ORDER of gates IS important!!!</em></strong> Gates are applied in the same order listed in the section.<br>
 <strong>Please note a mandatory prefix ‘o.’ in front of slot and intent label and also single quotes surrounding the intent name.</strong><br>
 Gates are executed in the sequential order and they must be <code>mutually exclusive</code>. The sequence of the gates execution stops when first one returns not empty intent.<br>
-Be aware of the following case. It WILL cause a break in the model function, because it will return either <code>INTENT_2</code> or <code>INTENT_3</code> <strong><em>always</em></strong>.</p>
+Be aware of the following case. It WILL cause a break in the model, because the return value will be always either <code>INTENT_2</code> or <code>INTENT_3</code>.</p>
 <pre><code>.gate
+    // ERROR!!!
     'INTENT_2' if o.t_intent == 'INTENT_1' and not hasattr( o, 't_something' ) else 'INTENT_3'
 </code></pre>
 <p>Ignore for now prefix <strong><em>R~</em></strong> of the <strong><em>R~THANKS_YES</em></strong> and <strong><em>R~THANKS_NO</em></strong>. It has special meaning to be discussed <a href="#r-prefix">later</a>.<br>
@@ -488,8 +509,8 @@ Consider another example:</p>
     'ASK_CITY' if o.t_intent == 'Q42' and not hasattr( o, 't_city' )
 </code></pre>
 <p>Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is <code>Q42</code>, but the t_city was not provided, return intent which would tell user something like: ‘You did not provide the city’. You can argue the rational of this, saying why can’t I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.</p>
-<h3><a id="proto_section_472"></a><code>proto</code> section</h3>
-<p>Prototype section is used to specify, which intents and slots should be linked together. Such association is needed for the <a href="#gate_section_431">gate section</a> to build an object with the slots and their values from the deduction history, so that the gate is using the only subset of data from the history. The deduction history may contain lots of previous deductions and they might not be related to each other. In other words, the prototype mechanism enables context isolation for the gate.<br>
+<h3><a id="proto_section_498"></a><code>proto</code> section</h3>
+<p>Prototype section is used to specify, which intents and slots should be linked together. Such association is needed for the <a href="#gate_section_456">gate section</a> to build an object with the slots and their values from the deduction history, so that the gate is using the only subset of data from the history. The deduction history may contain lots of previous deductions and they might not be related to each other. In other words, the prototype mechanism enables context isolation for the gate.<br>
 Syntax:</p>
 <pre><code>.proto
     &lt;List of intents separated by commas&gt; : &lt;list of slot names separated by commas&gt;
@@ -499,30 +520,39 @@ Syntax:</p>
     ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
 </code></pre>
 <p>This section creates a link between a <strong><em>list of intents and corresponding list of slots</em></strong>. Once all slot values are collected the conversation is considered complete.</p>
-<h2><a id="Strict_Dialogs_487"></a>Strict Dialogs</h2>
-<p>Strict dialog resembles traversing decision tree. The idea is to ask questions based on the <code>values of previous answers</code>, <strong>not on the fact that the value of the slot was provided or not</strong>, unlike loose dialog, pizza example.<br>
-Let’s take as example visit to doctor.</p>
-<pre><code>Patient&gt; I have a stomach ache
-Doctor&gt; Did you take any medications?
-Patient&gt; Yes
-Doctor&gt; What kind of medication did you take?
-Patient&gt;...
+<h2><a id="User_asks_questions_512"></a>User asks questions</h2>
+<p>The best example of such dialog would be Frequetly Asked Questions of a website. Again toth mechanism allows following handling questions differently depending on the context. Example of our web service:</p>
+<pre><code>User&gt; What can you do for me?
+Service&gt; I am a Natural Language Understanding platform and I can help you to create AI assistants
+User&gt; How?
+Service&gt; First, you need to create a project
+User&gt; How?
+Service&gt; Minimalistic project consists of two files - configuration file and training file
 </code></pre>
-<p>Or</p>
-<pre><code>Patient&gt; I have a stomach ache
-Doctor&gt; Did you take any medications?
-Patient&gt; No
-Doctor&gt; How bad is the pain on the scale of 1 to 10?
-Patient&gt;...
+<p>Training file:</p>
+<pre><code>.train
+    INTRO: what can you do for me
+    INTRO: what is your (purpose|goal|task|agenda)
+    INTRO: how you can help me
+    INTRO: &lt;...&gt;
+    
+    DO_CREATE_PROJECT: INTO how?
+    DO_CREATE_PROJECT: INTO how should I do that?
+    DO_CREATE_PROJECT: INTO any guidance (please|)?
+    DO_CREATE_PROJECT: &lt;...&gt;
+    
+    MIN_PROJECT: DO_CREATE_PROJECT how?
+    MIN_PROJECT: DO_CREATE_PROJECT how should I do that?
+    MIN_PROJECT: DO_CREATE_PROJECT any guidance (please|)?
+    MIN_PROJECT: &lt;...&gt;
+.prompt
+    INTRO: I am a Natural Language Understanding platform and I can help you to create AI assistants
+    DO_CREATE_PROJECT: First, you need to create a project
+    MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
 </code></pre>
-<p>As you can see based on the patient answer, conversation goes different routes.<br>
-Using <code>toth</code> and <code>intent_to_utterance</code> flags:</p>
-<pre><code>    &quot;toth&quot;:True
-    &quot;intent_to_utterance&quot;:true
-</code></pre>
-<p>or/and <code>prompts templates</code> we can follow <strong><code>train of thought</code></strong> of the conversation and use users answers as a context for next deductions.</p>
-<h1><a id="Regex_section_513"></a>Regex section</h1>
-<h2><a id="Replacement_514"></a>Replacement</h2>
+<p>As you can see here, the same question ‘How?’ gives contextual adequate response.</p>
+<h1><a id="Regex_section_547"></a>Regex section</h1>
+<h2><a id="Replacement_548"></a>Replacement</h2>
 <pre><code>.regex
     &amp;and:\b(?:as well as|and also)\b
 </code></pre>
@@ -531,13 +561,13 @@ Using <code>toth</code> and <code>intent_to_utterance</code> flags:</p>
 <pre><code>.regex
     &amp;1 hours and 30 minutes : \bone\s+(?:and|\&amp;)\s+(?:(?:a|the)\s+)?half\s+(?:an?\s+)?h(?:ou)?r?s?\b
 </code></pre>
-<h2><a id="Lookup_lables_527"></a>Lookup lables</h2>
+<h2><a id="Lookup_lables_561"></a>Lookup lables</h2>
 <pre><code>.regex
     P_SIZE:\b(?:small|medium|large)\b
 </code></pre>
 <p>The actual value of <code>small</code>, <code>medium</code> or <code>large</code> is replaced by <code>P_SIZE</code> and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See <a href="#pizza2-bot-example">pizza2 example</a> for more details.<br>
 <code>IMPORTANT!</code> There must be one group deduced by the regular expression(!)</p>
-<h1><a id="Prompt_label_535"></a>Prompt label</h1>
+<h1><a id="Prompt_label_569"></a>Prompt label</h1>
 <p>Prompt is a powerful tool of <strong><em>ToTh</em></strong> mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a <strong><em>template which uses collected slot and their values</em></strong> to build next ‘utterance’ for next layer in the pipeline, <strong>IF desired</strong>. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.</p>
 <pre><code>utterance =&gt; 
     Layer1 =&gt; 
@@ -559,60 +589,60 @@ Example:</p>
                 }
 </code></pre>
 <p>The values in the template are controlled by prompt’s prefixes as described below:</p>
-<h2><a id="Prefix______560"></a>Prefix <strong>“#”</strong></h2>
+<h2><a id="Prefix______594"></a>Prefix <strong>“#”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in the <strong><em>most recent deduction</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name value is in the last deduction, t_age is absent
 .prompt
     RESULT = {#t_name} {#t_age}
     # The value of RESULT = t_name None
 </code></pre>
-<h2><a id="Prefix______569"></a>Prefix <strong>“?#”</strong></h2>
+<h2><a id="Prefix______603"></a>Prefix <strong>“?#”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in the <strong><em>most recent deduction</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example:  t_name value is in the last deduction, t_age is absent
 .prompt
     RESULT = {?#t_name} {?#t_age}
     # The value of RESULT = t_name 
 </code></pre>
-<h2><a id="Prefix______578"></a>Prefix <strong>“$”</strong></h2>
+<h2><a id="Prefix______612"></a>Prefix <strong>“$”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in <strong><em>whole deduction history</em></strong>. The approach can be used as an input for dialog tracking layers. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name value is in all whole history, t_age is absent
 .prompt
     RESULT = {$t_name} {$t_age}
     # The value of RESULT = t_name None
 </code></pre>
-<h2><a id="Prefix______587"></a>Prefix <strong>“?$”</strong></h2>
+<h2><a id="Prefix______621"></a>Prefix <strong>“?$”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in <strong><em>whole deduction history</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name value is in all whole history, t_age is absent
 .prompt
     RESULT = {?$t_name} {?$t_age}
     # The value of RESULT = t_name 
 </code></pre>
-<h2><a id="Prefix______596"></a>Prefix <strong>“.”</strong></h2>
+<h2><a id="Prefix______630"></a>Prefix <strong>“.”</strong></h2>
 <p>Implies using label’s <strong><em>value</em></strong> in the <strong><em>most recent deduction</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name = John is in the last deduction. 
 .prompt
     GREETING = Hello {.t_name} =&gt; Hello John
 </code></pre>
-<h2><a id="Prefix______604"></a>Prefix <strong>“?.”</strong></h2>
+<h2><a id="Prefix______638"></a>Prefix <strong>“?.”</strong></h2>
 <p>Implies using label’s <strong><em>value</em></strong> in the <strong><em>most recent deduction</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name is absent in the last deduction. 
 .prompt
     GREETING = Hello {?.t_name} =&gt; Hello
 </code></pre>
-<h2><a id="Empty_label_prefix_612"></a>Empty label prefix</h2>
+<h2><a id="Empty_label_prefix_646"></a>Empty label prefix</h2>
 <p>Implies using label’s <strong><em>values</em></strong> in <strong><em>whole deduction history</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_kind values are in whole deduction history, t_kind = BBQ and t_kind = meat
 .prompt
     ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you =&gt; 
     =&gt; Ok, I will place an order of BBQ, meat pizza for you
 </code></pre>
-<h2><a id="Prefix______621"></a>Prefix <strong>“?”</strong></h2>
+<h2><a id="Prefix______655"></a>Prefix <strong>“?”</strong></h2>
 <p>Implies using label’s <strong><em>values</em></strong> in <strong><em>whole deduction history</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name is absent in deduction history
 .prompt
     GREETING = Hello {?t_name} =&gt; Hello
 </code></pre>
-<h2><a id="Prompt_label_value_access_by_index_629"></a>Prompt label value access by index</h2>
+<h2><a id="Prompt_label_value_access_by_index_663"></a>Prompt label value access by index</h2>
 <p>While building a prompt, the label value can be accessed by index in the deduction history, like so: <code>{t_utt-1}</code>. Index <code>-1</code> refers value of the label <code>t_utt</code> of in the previous deduction.<br>
 If previous deduction is not available, <code>None</code> value is used in the prompt. If you want the value to be omitted in such case, use <code>{?t_utt-1}</code>.</p>
 <pre><code>Example: 
@@ -626,9 +656,9 @@ If previous deduction is not available, <code>None</code> value is used in the p
     R~RESP_NO: Ok, no problem.
 </code></pre>
 <p>Side note: this particular example relies on <code>flag</code> toth to be enabled</p>
-<h1><a id="PIZZA2_BOT_Example_646"></a>PIZZA2 BOT Example</h1>
+<h1><a id="PIZZA2_BOT_Example_680"></a>PIZZA2 BOT Example</h1>
 <p>Let’s consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only <strong><em>Neural Networks(NN)</em></strong> layers. This implementation is also can be classified as <a href="#loose-dialogs"><code>loose dialog</code></a> type. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers.</p>
-<h2><a id="Layer_1_Slots_648"></a>Layer 1 Slots</h2>
+<h2><a id="Layer_1_Slots_682"></a>Layer 1 Slots</h2>
 <p>Layer 1 is named “slots” is dedicated to isolate types of the slots - <strong>pizza kind</strong>, <strong>pizza toppings</strong>,  <strong>size</strong> and <strong>delivery address</strong>. Here is the configuration for the layer:</p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"slots"</span></span>,
@@ -714,7 +744,7 @@ Lets review regex section.</p>
 I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOPPINGS on top
 </code></pre>
 <p>Latter is an input utterance to next layer called ‘Pizza’</p>
-<h2><a id="Layer_2_Pizza_746"></a>Layer 2 Pizza</h2>
+<h2><a id="Layer_2_Pizza_780"></a>Layer 2 Pizza</h2>
 <p>Config for this layer:</p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"pizza"</span></span>,
@@ -781,7 +811,7 @@ if t_toppings is missing
 if t_address is missing
 </code></pre>
 <p>Next layer is called ‘Bot’.</p>
-<h2><a id="Layer_3_Bot_825"></a>Layer 3 Bot</h2>
+<h2><a id="Layer_3_Bot_859"></a>Layer 3 Bot</h2>
 <p>Configuration:</p>
 <pre><code class="language-json">    {
         "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"bot"</span></span>,
@@ -804,7 +834,7 @@ if t_address is missing
                      be delivered to {t_address}. Would you like to go ahead with the order?
 </code></pre>
 <p>The training set for ‘Bot’ layer is self-explanatory. Generate <strong><em>ASK_KIND</em></strong> prompt to user if <strong><em>t_kind</em></strong> slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use <a href="#gate-section-script">.gate</a> section described before to ‘script’ the same logic, thus skipping training altogether for this type of deduction.</p>
-<h2><a id="Pizza_project_Final_Deduction_851"></a>Pizza project Final Deduction</h2>
+<h2><a id="Pizza_project_Final_Deduction_885"></a>Pizza project Final Deduction</h2>
 <p>Let’s review utterance transformation going though all layers of the ‘Pizza2’ project:</p>
 <pre><code>// 'Slot' layer
 I would like to place an order for small pepperoni with extra cheese and ham on top
@@ -821,7 +851,7 @@ if t_address is missing
 What is the delivery address?
 </code></pre>
 <p>I hope it is clear why the 1st question is ‘What is the delivery address’. It is because user already provided <strong><em>t_kind</em></strong>, <strong><em>t_toppings</em></strong> and <strong><em>t_size</em></strong> in the original sentence.</p>
-<h1><a id="Deduction_history_871"></a>Deduction history</h1>
+<h1><a id="Deduction_history_905"></a>Deduction history</h1>
 <p>This information is useful to understand platform operation under the hood. Deduction history could be simply described as the “things user said before”. All deductions are collected in the <code>history</code> or <code>stack</code>. Those terms will be used interchangeably. The deduction history contains:</p>
 <ul>
 <li>Layer’s input utterance with predefined slot name <code>t_utt</code></li>
@@ -829,11 +859,11 @@ What is the delivery address?
 <li>Layer’s deduced <code>slots</code> and their <code>values</code>, if any</li>
 <li>Layer’s prompt with predefined slot name <code>t_prompt</code>, if any</li>
 </ul>
-<h1><a id="How_to_control_deduction_history_878"></a>How to control deduction history</h1>
+<h1><a id="How_to_control_deduction_history_912"></a>How to control deduction history</h1>
 <p>At some point we need to collect all slots values in the stack to build an aggregative deduction (pizza order), or may be forget whole deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says “What?” or “Could you repeat it?”. Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of <strong>ToTh</strong> technology. It is done via intent prefixes:</p>
 <ul>
 <li>
-<h2><a id="Intent_Prefixes_881"></a>Intent Prefixes</h2>
+<h2><a id="Intent_Prefixes_915"></a>Intent Prefixes</h2>
 </li>
 </ul>
 <pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history
@@ -848,7 +878,7 @@ I~ - Clean previous deduction history and save current deduction in it. 'Tertis'
 </code></pre>
 <ul>
 <li>
-<h2><a id="Empty_prefix_893"></a><code>Empty</code> prefix</h2>
+<h2><a id="Empty_prefix_927"></a><code>Empty</code> prefix</h2>
 </li>
 </ul>
 <p>Intent without prefix with deduced slots and their values are saved in the deduction history.<br>
@@ -857,7 +887,7 @@ where<br>
 <code>t_intent = ORDER_PIZZA</code> will be kelp in stack until <code>R~</code> or <code>X~</code> session-based conversation intent comes along to erase it.</p>
 <ul>
 <li>
-<h2><a id="R_prefix_Return_command_899"></a><code>R~</code> prefix. Return command</h2>
+<h2><a id="R_prefix_Return_command_933"></a><code>R~</code> prefix. Return command</h2>
 </li>
 </ul>
 <p>In ‘Pizza’ layer we have:</p>
@@ -877,7 +907,7 @@ where<br>
 </code></pre>
 <ul>
 <li>
-<h2><a id="F_prefix_Deduce_and_Forget_command_917"></a><code>F~</code> prefix. Deduce and Forget command</h2>
+<h2><a id="F_prefix_Deduce_and_Forget_command_951"></a><code>F~</code> prefix. Deduce and Forget command</h2>
 </li>
 </ul>
 <p>The prefix is used to prevent saving the deduction in the history. For instance: <code>What time is it?</code> This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.</p>
@@ -889,7 +919,7 @@ where<br>
 <p>This is actually tricky example. <a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. <code>t_prompt</code>'s time value above must be provided by the client application. The framework returns the prompt template from the training set: <code>&quot;It is {t_time}&quot;</code>, so user application should replace <code>t_time</code> with its value.</p>
 <ul>
 <li>
-<h2><a id="P_prefix_One_step_back_command_927"></a><code>P~</code> prefix. One step back command</h2>
+<h2><a id="P_prefix_One_step_back_command_961"></a><code>P~</code> prefix. One step back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take last/previous deduction in the history and return it. It is useful for cases when user asks, ‘What did you say?’ ‘Repeat please?’.</p>
@@ -906,13 +936,13 @@ Bot&gt;What type of pizza would you like?
 <p>Star <code>*</code> symbol tells to grab last value of the <code>t_prompt</code> in the history.</p>
 <ul>
 <li>
-<h2><a id="B_prefix_Two_steps_back_command_944"></a><code>B~</code> prefix. Two steps back command</h2>
+<h2><a id="B_prefix_Two_steps_back_command_978"></a><code>B~</code> prefix. Two steps back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take <code>top-1</code> deduction from the history. It is useful for cases when user asks ‘What did you say BEFORE that?’</p>
 <ul>
 <li>
-<h2><a id="C_prefix_Change_slot_value_command_947"></a><code>C~</code> prefix. Change slot value command</h2>
+<h2><a id="C_prefix_Change_slot_value_command_981"></a><code>C~</code> prefix. Change slot value command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to change the value of the slot in the history<br>
@@ -931,7 +961,7 @@ Bot&gt;What type of pizza would you like?
 <p>The <code>t_dest</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
 <ul>
 <li>
-<h2><a id="X_prefix_Clean_previous_history_command_966"></a><code>X~</code> prefix. Clean previous history command</h2>
+<h2><a id="X_prefix_Clean_previous_history_command_1000"></a><code>X~</code> prefix. Clean previous history command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current deduction suggests that the previous history must not be kept any longer. <strong><em>Current deduction is not saved in the history.</em></strong></p>
@@ -951,11 +981,11 @@ Bot&gt;What type of pizza would you like?
 This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.</p>
 <ul>
 <li>
-<h2><a id="I_prefix_Clean_previous_history_and_restart_command_984"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
+<h2><a id="I_prefix_Clean_previous_history_and_restart_command_1018"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current deduction suggests that the previous history must not be kept any longer. <strong><em>Current deduction is saved in the history.</em></strong> Think of this command’s effect as ‘Tertis’ effect.</p>
-<h1><a id="Idioms_interpretation_Intent_prefix__987"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
+<h1><a id="Idioms_interpretation_Intent_prefix__1021"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
 <p>To support truly natural language understanding, we have a mechanism to interpret idioms and enable <code>slot filling</code> with semantic values <strong><em>not found in the original utterance</em></strong>. Here is an example:</p>
 <pre><code>.train
     ~NAV: take me to a place where i can have a nice meal
@@ -966,7 +996,7 @@ This prefix should be used for self-contained deduction, meaning it has all info
 </code></pre>
 <p>Prefix <code>~</code> must be first one in the intent. It <strong>can</strong> be used in combination with previously described prefixes. For example <code>~I~NAV</code>. It means that prompt contains additional slots. <code>I~</code> tells framework to restart collecting the history, while previous history will be lost. See <a href="#i-prefix-clean-previous-history-and-restart-command">above</a>.<br>
 Please also note the separator <code>;</code> between slots-value pairs.</p>
-<h1><a id="Remove_slot_value_from_deduction_history_del_command_1001"></a>Remove slot value from deduction history. <code>$del</code> command</h1>
+<h1><a id="Remove_slot_value_from_deduction_history_del_command_1035"></a>Remove slot value from deduction history. <code>$del</code> command</h1>
 <p>Lets say you want to delete a slot value from the history. Consider the example:</p>
 <pre><code>.train
     C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
@@ -978,7 +1008,7 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
     ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
 </code></pre>
 <p>In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.</p>
-<h1><a id="Indirect_references_it_or_there_1015"></a>Indirect references <code>it</code> or <code>there</code></h1>
+<h1><a id="Indirect_references_it_or_there_1049"></a>Indirect references <code>it</code> or <code>there</code></h1>
 <p>Consider the training samples using <code>P_PLACE</code> slot type:</p>
 <pre><code>.train
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
@@ -990,7 +1020,7 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
 <p>First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve <code>it</code>:<br>
 <code>INT_NAVIGATE/t_place/t_dest:take me there</code><br>
 Why list of slots? The intuition is this - search for either <code>t_place</code> or <code>t_dest</code> in that order in the deduction history and put its value to substitute <code>there</code>.</p>
-<h1><a id="Events_States_Sensors_Information_Embedding_1030"></a>Events, States, Sensors Information Embedding</h1>
+<h1><a id="Events_States_Sensors_Information_Embedding_1064"></a>Events, States, Sensors Information Embedding</h1>
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
 Let’s review an example:</p>
@@ -1032,13 +1062,13 @@ In which room? I did not say it explicitly.
 </li>
 </ol>
 <p>This makes client application <strong>cleaner, focusing on its task</strong> and <code>backend</code> takes care of the session, its history and the context. In our example my phone would only <strong><code>act</code></strong> on the intent by playing <code>Def Leppard</code> in <code>living room</code>.</p>
-<h1><a id="Comments_in_training_files_1072"></a>Comments in training files</h1>
+<h1><a id="Comments_in_training_files_1106"></a>Comments in training files</h1>
 <p>Comment must start from a new line and be prefixed with either <code>#</code> or <code>//</code></p>
-<h1><a id="Long_lines_continuation_1075"></a>Long lines continuation</h1>
+<h1><a id="Long_lines_continuation_1109"></a>Long lines continuation</h1>
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
-<h1><a id="Unknown_word_marker_1078"></a>Unknown word marker</h1>
+<h1><a id="Unknown_word_marker_1112"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Placement_slot_deduction_1081"></a>Placement slot deduction</h1>
+<h1><a id="Placement_slot_deduction_1115"></a>Placement slot deduction</h1>
 <p><code>Placement slot deduction</code> is used when we don’t know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.<br>
 Example:</p>
 <pre><code>.define
@@ -1052,7 +1082,7 @@ Example:</p>
     "<span class="hljs-attribute">t_kind</span>":<span class="hljs-value"><span class="hljs-string">"blah"</span>
 </span>}
 </code></pre>
-<h1><a id="Recommendations_tips_and_tricks_1098"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_1132"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -1108,7 +1138,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_1151"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_1185"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
@@ -1233,10 +1263,10 @@ Alternatively, prompt mechanism can be used to achieve the same result, however 
     // from the current deduction
     INT_YES: {.t_intent}
 </code></pre>
-<p>See <a href="#Prefix______596">Prefix “.”</a></p>
+<p>See <a href="#Prefix______630">Prefix “.”</a></p>
 </li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1261"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1295"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
