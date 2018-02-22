@@ -523,29 +523,31 @@ Service> Minimalistic project consists of two files - configuration file and tra
 Training file:
 ```
 .train
-    INTRO: what can you do for me
-    INTRO: what is your (purpose|goal|task|agenda)
-    INTRO: how you can help me
-    INTRO: how can you help me
-    INTRO: <...>
+    I~INTRO: what can you do for me
+    I~INTRO: what is your (purpose|goal|task|agenda)
+    I~INTRO: how you can help me
+    I~INTRO: how can you help me
+    I~INTRO: <...>
     
-    DO_CREATE_PROJECT: INTRO how?
-    DO_CREATE_PROJECT: INTRO how can I do that?
-    DO_CREATE_PROJECT: INTRO what should I do?
-    DO_CREATE_PROJECT: INTRO any guidance (please|)?
+    DO_CREATE_PROJECT: I~INTRO how?
+    DO_CREATE_PROJECT: I~INTRO how is that?
+    DO_CREATE_PROJECT: I~INTRO how can I do that?
+    DO_CREATE_PROJECT: I~INTRO what should I do?
+    DO_CREATE_PROJECT: I~INTRO any guidance (please|)?
     DO_CREATE_PROJECT: <...>
     
     MIN_PROJECT: DO_CREATE_PROJECT how?
+    MIN_PROJECT: DO_CREATE_PROJECT how is that?
     MIN_PROJECT: DO_CREATE_PROJECT how can I do that?
     MIN_PROJECT: DO_CREATE_PROJECT any guidance (please|)?
     MIN_PROJECT: <...>
 
 .prompt
-    INTRO: I am a Natural Language Understanding platform and I can help you to create AI assistants
+    I~INTRO: I am a Natural Language Understanding platform and I can help you to create AI assistants
     DO_CREATE_PROJECT: First, you need to create a project
     MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
 ```
-As you can see here, the same question 'How?' gives contextual adequate response.
+As you can see here, the same question 'How?' gives contextual adequate response. Also see [how to control deduction history](#how-to-control-deduction-history) section for intent prefixes.
 
 # Regex section
 ## Replacement
