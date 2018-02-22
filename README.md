@@ -711,7 +711,7 @@ __slots.txt__ file:
     // Replace, but finally resolve to actual value
     P_SIZE: (?:@small)
 .train
-    // The goal is isolate slot types(!) and replace them by the type name, so next layer - has
+    // The goal is to isolate slot types(!) and replace them by the type name, so next layer - has
     // less samples to be trained with
     (ORDER_PIZZA|) @kind{&P_KIND}
     (ORDER_PIZZA|) @toppings{&P_TOPPINGS} on top
