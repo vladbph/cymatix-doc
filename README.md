@@ -683,7 +683,7 @@ Example:
 Side note: this particular example relies on `flag` toth to be enabled
 
 # PIZZA2 BOT Example
-Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. This implementation is also can be classified as [`loose dialog`](#loose-dialogs) type. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
+Let's consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only ___Neural Networks(NN)___ layers. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers. 
 ## Layer 1 Slots
 Layer 1 is named "slots" is dedicated to isolate types of the slots - __pizza kind__, __pizza toppings__,  __size__ and __delivery address__. Here is the configuration for the layer:
 ```json
