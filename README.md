@@ -67,6 +67,7 @@ Table of Contents
    * [Remove slot value from deduction history. $del command](#remove-slot-value-from-deduction-history-del-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
+   * [Multiple language support](#multiple-language-support)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unknown word marker](#unknown-word-marker)
@@ -81,10 +82,10 @@ Table of Contents
 # Features Highlights
 - ***`Train Of Thought technology`***
     * Maintains a train of thought of the conversation using proprietary mechanism and deductions history
-- State of the Art ***`deduction pipeline`*** to efficiently resolve ambiguity
+- ___`Session-based conversation instances`___  Memory and context is kept on the `backend`. Client application does not need to collect deduction history(!).
+- ***`Deduction pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
-- ___`Session-based conversation instances`___  Context is maintained on the `backend` leaving client focusing only on the application itself
 - `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
 - Optional `scripting support`.
     * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
@@ -119,6 +120,7 @@ Table of Contents
 - ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
     * This is not NLU specific feature which enables platform utilization in any field of knowledge
 - Platform DOES NOT provide voice recognition servives
+- ***`Multiple language support`***
 
    ___So, Let's do it!___
 # 'Hello Word' Example
@@ -1107,6 +1109,17 @@ So what? Here the advantages:
     __NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
 
 This makes client application __cleaner, focusing on its task__ and `backend` takes care of the session, its history and the context. In our example my phone would only __`act`__ on the intent by playing `Def Leppard` in `living room`.
+
+# Multiple language support
+In order to support other languages besides English, all you have to do is to add 'lang' field (ISO 639-1 and ISO alpha-2) into any of the layers of you project configurationISO:
+```
+[
+    {
+        "data_files":<...>
+        "lang":"es-mx"
+    }
+]
+```
 
 # Comments in training files
 Comment must start from a new line and be prefixed with either `#` or `//`
