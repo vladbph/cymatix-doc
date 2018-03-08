@@ -122,7 +122,7 @@ Table of Contents
     * This is not NLU specific feature which enables platform utilization in any field of knowledge
 - ***`Multiple language support`***
 - NOTE! Platform DOES NOT provide voice recognition services
-- 
+
 
    ___So, Let's do it!___
 # 'Hello Word' Example
