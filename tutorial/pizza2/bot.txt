@@ -14,7 +14,7 @@
     ASK_SIZE: Small, medium or large?
     ASK_TOPPINGS: What do you want on top. For example: tomatoes, ham, cheese, etc.?
     ASK_ADDRESS: What is delivery address?
-    ASK_TO_CONFIRM: Your order is {?t_cnt} [{t_size}] [{t_kind}] pizza with [{t_toppings}] to be delivered to [{t_address}]. Would you like to go ahead with the order?
+    ASK_TO_CONFIRM: Your order is [{t_size}] [{t_kind}] pizza with [{t_toppings}] to be delivered to [{t_address}]. Would you like to go ahead with the order?
 
     R~PLACE_ORDER: Thank you for you order
     R~DONT_PLACE_ORDER: Sure, may be next time

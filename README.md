@@ -141,7 +141,7 @@ So, this is it. Literally, 3 lines of code get you there. The deduction of the p
 ```
 To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
-![Register](http://www.zcymatix.com/img/signup1.png "Register")
+![Register](http://www.zcymatix.com/img/signup2.png "Register")
 
 After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
 ![Upload](http://www.zcymatix.com/img/upload_page1.png "Upload")
@@ -264,6 +264,7 @@ The idea: You collect all the data from user in the form of slots and their valu
 .prompt
     R~READY = {t_param1} {t_param2} {t_param3}...
 ```
+Please, be careful when having multiple layers in non expert system projects. Let's say you have three layer project. Second layer defines a prompt. In such cases `propmt is passed to third layer instead of utterance(!)`
 
 # `define` section
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
