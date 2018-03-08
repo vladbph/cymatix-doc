@@ -120,8 +120,9 @@ Table of Contents
         * 'Take me there'
 - ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
     * This is not NLU specific feature which enables platform utilization in any field of knowledge
-- Platform DOES NOT provide voice recognition servives
 - ***`Multiple language support`***
+- NOTE! Platform DOES NOT provide voice recognition services
+- 
 
    ___So, Let's do it!___
 # 'Hello Word' Example
