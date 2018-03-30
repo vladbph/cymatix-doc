@@ -127,6 +127,7 @@ Table of Contents
 
    ___So, Let's do it!___
 # 'Hello Word' Example
+Let's demonstrate how 3 lines of text/code makes your first NLU project.
 * Create and enter **hello** folder. `Folder name is the name of the project.`
 * Create **hello.json** file
 ```json
