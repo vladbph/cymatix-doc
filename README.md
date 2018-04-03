@@ -136,14 +136,20 @@ Let's demonstrate how 3 lines of text/code makes your first NLU project.
 * Create **hello.txt** training file
 ```
 .train
-    GREETING:Hello World
+    GREETING: (Hello World|hi|hello)
 ```
 ***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
 So, this is it. Literally, 3 lines of code get you there. The deduction of the phrase 'Hello World' will be 
 ```json
     {"t_intent":"GREETING"}
 ```
-To get E2E how-to experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
+That's it. If you want to see system to respond to you, add:
+```
+.prompt
+    GREETING: Hello my friend
+```
+
+To get end-to-end experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup3.png "Register")
 
