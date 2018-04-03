@@ -29,11 +29,11 @@
     'R~THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
 
 .prompts
-    ASK_KIND        = What kind of pizza would you like?(bbq chicken, hawaiian, pepperoni, etc)
-    ASK_SIZE        = What size? (large, medium, small, etc)
-    ASK_TOPPINGS    = Anything on top?(ham, cheese, tomatoes, etc)
-    ASK_ADDRESS     = What is your address?
-    ASK_TO_CONFIRM  = Your order is {t_size} {t_kind} pizza with {t_topping} \
+    ASK_KIND       : What kind of pizza would you like?(bbq chicken, hawaiian, pepperoni, etc)
+    ASK_SIZE       : What size? (large, medium, small, etc)
+    ASK_TOPPINGS   : Anything on top?(ham, cheese, tomatoes, etc)
+    ASK_ADDRESS    : What is your address?
+    ASK_TO_CONFIRM : Your order is {t_size} {t_kind} pizza with {t_topping} \
                      to be delivered to {t_address} Should I go ahead and place the order?
-    R~THANKS_YES    = Thank you for your order
-    R~THANKS_NO     = Sure, I will cancel the order for you
+    R~THANKS_YES   : Thank you for your order
+    R~THANKS_NO    : Sure, I will cancel the order for you

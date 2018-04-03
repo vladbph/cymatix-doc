@@ -7,7 +7,7 @@
     @want: want|need|would like
     @and: and|and also|as well as
 
-    @bbq = barbecue|bbq
+    @bbq: barbecue|bbq
 
     @small: small|large|medium
     @kind: pepperoni|meat|hawaiian|@bbq|@bbq chicken|meat|cheese|@bbq pork
