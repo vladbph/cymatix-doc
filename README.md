@@ -199,7 +199,8 @@ The response contains the dynamic ___session_id___, which must be used in the fo
 { "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
 ```
 Session ID in this example is:`2cb3b87d-e29c-4743-bab1-0fc5cb98db6d`
-
+Here is REST API flow diagram:
+![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
 
 ## Deduction example
 
@@ -1078,6 +1079,10 @@ Consider the training samples using `P_PLACE` slot type:
 First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
 `INT_NAVIGATE/t_place/t_dest:take me there`
 Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the deduction history and put its value to substitute `there`.
+![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_01.png "Conventional it/there reolution")
+As you can see, you have to collect inferences in client application and resolve the value of 'it'. With zCymatix platform all done automatically on backend side.
+
+![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
 # Events, States, Sensors Information Embedding
 Contextual information embedding into utterances and prompts is the foundation of ToTh technology.
@@ -1215,10 +1220,21 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 
 __NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. 
 
-- To use bidirectional LSTM models. By default, it is unidirectional model.
+- Depth of the model. By default, `1`
     ```
-    "bi_lstm":false
+    "n_lstm":1
     ```
+
+- Bidirectional LSTM models. By default, `true`.  
+    ```
+    "bi_lstm":true
+    ```
+    Example :
+    ```
+    I want ABC{t_pizza_type} pizza
+    I want ABC{t_pizza_topping} on top
+    ```
+    Unless `bi_lstm` is enabled, model will not be able to tell that in first case `ABC` refers to a `pizza type` and in second, to `pizza toppings`. It is sort of look ahead. There is an alternative though - enable convolutional layer.
 
 - Confidence level. By default, `0.9` - 90%. Level to consider deduction reliable. If deduced intent has lower probability, it will be replaced with `error_intent` if it is set.
     ```
@@ -1422,3 +1438,6 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "error_intent":""
     ```
+    
+    
+    
