@@ -200,7 +200,7 @@ The response contains the dynamic ___session_id___, which must be used in the fo
 ```
 Session ID in this example is:`2cb3b87d-e29c-4743-bab1-0fc5cb98db6d`
 Here is REST API flow diagram:
-![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
+![REST API workflow](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
 
 ## Deduction example
 
@@ -1175,7 +1175,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING`. 
 
-- Call intents refering what to do next, rather then what already happened. While following train of though of the dialog, it is much easier.
+- Name intents describing "what to do next", rather then what already happened. While following train of though of the dialog, it is much easier.
 
 - Do not use slot types names that can be confused for words. I recommend using something like `PIZZA_KIND` or similar
 
