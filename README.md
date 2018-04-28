@@ -153,7 +153,9 @@ To get end-to-end experience go to [zcymatix.com](http://www.zcymatix.com) and s
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](http://www.zcymatix.com/img/signup3.png "Register")
 
-After login, upload the project by choosing your project folder - ***hello***. Remember, __project name__ is the name of the __folder__
+After login, upload the project by choosing your project folder - ***hello***. 
+Remember, __project name__ is the name of the __folder__ and configuration file name must be 
+`<project name>.json`
 ![Upload](http://www.zcymatix.com/img/upload_page1.png "Upload")
 
 When project is uploaded, you need to train it. Choose ***Build*** option for that. When project was stopped and/or you want to continue building it, press ***Continue Build***. However, keep in mind that if you changed the training files, continuing building the project DOES NOT always means faster training times. So, we suggest to use ***Build*** option when training files have changed.
