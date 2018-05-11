@@ -23,18 +23,17 @@ Table of Contents
    * [Project WEB UI indicators](#project-web-ui-indicators)
    * [NLU service REST API](#nlu-service-rest-api)
       * [Launch request](#launch-request)
-      * [Deduction example](#deduction-example)
+      * [Inference example](#inference-example)
       * [List of response codes](#list-of-response-codes)
-   * [train section](#train-section)
-   * [prompt section](#prompt-section)
-   * [define section](#define-section)
-   * [list section](#list-section)
+   * [.train section](#train-section)
+   * [.prompt section](#prompt-section)
+   * [.define section](#define-section)
+   * [.list section](#list-section)
    * [Slots (parameters)](#slots-parameters)
    * [Introduction to Layers](#introduction-to-layers)
    * [Dialogs](#dialogs)
       * [AI system asks questions](#ai-system-asks-questions)
-         * [gate section](#gate-section)
-         * [proto section](#proto-section)
+         * [.gate section](#gate-section)
       * [User asks questions](#user-asks-questions)
    * [Regex section](#regex-section)
       * [Replacement](#replacement)
@@ -53,27 +52,27 @@ Table of Contents
       * [Layer 1 Slots](#layer-1-slots)
       * [Layer 2 Pizza](#layer-2-pizza)
       * [Layer 3 Bot](#layer-3-bot)
-      * [Pizza project Final Deduction](#pizza-project-final-deduction)
-   * [Deduction history](#deduction-history)
-   * [How to control deduction history](#how-to-control-deduction-history)
+      * [Pizza project Final Inference](#pizza-project-final-inference)
+   * [Inference history](#inference-history)
+   * [How to control inference history](#how-to-control-inference-history)
       * [Intent Prefixes](#intent-prefixes)
       * [Empty prefix](#empty-prefix)
       * [R~ prefix. Return command](#r-prefix-return-command)
-      * [F~ prefix. Deduce and Forget command](#f-prefix-deduce-and-forget-command)
+      * [F~ prefix. Infere and Forget command](#f-prefix-infere-and-forget-command)
       * [P~ prefix. One step back command](#p-prefix-one-step-back-command)
       * [B~ prefix. Two steps back command](#b-prefix-two-steps-back-command)
       * [C~ prefix. Change slot value command](#c-prefix-change-slot-value-command)
       * [X~ prefix. Clean previous history command](#x-prefix-clean-previous-history-command)
       * [I~ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
    * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
-   * [Remove slot value from deduction history. $del command](#remove-slot-value-from-deduction-history-del-command)
+   * [Remove slot value from inference history. $del command](#remove-slot-value-from-inference-history-del-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Multiple language support](#multiple-language-support)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unknown word marker](#unknown-word-marker)
-   * [Placement slot deduction](#placement-slot-deduction)
+   * [Placement slot inference](#placement-slot-inference)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
@@ -83,9 +82,9 @@ Table of Contents
 ### ___"...Context IS everything ..."___
 # Features Highlights
 - ***`Train Of Thought technology`***
-    * Maintains a train of thought of the conversation using proprietary mechanism and deductions history
-- ___`Session-based conversation instances`___  Memory and context is kept on the `backend`. Client application does not need to collect deduction history(!).
-- ***`Deduction pipeline`*** to efficiently resolve ambiguity
+    * Maintains a train of thought of the conversation using proprietary mechanism and inferences history
+- ___`Session-based conversation instances`___  Memory and context is kept on the `backend`. Client application does not need to collect inference history(!).
+- ***`Inference pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
 - `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
@@ -96,7 +95,7 @@ Table of Contents
 - Lookup labels support
     * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
 - NLU tasks:
-    - `Self-contained` deductions:
+    - `Self-contained` inferences:
         * __"Play the latest from Def Leppard"__ =>  
             ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard', 't_attr':'latest' } ```
         * __"Show flights to Seattle"__ =>  ``` { 't_intent':'SHOW_FLIGHT, 't_dest':'Seattle' } ```
@@ -139,7 +138,7 @@ Let's demonstrate how 3 lines of text/code makes your first NLU project.
     GREETING: (Hello World|hi|hello)
 ```
 ***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
-So, this is it. Literally, 3 lines of code get you there. The deduction of the phrase 'Hello World' will be 
+So, this is it. Literally, 3 lines of code get you there. The inference of the phrase 'Hello World' will be 
 ```json
     {"t_intent":"GREETING"}
 ```
@@ -189,14 +188,14 @@ YELLOW - indicates that one of the project layer has been loaded, but not the wh
 # NLU service REST API
 ## Launch request
 This is initial handshake request.
-***https://nlp2.zcymatix.com/?cmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
+***https://nlp2.zcymatix.com/?zcmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
 Parameters: 
 ```json
     cmd = launch
     project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
 ```
 NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
-The response contains the dynamic ___session_id___, which must be used in the following deduction requests. The response looks like this:
+The response contains the dynamic ___session_id___, which must be used in the following inference requests. The response looks like this:
 ```json
 { "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
 ```
@@ -204,9 +203,9 @@ Session ID in this example is:`2cb3b87d-e29c-4743-bab1-0fc5cb98db6d`
 Here is REST API flow diagram:
 ![REST API workflow](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
 
-## Deduction example
+## Inference example
 
-***<https://nlp2.zcymatix.com/?cmd=deduce&session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&query=Hello+World>***
+***<https://nlp2.zcymatix.com/?zcmd=deduce&session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&query=Hello+World>***
 Parameters: 
 ```json
     cmd = deduce
@@ -222,17 +221,18 @@ The response:
 ```
 List of codes:
     200 - Session id is provided in msg field as a string
-    201 - Deduction is provided in msg field as a JSON string
+    201 - Inference is provided in msg field as a JSON string
     202 - Info is provided in msg field as a string
     102 - Project is loading
     101 - Authentication error
     100 - Invalid parameters
 ```
 
-It may take few seconds for a project to be launched (if it was not before). If during this time client's deduction request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the deduction response comes back with the code `201`. 
+It may take few seconds for a project to be launched (if it was not before). If during this time client's inference request comes to the backend, it will respond with the code `102`. ___Client must repeat the request___ until the inference response comes back with the code `201`. 
         This is the 'worst' case scenario, because projects must be loaded in prediction mode for `production` use after training is finished, thus it should be always loaded.
         
-# `train` section 
+# `.train` section 
+Alternative name is **`.user`** for readability.
 The section contains training samples. Formal syntax is:
 ```
 .train
@@ -250,16 +250,16 @@ The following example teaches to ingore the utterace all together:
 ```
 This example is quite important to demonstrate the key concept, while building a training set. One thing can be descrided `what it is` and `what it is not`! Keeping this in mind, you can create more accurate training sets.
 
-# `prompt` section
-
+# `.prompt` section
+Alternative name is **`.bot`** for readability.
 What if we want AI system to respond to user query? Let's use the 'Hello World' code:
 ```
-.train
+.user
     GREETING: Hello World
 .prompt
-    GREETING = Hello my friend
-    GREETING = Hello!
-    GREETING = Hi!    
+    GREETING: Hello my friend
+    GREETING: Hello!
+    GREETING: Hi!    
 ```
 By adding section ***.prompt*** we can define user prompts: 
 ```
@@ -271,20 +271,20 @@ In the example above GREETING has three variants. They will be selected randomly
     NAVIGATE: Ok, I am starting navigation to {t_dest} by {t_car}
 ```
 Where ___t_dest___ and ___t_car___ are slots/parameters.
-Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the deduction pipeline. This mechanism is used in `expert systems` layers.
+Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the inference pipeline. This mechanism is used in `expert systems` layers.
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
 .prompt
-    R~READY = {t_param1} {t_param2} {t_param3}...
+    R~READY: {t_param1} {t_param2} {t_param3}...
 ```
 Please, be careful when having multiple layers in non expert system projects. Let's say you have three layer project. Second layer defines a prompt. In such cases `propmt is passed to third layer instead of utterance(!)`
 
-# `define` section
+# `.define` section
 Let's update ***hello.txt*** file a little. Add ***.define*** section. 
 ```json
 .define
-    @hi = Hello|hi
-    @guys = guys|folks|World|
+    @hi: Hello|hi
+    @guys: guys|folks|World|
 
 .train
     GREETING:@hi @guys
@@ -304,7 +304,7 @@ Please note the last OR in ***@guys*** definition reads like ***empty string***.
 - ***folk(s|)*** is INVALID
 - ***(folk|folks)*** is VALID
  
-# `list` section
+# `.list` section
 
 This section is very much the same as define with different syntax:
 ```
@@ -326,7 +326,7 @@ Example:
 It is the same as:
 ```
 .define
-    @us_state = Alabama|Alaska|Arizona|Arkansas|California|...
+    @us_state: Alabama|Alaska|Arizona|Arkansas|California|...
 ```
 Imagine you want to train `named entity recognizer`. Usually you get the text file with the list of items. `.list` section lets you quickly transform text file into the training file by adding the section header to the top.
 
@@ -335,22 +335,22 @@ In the training set we can assign intent and mark/label words with slot names fo
 Training file:
 ```json
 .define
-    @take = take|bring
-    @me = me|us|them
+    @take: take|bring
+    @me: me|us|them
 .train
     NAVIGATE: @take @me to Seattle{t_dest} by car{t_transport}
 .prompt
-    NAVIGATE = Sure, I am starting navigation to {t_dest} by {t_transport}
+    NAVIGATE: Sure, I am starting navigation to {t_dest} by {t_transport}
 ```
 
-The deduction will look like:
+The inference will look like:
 ```json
 {"t_intent":"NAVIGATE", "t_dest":"Seattle", "t_transport":"car"}
 ```
-This way we deduce the meaning of the utterance.
+This way we infere the meaning of the utterance.
 
 # Introduction to Layers
-[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for deduction of specific things. For example, in case of ordering pizza you may want to deduce ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot deduction`](#placement-slot-deduction), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the deduction cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infere ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot inference`](#placement-slot-inference), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -367,7 +367,7 @@ I'll walk you through. First of all, let's put all the macros in one file ***mac
 ```
 I would like to place an order for a small BBQ chicken and large meat pizza
 ```
-For simplicity sake, let's ignore pizza sizes deduction.
+For simplicity sake, let's ignore pizza sizes inference.
 
 ***kinds.txt***:
 ```
@@ -388,7 +388,7 @@ This is a mechanism to label multiple words with specific `lookup label` and usi
 ```
 The intent ***ORDER_PIZZA*** present here, because the purpose of this layer is to get ***the intent and slots/parameters values*** that come with it.
 ***PIZZA_KIND{t_kind}*** marks both instances of the mentioned pizza kinds.
-The resulting deduction after applying both layers will be:
+The resulting inference after applying both layers will be:
 ```json
 {
     "t_utt":"i would like to place an order for small BBQ chicken and large meat pizza",
@@ -399,7 +399,7 @@ The resulting deduction after applying both layers will be:
 You could say - ___How about if I have a macro @pizza_kind and put all values there and use training utterance in one single layer?:___
 ```
 .define
-    @pizza_kind = BBQ chicken|meat|Hawaiian|...
+    @pizza_kind: BBQ chicken|meat|Hawaiian|...
 .train
     ORDER_PIZZA: i would like to place an order for small @pizza_kind{t_kind} and \
                  large @pizza_kind{t_kind} pizza
@@ -407,9 +407,9 @@ You could say - ___How about if I have a macro @pizza_kind and put all values th
 Of course you can! BUT, how many utterances will be produced? ***A LOT!!!*** Imagine if on top you have:
 ```
 .define 
-    @i = i|we|they 
-    @order = (place|) order for|get|buy
-    @small = small|large|medium|
+    @i: i|we|they 
+    @order: (place|) order for|get|buy
+    @small: small|large|medium|
 ```
 ```
 ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and \
@@ -418,7 +418,7 @@ ORDER_PIZZA: @i would like to @order @small @pizza_kind{t_kind} and \
 So, this mechanism enables smaller context needed to train the layer to extract and label the pizza kinds. Look - do you need ***all*** words in the example utterance in layer "Pizza kinds"? Not really. So, I would put into training file something like this:
 ```
 .define 
-    @pizza_kind = BBQ chicken|meat|pepperoni|Hawaiian
+    @pizza_kind: BBQ chicken|meat|pepperoni|Hawaiian
 .train
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
@@ -449,7 +449,7 @@ Using `toth` flags:
     "toth":True
     "intent_to_utterance":true
 ```
-or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users intents and answers as a context for next deductions. Intents of the previous statements are embedded into next user utterances. It allows to have multiturn dialogs.
+or/and `prompts templates` we can follow __`train of thought`__ of the conversation and use users intents and answers as a context for next inferences. Intents of the previous statements are embedded into next user utterances. It allows to have multiturn dialogs.
 
 Another example: pizza assistant. User can freely provide the information about the pizza without following strict order of the conversation:
 ```
@@ -470,8 +470,8 @@ The conversation flow depends on already provided parameters and system would as
 ```
 There are few things to know before we can create such dialog.
 
-### `gate` section
-Gate is a small script for generating new intent based on the deduction history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
+### `.gate` section
+Gate is a small script for generating new intent based on the inference history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
 .gate
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_kind' )
@@ -484,14 +484,14 @@ Gate is a small script for generating new intent based on the deduction history.
 ```
 ```
 .prompt
-    ASK_KIND = What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
-    ASK_SIZE = What size? (large, medium, small, etc)
-    ASK_TOPPINGS = Anything on top?(ham, cheese, tomatoes, etc)
-    ASK_ADDRESS = What is your address?
-    ASK_TO_CONFIRM = Your order is {t_size} {t_kind} pizza with {t_topping} \
+    ASK_KIND: What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
+    ASK_SIZE: What size? (large, medium, small, etc)
+    ASK_TOPPINGS: Anything on top?(ham, cheese, tomatoes, etc)
+    ASK_ADDRESS: What is your address?
+    ASK_TO_CONFIRM: Your order is {t_size} {t_kind} pizza with {t_topping} \
                      to be delivered to {t_address} Should I go ahead and place the order?
-    R~THANKS_YES = Thank you for your order
-    R~THANKS_NO = Sure, I will cancel the order for you
+    R~THANKS_YES: Thank you for your order
+    R~THANKS_NO: Sure, I will cancel the order for you
 ```
 The intuition is simple. It reads like this - when current intent is ORDER_PIZZA and we still don't know pizza kind - generate intent ASK_KIND to ask user about pizza kind. The actual question is in the `prompt` section.
 ***ORDER of gates IS important!!!*** Gates are applied in the same order listed in the section.
@@ -511,20 +511,6 @@ Consider another example:
     'ASK_CITY' if o.t_intent == 'Q42' and not hasattr( o, 't_city' )
 ```
 Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is `Q42`, but the t_city was not provided, return intent which would tell user something like: 'You did not provide the city'. You can argue the rational of this, saying why can't I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.
-
-### `proto` section
-Prototype section is used to specify, which intents and slots should be linked together. Such association is needed for the [gate section](#gate-section) to build an object with the slots and their values from the deduction history, so that the gate is using the only subset of data from the history. The deduction history may contain lots of previous deductions and they might not be related to each other. In other words, the prototype mechanism enables context isolation for the gate.
-Syntax:
-```
-.proto
-    <List of intents separated by commas> : <list of slot names separated by commas>
-```
-Pizza example:
-```
-.proto
-    ORDER_PIZZA, ORDER_PIZZA_YES, ORDER_PIZZA_NO: t_kind, t_size, t_toppings, t_address
-```
-This section creates a link between a ***list of intents and corresponding list of slots***. Once all slot values are collected the conversation is considered complete.
 
 ## User asks questions
 The best example of such dialog would be Frequetly Asked Questions of a website. Again toth mechanism allows following handling questions differently depending on the context. Example of our web service:
@@ -563,7 +549,7 @@ Training file:
     DO_CREATE_PROJECT: First, you need to create a project
     MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
 ```
-As you can see here, the same question 'How?' gives contextual adequate response. Also see [how to control deduction history](#how-to-control-deduction-history) section for intent prefixes.
+As you can see here, the same question 'How?' gives contextual adequate response. Also see [how to control inference history](#how-to-control-inference-history) section for intent prefixes.
 
 # Regex section
 ## Replacement
@@ -585,10 +571,10 @@ More complex example:
     P_SIZE:\b(?:small|medium|large)\b
 ```
 The actual value of `small`, `medium` or `large` is replaced by `P_SIZE` and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See [pizza2 example](#pizza2-bot-example) for more details.
-`IMPORTANT!` There must be one group deduced by the regular expression(!)
+`IMPORTANT!` There must be one group infered by the regular expression(!)
 
 # Prompt label
-Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one deduction layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first deduction layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
+Prompt is a powerful tool of ___ToTh___ mechanism to control passing information from one inference layer to another. It could be a simple text response corresponding to user query or a ___template which uses collected slot and their values___ to build next 'utterance' for next layer in the pipeline, __IF desired__. Must reiterate this point. Very first inference layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.
 ```
 utterance => 
     Layer1 => 
@@ -613,77 +599,77 @@ Utterance: Take me to Seattle =>
 The values in the template are controlled by prompt's prefixes as described below:
 
 ## Prefix __"#"__
-Implies using label's ___name___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___name___ in the ___most recent inference___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
-Example: t_name value is in the last deduction, t_age is absent
+Example: t_name value is in the last inference, t_age is absent
 .prompt
-    RESULT = {#t_name} {#t_age}
-    # The value of RESULT = t_name None
+    RESULT: {#t_name} {#t_age}
+    # The value of RESULT: t_name None
 ```
 
 ## Prefix __"?#"__  
-Implies using label's ___name___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___name___ in the ___most recent inference___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
-Example:  t_name value is in the last deduction, t_age is absent
+Example:  t_name value is in the last inference, t_age is absent
 .prompt
-    RESULT = {?#t_name} {?#t_age}
-    # The value of RESULT = t_name 
+    RESULT: {?#t_name} {?#t_age}
+    # The value of RESULT: t_name 
 ```
 
 ## Prefix __"$"__  
-Implies using label's ___name___ in ___whole deduction history___. The approach can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___name___ in ___whole inference history___. The approach can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
-    RESULT = {$t_name} {$t_age}
-    # The value of RESULT = t_name None
+    RESULT: {$t_name} {$t_age}
+    # The value of RESULT: t_name None
 ```
 
 ## Prefix __"?$"__  
-Implies using label's ___name___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___name___ in ___whole inference history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name value is in all whole history, t_age is absent
 .prompt
-    RESULT = {?$t_name} {?$t_age}
-    # The value of RESULT = t_name 
+    RESULT: {?$t_name} {?$t_age}
+    # The value of RESULT: t_name 
 ```
 
 ## Prefix __"."__ 
-Implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___value___ in the ___most recent inference___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
-Example: t_name = John is in the last deduction. 
+Example: t_name = John is in the last inference. 
 .prompt
-    GREETING = Hello {.t_name} => Hello John
+    GREETING: Hello {.t_name} => Hello John
 ```
 
 ## Prefix __"?."__  
-Implies using label's ___value___ in the ___most recent deduction___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___value___ in the ___most recent inference___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
-Example: t_name is absent in the last deduction. 
+Example: t_name is absent in the last inference. 
 .prompt
-    GREETING = Hello {?.t_name} => Hello
+    GREETING: Hello {?.t_name} => Hello
 ```
 
 ## Empty label prefix 
-Implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be replaced with 'None'___
+Implies using label's ___values___ in ___whole inference history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
-Example: t_kind values are in whole deduction history, t_kind = BBQ and t_kind = meat
+Example: t_kind values are in whole inference history, t_kind = BBQ and t_kind = meat
 .prompt
-    ORDER_PIZZA = Ok, I will place an order of {t_kind} pizza for you => 
+    ORDER_PIZZA: Ok, I will place an order of {t_kind} pizza for you => 
     => Ok, I will place an order of BBQ, meat pizza for you
 ```
 
 ## Prefix __"?"__  
-Implies using label's ___values___ in ___whole deduction history___. ___NOTE: if value is absent it will be skipped from the prompt___
+Implies using label's ___values___ in ___whole inference history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
-Example: t_name is absent in deduction history
+Example: t_name is absent in inference history
 .prompt
-    GREETING = Hello {?t_name} => Hello
+    GREETING: Hello {?t_name} => Hello
 ```
 
 ## Prompt label value access by index  
-While building a prompt, the label value can be accessed by index in the deduction history, like so: `{t_utt-1}`. Index `-1` refers value of the label `t_utt` of in the previous deduction. 
-If previous deduction is not available, `None` value is used in the prompt. If you want the value to be omitted in such case, use `{?t_utt-1}`.
+While building a prompt, the label value can be accessed by index in the inference history, like so: `{t_utt-1}`. Index `-1` refers value of the label `t_utt` of in the previous inference. 
+If previous inference is not available, `None` value is used in the prompt. If you want the value to be omitted in such case, use `{?t_utt-1}`.
 
 ```
 Example: 
@@ -746,7 +732,7 @@ It is not always makes sense to use trainable models in all layers. Sometimes it
 Developers of knowledge domains are faced with the challenge to come up with as many variations of utterances as possible, so the system can understand all users - the ways they talk. From one side - we want to have lots of utterances to achieve that, but on the other hand it leads to longer training times.
 ```
 .define
-    @and = and|also|as well as
+    @and: and|also|as well as
 .train
     I would like ham @and extra cheese on top 
 ```
@@ -754,7 +740,7 @@ In the example above we would have 3 utterances instead of one because we have 3
 Lets review regex section.
 ```    
 .define 
-    @small = small|medium|large
+    @small: small|medium|large
 .regex
     // Prefix & is to indicate simple replacement
     // Ex utterance:  
@@ -763,31 +749,31 @@ Lets review regex section.
 
     // Lookup label replacement
     // Replace all values of @small definition by P_SIZE.
-    // At the end of deduction it will be replaced by its origial value.
+    // At the end of inference it will be replaced by its origial value.
     // P_SIZE will be used for training instead of all values of @small
     P_SIZE: (?:@small)
 ```
-```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final deduction.
-```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final deduction result. 
+```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final inference.
+```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final inference result. 
 ___NOTE!___ Regex section is used for both - __training__ and __prediction__ modes.
-___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc. so next layer that supposed to deduce user intents would not deal with them.
+___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc. so next layer that supposed to infere user intents would not deal with them.
 __base.h__ file:
 ```
 .define
-    @i = i|we
-    @i_want = @i @want
-    @pizza = pizza
-    @please = please|kindly
-    @want = want|need|would like
-    @and = and|and also|as well as
-    @small = small|large|medium
-    @kind = pepperoni|meat|Hawaiian|BBQ|meat|cheese
-    @toppings = ham|cheese|tomato|meat|cheese
-    @address = seattle|vancouver
-    @extra = extra|
-    @the = the|a|
-    @yes = yes|sure|go ahead|you bet|sure why not
-    @no = no|no way|nope|(@i|) changed my mind
+    @i: i|we
+    @i_want: @i @want
+    @pizza: pizza
+    @please: please|kindly
+    @want: want|need|would like
+    @and: and|and also|as well as
+    @small: small|large|medium
+    @kind: pepperoni|meat|Hawaiian|BBQ|meat|cheese
+    @toppings: ham|cheese|tomato|meat|cheese
+    @address: seattle|vancouver
+    @extra: extra|
+    @the: the|a|
+    @yes: yes|sure|go ahead|you bet|sure why not
+    @no: no|no way|nope|(@i|) changed my mind
 ```
 
 Original utterance transformation with "SLOTS" layer:
@@ -838,18 +824,18 @@ __pizza.txt__ file:
     // .train
     //   ASK_KIND: if t_kind is missing
     // See bot.txt file.
-    ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
+    ORDER_PIZZA: if {$!t_kind|t_size|t_toppings|t_address|none} is missing
 
     // NOTE! Prefix R~(==return) is an instruction to collect all slots values and clean up
-    // the deduction history, thus to forget what user said before.
-    R~ORDER_PIZZA_YES = Thank you for you order :)
-    R~ORDER_PIZZA_NO = Sure, may be next time
+    // the inference history, thus to forget what user said before.
+    R~ORDER_PIZZA_YES: Thank you for you order :)
+    R~ORDER_PIZZA_NO: Sure, may be next time
 ```
 Now time to discuss:
 ```
 "toth":true
 ```
-It tells that the layer wants to receive ___last intent___ as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make deductions more accurate. __NOTE!__ Intents can be generated by any layer in the stack and be passed to the next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value is passed to the next layer unchanged. Consider the following training utterance:
+It tells that the layer wants to receive ___last intent___ as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make inferences more accurate. __NOTE!__ Intents can be generated by any layer in the stack and be passed to the next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value is passed to the next layer unchanged. Consider the following training utterance:
 ```
 .train
     ORDER_PIZZA: ASK_TOPPINGS I want pizza with P_TOPPINGS{t_toppings}
@@ -857,15 +843,15 @@ It tells that the layer wants to receive ___last intent___ as a prefix to the in
 It reads like this: when user is prompted to provide pizza toppings(previous intent was ___ASK_TOPPINGS___) and user response is 'I want pizza with cheese', produce ___ORDER_PIZZA___ intent and assign ___t_toppings___ with its value. ```t_toppings = cheese```
 
 Layer 'Pizza' should contain as many utterances as possible to understand any user and the way they talk! The layer collects all slots and their values. 
-Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer deduction is based on the fact which slots we have already collected. This information is stored in the deduction history, which is what user said before. See the comments in prompt section above.
+Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer inference is based on the fact which slots we have already collected. This information is stored in the inference history, which is what user said before. See the comments in prompt section above.
 ```
 .prompt
-    ORDER_PIZZA = if {$!t_kind|t_size|t_toppings|t_address|none} is missing
+    ORDER_PIZZA: if {$!t_kind|t_size|t_toppings|t_address|none} is missing
 ```
-```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all deduction history and put __slot names__(prefix __'$'__) which are __NOT__ present in the deduction history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt's template could just look like this:
+```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all inference history and put __slot names__(prefix __'$'__) which are __NOT__ present in the inference history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt's template could just look like this:
 ```
 .prompt
-    ORDER_PIZZA = {$!t_kind|t_size|t_toppings|t_address|none}
+    ORDER_PIZZA: {$!t_kind|t_size|t_toppings|t_address|none}
 ```
 This way we build prompts providing sufficient information to the next layer to decide - what to ask next. 
 Layer 'Pizza' generates prompts => utterances for next layer:
@@ -894,16 +880,16 @@ __bot.txt__ training file is very simple and contains very few 'utterances', whi
     ASK_ADDRESS: if t_address is missing
     ASK_TO_CONFIRM: if None is missing
 .prompt
-    ASK_KIND = What kind of pizza would you like. For example, Hawaiian, BBQ, etc.?
-    ASK_SIZE = Small, medium or large?
-    ASK_TOPPINGS = What do you want on top. For example: tomato, ham, cheese, etc.?
-    ASK_ADDRESS = What is delivery address?
-    ASK_TO_CONFIRM = Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
+    ASK_KIND: What kind of pizza would you like. For example, Hawaiian, BBQ, etc.?
+    ASK_SIZE: Small, medium or large?
+    ASK_TOPPINGS: What do you want on top. For example: tomato, ham, cheese, etc.?
+    ASK_ADDRESS: What is delivery address?
+    ASK_TO_CONFIRM: Your order is {?t_cnt} {t_size} {t_kind} pizza with {t_toppings} to \
                      be delivered to {t_address}. Would you like to go ahead with the order?
 ```
-The training set for 'Bot' layer is self-explanatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gate](#gate-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of deduction.
+The training set for 'Bot' layer is self-explanatory. Generate ___ASK_KIND___ prompt to user if ___t_kind___ slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use [.gate](#gate-section-script) section described before to 'script' the same logic, thus skipping training altogether for this type of inference.
 
-## Pizza project Final Deduction
+## Pizza project Final Inference
 Let's review utterance transformation going though all layers of the 'Pizza2' project:
 ```
 // 'Slot' layer
@@ -923,30 +909,30 @@ What is the delivery address?
 
 I hope it is clear why the 1st question is 'What is the delivery address'. It is because user already provided ___t_kind___, ___t_toppings___ and ___t_size___ in the original sentence.
 
-# Deduction history
-This information is useful to understand platform operation under the hood. Deduction history could be simply described as the "things user said before". All deductions are collected in the ```history``` or ```stack```. Those terms will be used interchangeably. The deduction history contains:
+# Inference history
+This information is useful to understand platform operation under the hood. Inference history could be simply described as the "things user said before". All inferences are collected in the ```history``` or ```stack```. Those terms will be used interchangeably. The inference history contains:
 * Layer's input utterance with predefined slot name ```t_utt```
 * Layer's intent with predefined slot name ```t_intent```, if any
-* Layer's deduced ```slots``` and their ```values```, if any
+* Layer's infered ```slots``` and their ```values```, if any
 * Layer's prompt with predefined slot name ```t_prompt```, if any
 
-# How to control deduction history
+# How to control inference history
 
-At some point we need to collect all slots values in the stack to build an aggregative deduction (pizza order), or may be forget whole deduction, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
+At some point we need to collect all slots values in the stack to build an aggregative inference (pizza order), or may be forget whole inference, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
-R~ - Return all collected slots values in the deduction history and clean the history. "Return" command.
-F~ - Do not remember this particular deduction in the history - "Deduce and forget" command.
+R~ - Return all collected slots values in the inference history and clean the history. "Return" command.
+F~ - Do not remember this particular inference in the history - "Infere and forget" command.
 P~ - One step back command. 'Can you repeat it please?'
 B~ - Two steps back command. 'What did you say before that?'
 C~ - Change value of a slot. "Change" command.
-X~ - Clean previous deduction history and do not save current deduction in it.
-I~ - Clean previous deduction history and save current deduction in it. 'Tertis' game effect.
+X~ - Clean previous inference history and do not save current inference in it.
+I~ - Clean previous inference history and save current inference in it. 'Tertis' game effect.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
-Intent without prefix with deduced slots and their values are saved in the deduction history.
+Intent without prefix with infered slots and their values are saved in the inference history.
 `ORDER_PIZZA: @i @want some @pizza @please`
 where
 `t_intent = ORDER_PIZZA` will be kelp in stack until `R~` or `X~` session-based conversation intent comes along to erase it.
@@ -958,10 +944,10 @@ In 'Pizza' layer we have:
     R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
     R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
 .prompt:
-    R~ORDER_PIZZA_YES = Thank you for you order :)
-    R~ORDER_PIZZA_NO = Sure, may be next time
+    R~ORDER_PIZZA_YES: Thank you for you order :)
+    R~ORDER_PIZZA_NO: Sure, may be next time
 ```
-Intents with ```'R~'``` prefix tell the framework to collect all slots and their values from history and return them to user as a deduction in json format. After that deduction history will be erased.
+Intents with ```'R~'``` prefix tell the framework to collect all slots and their values from history and return them to user as a inference in json format. After that inference history will be erased.
 ```json
 {
     "t_size":"small", 
@@ -969,18 +955,18 @@ Intents with ```'R~'``` prefix tell the framework to collect all slots and their
     "t_toppings": ["cheese", "ham"]
 }
 ```
-* ## `F~` prefix. Deduce and Forget command
-The prefix is used to prevent saving the deduction in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting deduction will be returned, and it will not be remembered in the stack.
+* ## `F~` prefix. Infere and Forget command
+The prefix is used to prevent saving the inference in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting inference will be returned, and it will not be remembered in the stack.
 ```json
 {
     "t_intent":"GET_TIME",
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only deduces the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
+This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only inferes the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
 
 * ## `P~` prefix. One step back command
-The prefix tells the framework to take last/previous deduction in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
+The prefix tells the framework to take last/previous inference in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
 ```
 Bot>What type of pizza would you like?
 User>What?
@@ -992,12 +978,12 @@ Please note, if previous intent was either R~ or I~ or X~, there will be no hist
 .train
     F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
 .prompt:
-    F~REPEAT = *
+    F~REPEAT: *
 ```
 Star `*` symbol tells to grab last value of the `t_prompt` in the history. 
 
 * ## `B~` prefix. Two steps back command
-The prefix tells the framework to take `top-1` deduction from the history. It is useful for cases when user asks 'What did you say BEFORE that?'
+The prefix tells the framework to take `top-1` inference from the history. It is useful for cases when user asks 'What did you say BEFORE that?'
 
 * ## `C~` prefix. Change slot value command
 The prefix tells the framework to change the value of the slot in the history
@@ -1019,7 +1005,7 @@ The prefix tells the framework to change the value of the slot in the history
 The `t_dest` slot value `Seattle` will be replaced with `Vancouver` directly in the history.
 
 * ## `X~` prefix. Clean previous history command
-The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is not saved in the history.___
+The prefix should be used if current inference suggests that the previous history must not be kept any longer. ___Current inference is not saved in the history.___
 ```
 .train
     CONFIRMATION:Would you like to proceed with your order?
@@ -1033,11 +1019,11 @@ The prefix should be used if current deduction suggests that the previous histor
     // Wipe out the history
     X~CANCEL_ORDER: Sure, I am canceling your order
 ```
-Note, current deduction slots, if any, will be returned to user in the deduction. 
-This prefix should be used for self-contained deduction, meaning it has all information needed to make confident conclusion, plus no further deduction should rely on it.
+Note, current inference slots, if any, will be returned to user in the inference. 
+This prefix should be used for self-contained inference, meaning it has all information needed to make confident conclusion, plus no further inference should rely on it.
 
 * ## `I~` prefix. Clean previous history and restart command
-The prefix should be used if current deduction suggests that the previous history must not be kept any longer. ___Current deduction is saved in the history.___ Think of this command's effect as 'Tertis' effect.
+The prefix should be used if current inference suggests that the previous history must not be kept any longer. ___Current inference is saved in the history.___ Think of this command's effect as 'Tertis' effect.
 
 # Idioms interpretation. Intent prefix `~`
 
@@ -1053,7 +1039,7 @@ To support truly natural language understanding, we have a mechanism to interpre
 Prefix `~` must be first one in the intent. It __can__ be used in combination with previously described prefixes. For example `~I~NAV`. It means that prompt contains additional slots. `I~` tells framework to restart collecting the history, while previous history will be lost. See [above](#i-prefix-clean-previous-history-and-restart-command).
 Please also note the separator `;` between slots-value pairs. 
 
-# Remove slot value from deduction history. `$del` command
+# Remove slot value from inference history. `$del` command
 Lets say you want to delete a slot value from the history. Consider the example:
 ```
 .train
@@ -1080,7 +1066,7 @@ Consider the training samples using `P_PLACE` slot type:
 ```
 First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
 `INT_NAVIGATE/t_place/t_dest:take me there`
-Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the deduction history and put its value to substitute `there`.
+Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the inference history and put its value to substitute `there`.
 ![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_01.png "Conventional it/there reolution")
 As you can see, you have to collect inferences in client application and resolve the value of 'it'. With zCymatix platform all done automatically on backend side.
 
@@ -1112,7 +1098,7 @@ With [`zCymatix`](http://www.zcymatix.com) platform it is possible to encode and
 .train
     PLAY_MUSIC: __living_room__{t_location} play P_ARTIST{t_artist}
 ```
-and the deduction would be:
+and the inference would be:
 ```json
 {
     "t_intent":"PLAY_MUSIC",
@@ -1122,7 +1108,7 @@ and the deduction would be:
 ```
 So what? Here the advantages:
 1. Client device `did NOT make the decision` where to play the music, but merely provided encoded sensor information or in this case it is a state - "where am I at the moment" == `living room`.
-2. This is `not hardcoded logic`, because the model which deduced the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
+2. This is `not hardcoded logic`, because the model which infered the intent and slots `resides on the backend` and can be trained or re-trained at any time, so there is no need to "install new version" of the application just because of some changes in logic.
 
     __NOTE!__ You need to train your models with encoded events/states and modify user utterance in prediction mode.
 
@@ -1148,12 +1134,12 @@ Use backslash `\` to break long line. NOTE, white spaces on next line are ignore
 # Unknown word marker
 __`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
 
-# Placement slot deduction
-`Placement slot deduction` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.
+# Placement slot inference
+`Placement slot inference` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.
 Example:
 ```
 .define
-    @pizza_kind = BBQ chicken|Hawaiian|<UNK>|<UNK> <UNK>
+    @pizza_kind: BBQ chicken|Hawaiian|<UNK>|<UNK> <UNK>
 .train
     ORDER_PIZZA:I would like to order @pizza_kind{t_kind}
 ```
@@ -1173,7 +1159,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
         INT_FLIGHT_INFO:show me flights to Seattle{t_dest}
         don't show me flights to Seattle
     ```
-    Second sample does not have an intent or slots to deduce. This means that this statement will be __`just ignored`__ and no deduction will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
+    Second sample does not have an intent or slots to infere. This means that this statement will be __`just ignored`__ and no inference will be made, __if we wish__. So, the training process will teach the model to remember the difference between these samples.
 
 - Do not use intent names that can be confused for words. I recommend using something like `INT_DO_SOMETHING`. 
 
@@ -1181,33 +1167,33 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 
 - Do not use slot types names that can be confused for words. I recommend using something like `PIZZA_KIND` or similar
 
-- Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
+- Slot name template is __`t_<name>`__ keeping in mind that __`t_intent`__, __`t_prev_intent`__, __`t_utt`__ and __`t_prompt`__ are reserved.
 
-- Slot deduction. Consider two training sets:
+- Slot inference. Consider two training sets:
  `Single layer project` which attempts not to use slot types isolation step:
     ```
         .train
             INT_NAVIGATE:take me to (Los Angeles){t_dest} and to (New York){t_dest}
     ```
-    with deduction for the sample above:
+    with inference for the sample above:
     ```json
         {
             "t_intent":"INT_NAVIGATE",
             "t_dest":["Los", "Angeles", "New", "York"]
         }
     ```
-    vs `Two layers project` which uses type definition layer and a separate slot value deduction layer:
+    vs `Two layers project` which uses type definition layer and a separate slot value inference layer:
     ```
         # Layer 1 - type training
         .train 
             take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE}
     ```
     ```
-        # Layer 2 - intents and slots deduction
+        # Layer 2 - intents and slots inference
         .train
             INT_NAVIGATE:take me to P_PLACE{t_dest} and to P_PLACE{t_dest}
     ```
-    with deduction for the sample:
+    with inference for the sample:
     ```json
         {
             "t_intent":"INT_NAVIGATE",
@@ -1238,7 +1224,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     Unless `bi_lstm` is enabled, model will not be able to tell that in first case `ABC` refers to a `pizza type` and in second, to `pizza toppings`. It is sort of look ahead. There is an alternative though - enable convolutional layer.
 
-- Confidence level. By default, `0.9` - 90%. Level to consider deduction reliable. If deduced intent has lower probability, it will be replaced with `error_intent` if it is set.
+- Confidence level. By default, `0.9` - 90%. Level to consider inference reliable. If infered intent has lower probability, it will be replaced with `error_intent` if it is set.
     ```
     "confidence":0.9
     ```
@@ -1266,11 +1252,11 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "toth":false
     ```
-- Toth fallback mode . By default, it is `true`. If true, and the deduction probability of the intent is lower than confidence level, `toth` mode will be turned off for this deduction.
+- Toth fallback mode . By default, it is `true`. If true, and the inference probability of the intent is lower than confidence level, `toth` mode will be turned off for this inference.
     ```
     "toth_fallback_mode":true
     ```
-- A layer can be optionally included into the deduction pipeline. When `accept_r_intents_only` is True , only  `R~` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the deduction. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
+- A layer can be optionally included into the inference pipeline. When `accept_r_intents_only` is True , only  `R~` prefixed intent produced by one of the __previous layers__ will enable this layer to be included in the inference. By default, is it `False`.  This is useful for expert system layers, where it should not be a part of collecting slots values, but rather when we need to process the whole collection of the slots.
     ```
     "accept_r_intents_only":true
     ```
@@ -1282,43 +1268,43 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "version":"0000.0000.0000"
     ```
-- To include vendor name into the deductions. By default, it is `False`
+- To include vendor name into the inferences. By default, it is `False`
     ```
     "include_vendor":false
     ```
-- To include version number into the deductions. By default, it is `False`
+- To include version number into the inferences. By default, it is `False`
     ```
     "include_version":false
     ```
-- To include layer name into the deductions. By default, it is `False`
+- To include layer name into the inferences. By default, it is `False`
     ```
     "include_layer_name":false
     ```
-- To include intents into the deductions. By default, it is `True`
+- To include intents into the inferences. By default, it is `True`
     ```
     "include_intents":true
     ```
-- To include prompt into the deductions. By default, it is `True`
+- To include prompt into the inferences. By default, it is `True`
     ```
     "include_prompts":true
     ```
-- To include utterance into the deductions. By default, it is `True`
+- To include utterance into the inferences. By default, it is `True`
     ```
     "include_utt":true
     ```
-- To keep last intent only in the deductions. By default, it is `True`
+- To keep last intent only in the inferences. By default, it is `True`
     ```
     "keep_last_intent":true
     ```
-- To keep last prompt only in the deductions. By default, it is `True`
+- To keep last prompt only in the inferences. By default, it is `True`
     ```
     "keep_last_prompt":true
     ```
-- To keep last utterance only in the deductions. By default, it is `True`
+- To keep last utterance only in the inferences. By default, it is `True`
     ```
     "keep_last_utterance":true
     ```
-- To convert the intent value to an utterance for the next layer in the deduction pipeline. By default, it is `False`. 
+- To convert the intent value to an utterance for the next layer in the inference pipeline. By default, it is `False`. 
     ```
     "intent_to_utterance":false
     ```
@@ -1334,7 +1320,7 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
         INT_YES:I guess so|it is rather yes then no|...
     .prompt
         // Utterance for the next layer will be the intent itself taken 
-        // from the current deduction
+        // from the current inference
         INT_YES: {.t_intent}
     ```
     See [Prefix "."](#prefix--4)
@@ -1420,23 +1406,19 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "conv_padding ":"same"
     ```
-- Use dropout layer. By default, `false`.
+- Dropout layer value. By default, `0.0`.
     ```
-    "dropout_layer ":"false"
+    "dropout_layer_value ":0.0
     ```
-- Dropout layer value. By default, `0.3`.
+- Include signle words into training set. By default, `false`. If true, all single words are added to the training set without any labels.
     ```
-    "dropout_layer_value ":0.3
+    "include_single_words":false
     ```
-- Ignore signle words. By default, `false`. If true, all single words are added to the training set without any labels.
+- Include intent names into training set. By default, `false`. If true, all intents are added to the training set without any labels.
     ```
-    "ignore_single_words":false
+    "include_intent_words":false
     ```
-- Ignore intents. By default, `false`. If true, all intents are added to the training set without any labels.
-    ```
-    "ignore_intent_words":false
-    ```
-- Error intent. By default, ``. If set, this is the intent to be used if deduction probability did not reach confidence level.
+- Error intent. By default, ``. If set, this is the intent to be used if inference probability did not reach confidence level.
     ```
     "error_intent":""
     ```
