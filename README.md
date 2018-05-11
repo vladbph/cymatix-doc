@@ -263,7 +263,7 @@ What if we want AI system to respond to user query? Let's use the 'Hello World' 
 ```
 By adding section ***.prompt*** we can define user prompts: 
 ```
-INTENT=<PROMPT VARIANT>
+INTENT:<PROMPT VARIANT>
 ```
 In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
