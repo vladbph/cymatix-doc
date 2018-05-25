@@ -1,4 +1,3 @@
-
 # [zCymatix](http://www.zcymatix.com) Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform 
 # [Sign Up](https://nlp2.zcymatix.com/) 
 # [Dashboard Android App](https://play.google.com/store/apps/details?id=com.zcymatix.demo)
@@ -85,15 +84,14 @@ Table of Contents
 - ***`Train Of Thought technology`***
     * Maintains a train of thought of the conversation using proprietary mechanism and inferences history
 - ___`Session-based conversation instances`___  Memory and context is kept on the `backend`. Client application does not need to collect inference history(!).
-- ***`Inference pipeline`*** to efficiently resolve ambiguity
 - Ability to create ***`1000s of utterances`*** in minutes
 - ___`States, Events and Sensors Data Embedding`___ contextual support
-- `Regex` layer support. Yes, why would you need to use ML for simple things.? You may, but you don't have to
-- Optional `scripting support`.
-    * All layers of the pipeline are ML layers, however if desired, scripting can be used to make contextual changes.
+- ___`Scripting support`___.
+    * Along with `ToTh`, developer may choose to use python scripts that runs on backend to update inferences based on the context. This way client application focuses on the task at hand.
+- `Regex` support. Yes, why would you need to use trainable models for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
     * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_dest':'Home' } ```
-- Lookup labels support
+- Trainable Lookup labels support
     * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
 - NLU tasks:
     - `Self-contained` inferences:
@@ -115,8 +113,7 @@ Table of Contents
         * User> __How?__
         * __Bot__> Create a folder, then create configuration file and training files for me to learn
     - Combination of above
-- ***Indirect*** subject referencing
-    * Notion of ***`it/there`***
+- ***Coreference Resolution*** 
         * 'Where is Seattle'
         * 'Take me there'
 - ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
