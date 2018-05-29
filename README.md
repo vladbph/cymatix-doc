@@ -83,10 +83,10 @@ Table of Contents
 # Features Highlights
 - ***`Train Of Thought technology`***
     * Maintains a train of thought of the conversation using proprietary mechanism and inferences history
-- ___`Session-based conversation instances`___  Memory and context is kept on the `backend`. Client application does not need to collect inference history(!).
+- ***`Session-based conversation instances`***  Memory and context is kept on the `backend`. Client application does not need to collect inference history(!).
 - Ability to create ***`1000s of utterances`*** in minutes
-- ___`States, Events and Sensors Data Embedding`___ contextual support
-- ___`Scripting support`___.
+- ***`States, Events and Sensors Data Embedding`*** contextual support
+- ***`Scripting support`***
     * Along with `ToTh`, developer may choose to use python scripts that runs on backend to update inferences based on the context. This way client application focuses on the task at hand.
 - `Regex` support. Yes, why would you need to use trainable models for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
