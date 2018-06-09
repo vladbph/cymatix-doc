@@ -1079,6 +1079,7 @@ As you can see, you have to collect inferences in client application and resolve
 Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. IMPORTANT!
 
 __`o.t_intent`__ - has a string value of the current intent.
+
 __`o.t_prev_intent`__ - has a string value of previous intent.
 
 All other values of the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
@@ -1086,18 +1087,24 @@ So if you want to access the last value, do it like this:
 `o.t_target[ -1 ]`
 
 # `.script` section
-Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of function is limited to:
+Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of functions is limited to:
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 
 'to_json', 'to_namespace', 'to_dict', 'read', 'write'
 ```
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
+
 __`to_json( obj )`__ - to convert an object to a json string.
+
 __`to_namespace( obj )`__ - to convert dict to Namespace object
+
 __`read( session_id, file_name, data_string, shared = True )`__ - read from __shared__ or __private__ data storage. Private data storage is associated with an instance of the application.
-__`write( session_id, file_name, data_string, shared = True )`__ - write to __shared__ or __private__ data storage
+
+__`write( session_id, file_name, data_string, shared = True )`__ - write to __shared__ or __private__ data storage.
+
 __`z_sid`__ - is the __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls.
+
 ```
 Example:
         write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
