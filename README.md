@@ -1077,10 +1077,13 @@ As you can see, you have to collect inferences in client application and resolve
 
 # `.gate2` section
 Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. IMPORTANT!
-__`o.t_intent`__ - has a string value of the current intent
-__`o.t_prev_intent`__ - has a string value of previous intent
+
+__`o.t_intent`__ - has a string value of the current intent.
+__`o.t_prev_intent`__ - has a string value of previous intent.
+
 All other values of the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
-So if you want to access the last value, do it like this: `o.t_target[ -1 ]`
+So if you want to access the last value, do it like this: 
+`o.t_target[ -1 ]`
 
 # `.script` section
 Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of function is limited to:
