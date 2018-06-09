@@ -65,7 +65,7 @@ Table of Contents
       * [I~ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
    * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
    * [Remove slot value from inference history. $del command](#remove-slot-value-from-inference-history-del-command)
-   * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
+   * [Coreinference](#coreinference)
    * [.gate2 section](#gate2-section)
    * [.script section](#script-section)
    * [.vars section](#vars-section)
@@ -1056,7 +1056,7 @@ Lets say you want to delete a slot value from the history. Consider the example:
 ```
 In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.
 
-# Indirect references `it` or `there`
+# Coreinference
 
 Consider the training samples using `P_PLACE` slot type:
 ```
@@ -1076,13 +1076,15 @@ As you can see, you have to collect inferences in client application and resolve
 ![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
 # `.gate2` section
-Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. IMPORTANT!
+Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. NOTE! The following slot names are __reserved__:
 
-__`o.t_intent`__ - has a string value of the current intent.
+__`o.t_intent`__ - is a string value of the current intent.
 
-__`o.t_prev_intent`__ - has a string value of previous intent.
+__`o.t_prev_intent`__ - is a string value of previous intent.
 
-All other values of the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
+__`o.t_prompt`__ - is a list of previous prompts. 
+
+All other values of __user__ defined the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
 So if you want to access the last value, do it like this: 
 `o.t_target[ -1 ]`
 
