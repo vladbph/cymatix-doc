@@ -14,7 +14,6 @@
 
 Table of Contents
 =================
-
    * [Features Highlights](#features-highlights)
    * ['Hello Word' Example](#hello-word-example)
    * [Project Layers](#project-layers)
@@ -35,7 +34,7 @@ Table of Contents
       * [AI system asks questions](#ai-system-asks-questions)
          * [.gate section](#gate-section)
       * [User asks questions](#user-asks-questions)
-   * [Regex section](#regex-section)
+   * [.regex section](#regex-section)
       * [Replacement](#replacement)
       * [Lookup lables](#lookup-lables)
    * [Prompt label](#prompt-label)
@@ -67,15 +66,21 @@ Table of Contents
    * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
    * [Remove slot value from inference history. $del command](#remove-slot-value-from-inference-history-del-command)
    * [Indirect references it or <code>there</code>](#indirect-references-it-or-there)
+   * [.gate2 section](#gate2-section)
+   * [.script section](#script-section)
+   * [.vars section](#vars-section)
+   * [.slist section](#slist-section)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Multiple language support](#multiple-language-support)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unknown word marker](#unknown-word-marker)
    * [Placement slot inference](#placement-slot-inference)
+   * [Expert systems support](#expert-systems-support)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
+
 
 
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
@@ -469,7 +474,7 @@ The conversation flow depends on already provided parameters and system would as
 There are few things to know before we can create such dialog.
 
 ### `.gate` section
-Gate is a small script for generating new intent based on the inference history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
+Its purpose is to fullfil user query. Gate is a small script for generating new intent based on the inference history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
 .gate
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_kind' )
@@ -549,7 +554,7 @@ Training file:
 ```
 As you can see here, the same question 'How?' gives contextual adequate response. Also see [how to control inference history](#how-to-control-inference-history) section for intent prefixes.
 
-# Regex section
+# `.regex` section
 ## Replacement
 ```
 .regex
@@ -1070,6 +1075,57 @@ As you can see, you have to collect inferences in client application and resolve
 
 ![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
+# `.gate2` section
+Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. IMPORTANT!
+__`o.t_intent`__ - has a string value of the current intent
+__`o.t_prev_intent`__ - has a string value of previous intent
+All other values of the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
+So if you want to access the last value, do it like this: `o.t_target[ -1 ]`
+
+# `.script` section
+Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of function is limited to:
+```
+'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
+'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 
+'to_json', 'to_namespace', 'to_dict', 'read', 'write'
+```
+Most of the functions are standard builtin. Custom methods and data exposed by plaform:
+__`to_json( obj )`__ - to convert an object to a json string.
+__`to_namespace( obj )`__ - to convert dict to Namespace object
+__`read( session_id, file_name, data_string, shared = True )`__ - read from __shared__ or __private__ data storage. Private data storage is associated with an instance of the application.
+__`write( session_id, file_name, data_string, shared = True )`__ - write to __shared__ or __private__ data storage
+__`z_sid`__ - is the __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls.
+```
+Example:
+        write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
+```
+Data structures declared in this sections should be treated as `shared data` of the application, which can be saved/retrived to/from persisant memory via available methods: `read` and `write`
+
+# `.vars` section
+Its purpose to allocate variables declared in local context of python script.
+
+# `.slist` section
+The purpose is the same as `.list` section. In addition, global list variable in python environment is created. Example:
+```
+.slist = allergy_type
+    Eggs
+    Milk
+    Peanuts
+    Tree nuts
+    Fish
+```
+as a result global variable __`g_allergy_type`__ is created in global context of python script making it visible from `.gate`, `.gate2` and `.script` sections:
+```
+g_allery_type = [
+    'Eggs',
+    'Milk',
+    'Peanuts',
+    'Tree nuts',
+    'Fish'
+]
+
+```
+
 # Events, States, Sensors Information Embedding
 Contextual information embedding into utterances and prompts is the foundation of ToTh technology.
 Language operates by `symbols`. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can `encode` any `contextual information` such as `events` or `states` or even `sensors information` using symbols, which we can use in the `training set` expanding our samples with those symbols. 
@@ -1148,6 +1204,8 @@ User> I want to order blah pizza
     "t_kind":"blah"
 }
 ```
+# Expert systems support
+The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient's answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.
 
 # Recommendations, tips and tricks
 - Before starting creating a `project` or `knowledge domain` important to remember:
