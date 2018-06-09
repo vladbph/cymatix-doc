@@ -1095,15 +1095,16 @@ Its purpose to define global python methods and data within one layer. These met
 ```
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
 
-__`to_json( obj )`__ - to convert an object to a json string.
-
-__`to_namespace( obj )`__ - to convert dict to Namespace object
-
-__`read( session_id, file_name, data_string, shared = True )`__ - read from __shared__ or __private__ data storage. Private data storage is associated with an instance of the application.
-
-__`write( session_id, file_name, data_string, shared = True )`__ - write to __shared__ or __private__ data storage.
-
-__`z_sid`__ - is the __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls.
+- To convert an object to a json string:
+__`to_json( obj )`__ 
+- To convert dict to Namespace object:
+__`to_namespace( obj )`__
+- Read from __shared__ or __private__ data storage. Private data storage is associated with an instance of the application
+__`read( session_id, file_name, data_string, shared = True )`__ 
+- Write to __shared__ or __private__ data storage:
+__`write( session_id, file_name, data_string, shared = True )`__ 
+- The __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls:
+__`z_sid`__ 
 
 ```
 Example:
