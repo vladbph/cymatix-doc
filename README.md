@@ -1075,8 +1075,12 @@ As you can see, you have to collect inferences in client application and resolve
 
 ![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
-# `.gate2` section
-Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is intent and slot values are known. Important to remember the scope of available data. Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. NOTE! The following slot names are __reserved__:
+# Script sections
+To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could to keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.
+
+## `.gate2` section
+Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is when intent and slot values are known. Important to remember the scope of exposed data. 
+Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. NOTE! The following slot names are __reserved__:
 
 __`o.t_intent`__ - is a string value of the current intent.
 
@@ -1087,14 +1091,27 @@ __`o.t_prompt`__ - is a list of previous prompts.
 All other values of __user__ defined the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
 So if you want to access the last value, do it like this: 
 `o.t_target[ -1 ]`
+```
+.user
+    WHAT_TIME: what time is it?
+    .gate2
+        if o.t_intent == 'F~TIME':
+            o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
+        .bot
+            F~TIME: It is {t_cur_time}
+```
+See the set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
 
-# `.script` section
+## `.script` section
 Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of functions is limited to:
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 
-'to_json', 'to_namespace', 'to_dict', 'read', 'write'
+'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime'
 ```
+NOTE! Access to `datetime` must be done as a function. See example in `.gate2` section.
+__`datetime( ).now( )`__ - Correct
+`datetime.now( )` - Incorrect
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
 
 - To convert an object to a json string:
@@ -1119,10 +1136,10 @@ Example:
 ```
 Data structures declared in this sections should be treated as `shared data` of the application, which can be saved/retrived to/from persisant memory via available methods: `read` and `write`
 
-# `.vars` section
+## `.vars` section
 Its purpose to allocate variables declared in local context of python script.
 
-# `.slist` section
+## `.slist` section
 The purpose is the same as `.list` section. In addition, global list variable in python environment is created. Example:
 ```
 .slist = allergy_type
