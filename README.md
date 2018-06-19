@@ -76,7 +76,7 @@ Table of Contents
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unknown word marker](#unknown-word-marker)
-   * [Named Entity Resolution](#named-entity-resolution)
+   * [Named Entity Recognition](#named-entity-recognition)
    * [Expert systems support](#expert-systems-support)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
@@ -1223,8 +1223,8 @@ Use backslash `\` to break long line. NOTE, white spaces on next line are ignore
 # Unknown word marker
 __`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
 
-# Named Entity Resolution
-Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have `named entity resolution`. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let's have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.
+# Named Entity Recognition
+Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have `named entity recognition`. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let's have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.
 ```
 .define 
     @unk: <UNK>|<UNK> <UNK>|<UNK> <UNK> <UNK>

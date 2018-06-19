@@ -102,7 +102,7 @@
 <li><a href="#Comments_in_training_files_1216">Comments in training files</a></li>
 <li><a href="#Long_lines_continuation_1219">Long lines continuation</a></li>
 <li><a href="#Unknown_word_marker_1222">Unknown word marker</a></li>
-<li><a href="#Named_Entity_Resolution_1225">Named Entity Resolution</a></li>
+<li><a href="#Named_Entity_Recognition_1225">Named Entity Recognition</a></li>
 <li><a href="#Expert_systems_support_1271">Expert systems support</a></li>
 <li><a href="#Recommendations_tips_and_tricks_1274">Recommendations, tips and tricks</a></li>
 <li><a href="#Optional_configuration_parameters_1327">Optional configuration parameters</a></li>
@@ -1139,8 +1139,8 @@ In which room? I did not say it explicitly.
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
 <h1><a id="Unknown_word_marker_1222"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Named_Entity_Resolution_1225"></a>Named Entity Resolution</h1>
-<p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity resolution</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
+<h1><a id="Named_Entity_Recognition_1225"></a>Named Entity Recognition</h1>
+<p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity recognition</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
 <pre><code>.define 
     @unk: &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt; &lt;UNK&gt;
 .user
