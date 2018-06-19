@@ -89,20 +89,24 @@
 <li><a href="#Idioms_interpretation_Intent_prefix__1030">Idioms interpretation. Intent prefix ~</a></li>
 <li><a href="#Remove_slot_value_from_inference_history_del_command_1044">Remove slot value from inference history. $del command</a></li>
 <li><a href="#Coreinference_1058">Coreinference</a></li>
+<li><a href="#Script_sections_1077">Script sections</a>
+<ul>
 <li><a href="#gate2_section_1080">.gate2 section</a></li>
 <li><a href="#script_section_1104">.script section</a></li>
 <li><a href="#vars_section_1138">.vars section</a></li>
 <li><a href="#slist_section_1141">.slist section</a></li>
+</ul>
+</li>
 <li><a href="#Events_States_Sensors_Information_Embedding_1163">Events, States, Sensors Information Embedding</a></li>
 <li><a href="#Multiple_language_support_1205">Multiple language support</a></li>
 <li><a href="#Comments_in_training_files_1216">Comments in training files</a></li>
 <li><a href="#Long_lines_continuation_1219">Long lines continuation</a></li>
 <li><a href="#Unknown_word_marker_1222">Unknown word marker</a></li>
-<li><a href="#Placement_slot_inference_1225">Placement slot inference</a></li>
-<li><a href="#Expert_systems_support_1241">Expert systems support</a></li>
-<li><a href="#Recommendations_tips_and_tricks_1244">Recommendations, tips and tricks</a></li>
-<li><a href="#Optional_configuration_parameters_1297">Optional configuration parameters</a></li>
-<li><a href="#Advanced_configuration_parameters_1418">Advanced configuration parameters</a></li>
+<li><a href="#Named_Entity_Resolution_1225">Named Entity Resolution</a></li>
+<li><a href="#Expert_systems_support_1271">Expert systems support</a></li>
+<li><a href="#Recommendations_tips_and_tricks_1274">Recommendations, tips and tricks</a></li>
+<li><a href="#Optional_configuration_parameters_1327">Optional configuration parameters</a></li>
+<li><a href="#Advanced_configuration_parameters_1453">Advanced configuration parameters</a></li>
 </ul>
 <h4><a id="Machine_learning_NLU_system_designed_for_dialogues_and_expert_systems_The_platform_utilizes_proprietary_TothTrain_Of_Thought_technology_for_conversation_flow_tracking_and_supports_many_other_features_85"></a>Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features…</h4>
 <h3><a id="___Context_IS_everything_____86"></a><strong><em>“…Context IS everything …”</em></strong></h3>
@@ -1135,23 +1139,50 @@ In which room? I did not say it explicitly.
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
 <h1><a id="Unknown_word_marker_1222"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Placement_slot_inference_1225"></a>Placement slot inference</h1>
-<p><code>Placement slot inference</code> is used when we don’t know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.<br>
-Example:</p>
-<pre><code>.define
-    @pizza_kind: BBQ chicken|Hawaiian|&lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;
-.train
-    ORDER_PIZZA:I would like to order @pizza_kind{t_kind}
+<h1><a id="Named_Entity_Resolution_1225"></a>Named Entity Resolution</h1>
+<p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity resolution</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
+<pre><code>.define 
+    @unk: &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt; &lt;UNK&gt;
+.user
+    pizza with @unk{&amp;P_TOPPING} on top
+    pizza with @unk{&amp;P_TOPPING} topping
 </code></pre>
-<p>User&gt; I want to order blah pizza</p>
-<pre><code class="language-json">{
-    "<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"ORDER_PIZZA"</span></span>,
-    "<span class="hljs-attribute">t_kind</span>":<span class="hljs-value"><span class="hljs-string">"blah"</span>
-</span>}
+<p>Next let’s have a slot assignment layer:</p>
+<pre><code>.slist = topping_list
+    ham
+    onions
+    mushrooms
+    ...
+.user
+    // Assign slot t_topping with P_TOPPING value
+    pizza with P_TOPPING{t_topping} on top
+    .gate2
+        // Check if history has a slot t_topping and it is present in the list of known toppings
+        if hasattr( o, 't_topping' ):
+            if o.t_topping not in g_topping_list:
+                // Too bad, the topping is not known
+                del o.t_topping 
+            else:
+                // Topping value has been validated
+                pass
 </code></pre>
-<h1><a id="Expert_systems_support_1241"></a>Expert systems support</h1>
+<p>Third layer:</p>
+<pre><code>.user
+    ORDER_PIZZA: I would like to order pizza with ham on top
+    ORDER_PIZZA: I would like to have a pizza with onions topping
+    ...
+</code></pre>
+<p>User utterance: “I want pizza with onions on top”</p>
+<pre><code>{
+    &quot;t_utterance&quot;: &quot;I want pizza with onions on top&quot;,
+    &quot;t_intent&quot; : ORDER_PIZZA,
+    &quot;t_topping&quot;: &quot;onions&quot;
+}
+</code></pre>
+<p>This approach is recommended to be used when you don’t know all the values of the slot type or values are known, but they are too many. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for. We will not be discussing here whether this is good or bad way leaving it to developers, because it is task specific. The example above can be handled in one layer, if desired.</p>
+<h1><a id="Expert_systems_support_1271"></a>Expert systems support</h1>
 <p>The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient’s answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.</p>
-<h1><a id="Recommendations_tips_and_tricks_1244"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_1274"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -1207,7 +1238,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_1297"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_1327"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
@@ -1226,8 +1257,13 @@ I want ABC{t_pizza_topping} on top
 <p>Unless <code>bi_lstm</code> is enabled, model will not be able to tell that in first case <code>ABC</code> refers to a <code>pizza type</code> and in second, to <code>pizza toppings</code>. It is sort of look ahead. There is an alternative though - enable convolutional layer.</p>
 </li>
 <li>
-<p>Confidence level. By default, <code>0.9</code> - 90%. Level to consider inference reliable. If infered intent has lower probability, it will be replaced with <code>error_intent</code> if it is set.</p>
-<pre><code>&quot;confidence&quot;:0.9
+<p>Training confidence level. By default, <code>0.9</code> - 90%. Level to consider inference reliable during training. If infered intent has lower probability, it will be replaced with <code>error_intent</code>, if it is set.</p>
+<pre><code>&quot;train_confidence&quot;:0.9
+</code></pre>
+</li>
+<li>
+<p>Prediction confidence level. By default, <code>0.9</code> - 90%. Level to consider inference reliable during prediction. If infered intent has lower probability, it will be replaced with <code>error_intent</code>, if it is set.</p>
+<pre><code>&quot;pred_confidence&quot;:0.9
 </code></pre>
 </li>
 <li>
@@ -1345,7 +1381,7 @@ Alternatively, prompt mechanism can be used to achieve the same result, however 
 <p>See <a href="#Prefix______639">Prefix “.”</a></p>
 </li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1418"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1453"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>

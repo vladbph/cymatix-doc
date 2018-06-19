@@ -66,21 +66,21 @@ Table of Contents
    * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
    * [Remove slot value from inference history. $del command](#remove-slot-value-from-inference-history-del-command)
    * [Coreinference](#coreinference)
-   * [.gate2 section](#gate2-section)
-   * [.script section](#script-section)
-   * [.vars section](#vars-section)
-   * [.slist section](#slist-section)
+   * [Script sections](#script-sections)
+      * [.gate2 section](#gate2-section)
+      * [.script section](#script-section)
+      * [.vars section](#vars-section)
+      * [.slist section](#slist-section)
    * [Events, States, Sensors Information Embedding](#events-states-sensors-information-embedding)
    * [Multiple language support](#multiple-language-support)
    * [Comments in training files](#comments-in-training-files)
    * [Long lines continuation](#long-lines-continuation)
    * [Unknown word marker](#unknown-word-marker)
-   * [Placement slot inference](#placement-slot-inference)
+   * [Named Entity Resolution](#named-entity-resolution)
    * [Expert systems support](#expert-systems-support)
    * [Recommendations, tips and tricks](#recommendations-tips-and-tricks)
    * [Optional configuration parameters](#optional-configuration-parameters)
    * [Advanced configuration parameters](#advanced-configuration-parameters)
-
 
 
 #### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
@@ -1223,22 +1223,52 @@ Use backslash `\` to break long line. NOTE, white spaces on next line are ignore
 # Unknown word marker
 __`<UNK>`__ is used in training sets to mark words that are not in the vocabulary of the training set.
 
-# Placement slot inference
-`Placement slot inference` is used when we don't know all the values of the slot type. That is the type of the slot is not complete or unknown. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for at some particular place in the utterance. We will not be discussing here whether this is good or bad way leaving it to developers.
-Example:
+# Named Entity Resolution
+Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have `named entity resolution`. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let's have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.
 ```
-.define
-    @pizza_kind: BBQ chicken|Hawaiian|<UNK>|<UNK> <UNK>
-.train
-    ORDER_PIZZA:I would like to order @pizza_kind{t_kind}
+.define 
+    @unk: <UNK>|<UNK> <UNK>|<UNK> <UNK> <UNK>
+.user
+    pizza with @unk{&P_TOPPING} on top
+    pizza with @unk{&P_TOPPING} topping
 ```
-User> I want to order blah pizza
-```json
+Next let's have a slot assignment layer:
+```
+.slist = topping_list
+    ham
+    onions
+    mushrooms
+    ...
+.user
+    // Assign slot t_topping with P_TOPPING value
+    pizza with P_TOPPING{t_topping} on top
+    .gate2
+        // Check if history has a slot t_topping and it is present in the list of known toppings
+        if hasattr( o, 't_topping' ):
+            if o.t_topping not in g_topping_list:
+                // Too bad, the topping is not known
+                del o.t_topping 
+            else:
+                // Topping value has been validated
+                pass
+```
+Third layer:
+```
+.user
+    ORDER_PIZZA: I would like to order pizza with ham on top
+    ORDER_PIZZA: I would like to have a pizza with onions topping
+    ...
+```
+User utterance: "I want pizza with onions on top"
+```
 {
-    "t_intent":"ORDER_PIZZA",
-    "t_kind":"blah"
+    "t_utterance": "I want pizza with onions on top",
+    "t_intent" : ORDER_PIZZA,
+    "t_topping": "onions"
 }
 ```
+This approach is recommended to be used when you don't know all the values of the slot type or values are known, but they are too many. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for. We will not be discussing here whether this is good or bad way leaving it to developers, because it is task specific. The example above can be handled in one layer, if desired.
+
 # Expert systems support
 The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient's answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.
 
@@ -1315,9 +1345,14 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     Unless `bi_lstm` is enabled, model will not be able to tell that in first case `ABC` refers to a `pizza type` and in second, to `pizza toppings`. It is sort of look ahead. There is an alternative though - enable convolutional layer.
 
-- Confidence level. By default, `0.9` - 90%. Level to consider inference reliable. If infered intent has lower probability, it will be replaced with `error_intent` if it is set.
+- Training confidence level. By default, `0.9` - 90%. Level to consider inference reliable during training. If infered intent has lower probability, it will be replaced with `error_intent`, if it is set.
     ```
-    "confidence":0.9
+    "train_confidence":0.9
+    ```
+
+- Prediction confidence level. By default, `0.9` - 90%. Level to consider inference reliable during prediction. If infered intent has lower probability, it will be replaced with `error_intent`, if it is set.
+    ```
+    "pred_confidence":0.9
     ```
 - Learning rate value. By default, `0.01`. 
     ```
