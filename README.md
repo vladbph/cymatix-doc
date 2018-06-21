@@ -96,7 +96,7 @@ Table of Contents
 - `Regex` support. Yes, why would you need to use trainable models for simple things.? You may, but you don't have to.
 - Idioms interpretation mechanism
     * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_dest':'Home' } ```
-- Trainable Lookup labels support
+- Named Entity Recognition support
     * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
 - NLU tasks:
     - `Self-contained` inferences:
@@ -190,19 +190,36 @@ YELLOW - indicates that one of the project layer has been loaded, but not the wh
 
 # NLU service REST API
 ## Launch request
-This is initial handshake request.
+This is `very first` handshake request from client application when it is started for the first time. The goal is to allocate `session_id`, which must be stored by application and provided with all sequential requests afterwards, including `launch` request. _It is a key to the instance of the application._
+Example:
 ***https://nlp2.zcymatix.com/?zcmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8***
 Parameters: 
 ```json
     cmd = launch
     project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
 ```
-NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id
-The response contains the dynamic ___session_id___, which must be used in the following inference requests. The response looks like this:
+NOTE! `f38360cd-08c5-482b-8c22-c2bc67194ab8` is fake project id in this example.
+
+On success, `msg` field will contain the `session_id`:
 ```json
-{ "code":200, "msg":"2cb3b87d-e29c-4743-bab1-0fc5cb98db6d"}
+{ "code": 200, "msg": "2cb3b87d-e29c-4743-bab1-0fc5cb98db6d" }
 ```
-Session ID in this example is:`2cb3b87d-e29c-4743-bab1-0fc5cb98db6d`
+Athentication error will be returned if incorrect:
+```json
+{ "code": 101, "msg": "The user name or password is incorrect" }
+```
+When application starts next time, launch request must be submitted __including previously obtained session id.__ It is important to access application instance data, stored in persistant memory of the application.
+
+***https://nlp2.zcymatix.com/?zcmd=launch&project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8&session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d***
+
+Parameters: 
+```json
+    cmd = launch
+    project_id = f38360cd-08c5-482b-8c22-c2bc67194ab8
+    session_id = 2cb3b87d-e29c-4743-bab1-0fc5cb98db6d
+```
+
+
 Here is REST API flow diagram:
 ![REST API workflow](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
 
@@ -353,7 +370,7 @@ The inference will look like:
 This way we infere the meaning of the utterance.
 
 # Introduction to Layers
-[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infere ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot inference`](#placement-slot-inference), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** lookup labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infere ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot inference`](#placement-slot-inference), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -382,7 +399,7 @@ For simplicity sake, let's ignore pizza sizes inference.
 ***PIZZA_KIND = BBQ chicken***
 ***PIZZA_KIND = meat***
 
-This is a mechanism to label multiple words with specific `lookup label` and using multiple instance of the label in a single utterance (***Amazon Lex does not allow that***). To explain further, let's look at the next layer and file 
+This is a mechanism to label multiple words with specific `label` and using multiple instance of the label in a single utterance. To explain further, let's look at the next layer and file 
 ***order_pizza.txt***:
 ```
 .train
@@ -1076,11 +1093,11 @@ As you can see, you have to collect inferences in client application and resolve
 ![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
 # Script sections
-To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could to keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.
+To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.
 
 ## `.gate2` section
 Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is when intent and slot values are known. Important to remember the scope of exposed data. 
-Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but containing only current inference data. NOTE! The following slot names are __reserved__:
+Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but with current inference data only. NOTE! The following slot names are __reserved__:
 
 __`o.t_intent`__ - is a string value of the current intent.
 
@@ -1100,18 +1117,20 @@ So if you want to access the last value, do it like this:
         .bot
             F~TIME: It is {t_cur_time}
 ```
-See the set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
+Set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
 
 ## `.script` section
-Its purpose to define global python methods and data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. This is sandboxed environment. Builtin set of functions is limited to:
+Its purpose to define global python methods and shared, application wide, data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. Builtin set of functions is sandboxed and limited to:
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 
 'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime'
 ```
 NOTE! Access to `datetime` must be done as a function. See example in `.gate2` section.
-__`datetime( ).now( )`__ - Correct
-`datetime.now( )` - Incorrect
+```
+datetime( ).now( ) # Correct
+datetime.now( ) # Incorrect
+```
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
 
 - To convert an object to a json string:
@@ -1120,7 +1139,7 @@ __`to_json( obj )`__
 - To convert dict to Namespace object:
 
 __`to_namespace( obj )`__
-- Read from __shared__ or __private__ data storage. Private data storage is associated with an instance of the application
+- Read from __shared__ or __private__ data storage. Private data storage is a persistant storage, associated with an **instance of the application**
 
 __`read( session_id, file_name, data_string, shared = True )`__ 
 - Write to __shared__ or __private__ data storage:
