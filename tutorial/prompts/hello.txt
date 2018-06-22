@@ -1,9 +1,9 @@
 # Training section contains utterances
-.train
-    GREETING: Hello World
+.user
+    GREETING: (Hello World|Hi|Hello|Hey)
 
-# Section containing list of responses to user queries
-.prompt
-    GREETING: Hello!
-    GREETING: Hi
-    GREETING: Hello my friend!
+    # Section containing list of responses to user queries
+    .bot
+        GREETING: Hello!
+        GREETING: Hi
+        GREETING: Hello my friend!

@@ -10,5 +10,5 @@
     GREETING: @hi @guys
 
 .prompt
-    # Prompts to user
+    # User prompts
     GREETING: Hello, my friend!

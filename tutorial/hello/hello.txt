@@ -1,4 +1,9 @@
 # Training section contains utterances with intents
 .train
-    # Basic utterance. 'GREETING' is the intent to be deduced. 'Hello World' is the utterance
-    GREETING:Hello World
+    # Utterances:
+    #   Hello world
+    #   Hi
+    #   Hello
+    #   Hey
+    # 'GREETING' is the intent
+    GREETING: (Hello World|Hi|Hello|Hey)

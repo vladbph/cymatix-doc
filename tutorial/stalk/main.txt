@@ -1,0 +1,16 @@
+//--------------------------------------------------------------------------------------------------
+.user
+    // All other utterances for the same intent are in 'main_ext.txt' file
+    // Note F~ prefix. It means the question is self contained, and should not be remembered
+    // because there will not be follow up questions.
+    F~WHAT_TIME: what time is it?
+
+    .gate2
+        if o.t_intent == 'F~WHAT_TIME':
+            // See the list of available functions here:
+            // https://github.com/vladbph/zcymatix#script-section
+            o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
+
+        .bot
+            F~WHAT_TIME: It is {t_cur_time}
+//--------------------------------------------------------------------------------------------------
