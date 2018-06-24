@@ -491,7 +491,7 @@ The conversation flow depends on already provided parameters and system would as
 There are few things to know before we can create such dialog.
 
 ### `.gate` section
-Its purpose is to fullfil user query. Gate is a small script for generating new intent based on the inference history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
+Its purpose is to fullfil user query. .gate section contains a small script for generating new intent based on the inference history. The syntax uses python style `if` statements. It is better to demonstrate on `Pizza` example:
 ```python
 .gate
     'ASK_KIND'        if o.t_intent == 'ORDER_PIZZA' and not hasattr( o, 't_kind' )
@@ -531,6 +531,7 @@ Consider another example:
     'ASK_CITY' if o.t_intent == 'Q42' and not hasattr( o, 't_city' )
 ```
 Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is `Q42`, but the t_city was not provided, return intent which would tell user something like: 'You did not provide the city'. You can argue the rational of this, saying why can't I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.
+NOTE! Order of the gates is important, if gate execution depends on previous gate outcome.
 
 ## User asks questions
 The best example of such dialog would be Frequetly Asked Questions of a website. Again toth mechanism allows following handling questions differently depending on the context. Example of our web service:
@@ -1118,12 +1119,13 @@ So if you want to access the last value, do it like this:
             F~TIME: It is {t_cur_time}
 ```
 Set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
+**NOTE!** Order of the gates is important, if gate execution depends on previous gate(s) outcome.
 
 ## `.script` section
 Its purpose to define global python methods and shared, application wide, data within one layer. These methods are accessible from `.gate` and `.gate2` sections in runtime mode. Builtin set of functions is sandboxed and limited to:
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
-'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 
+'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
 'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime'
 ```
 NOTE! Access to `datetime` must be done as a function. See example in `.gate2` section.
