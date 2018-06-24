@@ -1,7 +1,92 @@
 //--------------------------------------------------------------------------------------------------
+// Default error intent. When bot does not understand user.
+//--------------------------------------------------------------------------------------------------
+.bot
+    F~NONE: Sorry, I did not get it.
+    F~NONE: I did not get it.
+    F~NONE: I'm confused.
+//--------------------------------------------------------------------------------------------------
 .user
     F~WHAT_TIME: what time is it?
     F~WHAT_TIME: time?
     F~WHAT_TIME: what time is now?
     F~WHAT_TIME: do you have time?
+//--------------------------------------------------------------------------------------------------
+.user
+    NAME_Q: what is your name?
+    NAME_Q: your name please?
+    NAME_Q: your name?
+    NAME_Q: what name do you go by?
+    NAME_Q: how should I call you?
+    NAME_Q: how parents named you?
+    NAME_Q: i forgot what is ur name?
+//--------------------------------------------------------------------------------------------------
+.define 
+    // This macro results in 4 variants: 1. <UNK> 2. <UNK> <UNK> 3. <UNK> <UNK> <UNK 4. <empty>
+    @unk: <UNK>|<UNK> <UNK>|<UNK> <UNK> <UNK>|
+.user
+    USERS_NAME: I am <UNK>{t_user_name}
+    USERS_NAME: my name is <UNK>{t_user_name} @unk
+    USERS_NAME: my parents call me <UNK>{t_user_name} @unk
+    USERS_NAME: you can call me <UNK>{t_user_name} @unk
+    USERS_NAME: it is something like <UNK>{t_user_name} @unk
+    USERS_NAME: <UNK>{t_user_name} is my name
+    USERS_NAME: <UNK>{t_user_name} this is my name
+    USERS_NAME: <UNK>{t_user_name} that is my name
+    USERS_NAME: <UNK>{t_user_name} it is my name
+    
+    // Next utterances rely on remembering previous intent
+    // Without it, there no enough context to guess that it is 
+    // a name we are talking about
+    USERS_NAME: TELL_MY_NAME_ASK_USERS it is <UNK>{t_user_name} @unk
+    USERS_NAME: TELL_MY_NAME_ASK_USERS <UNK>{t_user_name} @unk
+
+    // NOTE! Make training to pay attention to context(!!!)
+    @unk
+
+    .user
+        R~TELL_MY_NAME: USERS_NAME What is yours?
+        R~TELL_MY_NAME: USERS_NAME and yours?
+        R~TELL_MY_NAME: USERS_NAME and you are?
+        R~TELL_MY_NAME: USERS_NAME what about you?
+        R~TELL_MY_NAME: USERS_NAME and you?
+        R~TELL_MY_NAME: USERS_NAME you?
+
+//--------------------------------------------------------------------------------------------------
+.define 
+    @fav: favorite|best
+.user
+    COLOR_Q: What is your @fav color?
+    COLOR_Q: What color do you (like|prefer)?
+    COLOR_Q: Any preference for a color?
+    COLOR_Q: What color you like the most?
+
+    .user
+        USER_COLOR: My favorite color is <UNK>{t_user_color}
+        USER_COLOR: My color is <UNK>{t_user_color}
+        USER_COLOR: <UNK>{t_user_color} is my color
+        USER_COLOR: <UNK>{t_user_color} is my @fav color
+
+        My favorite color
+        My color is
+        is my color
+        is my @fav color
+
+        USER_COLOR: TELL_MY_COLOR_ASK_USERS mine is <UNK>{t_user_color}
+        USER_COLOR: TELL_MY_COLOR_ASK_USERS it is <UNK>{t_user_color}
+        USER_COLOR: TELL_MY_COLOR_ASK_USERS <UNK>{t_user_color}
+
+        .user
+            ADD_NEW_COLOR: UNK_COLOR @yes
+            ADD_NEW_COLOR: UNK_COLOR I am sure
+            ADD_NEW_COLOR: UNK_COLOR it is a real color
+            ADD_NEW_COLOR: UNK_COLOR it is a color
+
+        .user
+            NOT_A_COLOR: UNK_COLOR @no
+            NOT_A_COLOR: UNK_COLOR just kidding
+            NOT_A_COLOR: UNK_COLOR not really
+            NOT_A_COLOR: UNK_COLOR it is not real color
+            NOT_A_COLOR: UNK_COLOR not a color
+
 //--------------------------------------------------------------------------------------------------

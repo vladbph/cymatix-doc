@@ -1,3 +1,5 @@
 {
-    "data_files": [ "main.txt", "main_ext.txt" ]
+    "data_files": [ "init.py", "main.txt", "main_ext.txt", "base.def" ],
+    "toth": true,
+    "error_intent":  "F~NONE"
 }

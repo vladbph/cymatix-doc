@@ -1,16 +1,166 @@
 //--------------------------------------------------------------------------------------------------
+// All alternative utterances for the same intent are defined in 'main_ext.txt' file
+// This is done to keep bot logic clean and visible.
+//--------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------
+// What time is it?
+//--------------------------------------------------------------------------------------------------
 .user
-    // All other utterances for the same intent are in 'main_ext.txt' file
-    // Note F~ prefix. It means the question is self contained, and should not be remembered
-    // because there will not be follow up questions.
+#####
     F~WHAT_TIME: what time is it?
 
     .gate2
+        // See script section below for the function definition
+        on_what_time( o )
+
+        .bot
+        ####
+            // Note F~ prefix. Let's assume that 'time' question is self contained,
+            // and should not be remembered, because no follow up 
+            // questions are expected.
+            F~WHAT_TIME: It is {t_cur_time}
+.script
+    def on_what_time( o ):
         if o.t_intent == 'F~WHAT_TIME':
             // See the list of available functions here:
             // https://github.com/vladbph/zcymatix#script-section
             o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
+        
+//--------------------------------------------------------------------------------------------------
+// What is your name?
+//--------------------------------------------------------------------------------------------------
+.user
+####
+    NAME_Q: what is your name?
+    .gate2
+        if o.t_intent == 'NAME_Q':
+            if s_user.name:
+                o.t_intent = 'R~TELL_MY_NAME'
+                o.t_user_name = s_user.name
+            else:
+                o.t_intent = 'TELL_MY_NAME_ASK_USERS'
+        .bot
+        ####
+            TELL_MY_NAME_ASK_USERS: My name is Silly. What is yours?
+            R~TELL_MY_NAME: My name is Silly. Good to see you, {.t_user_name}.
+
+            .user
+            ####
+                USERS_NAME: my name is <UNK>{t_user_name}
+
+                .gate2
+                    on_user_name( o, s_user, z_sid )
+                .bot
+                ####
+                    // Note 'dot' in front of the label, telling to use last stacked value
+                    USERS_NAME: Nice to meet you {.t_user_name}
+                        I_KNOW_UR_NAME: I remember, you are {.t_user_name}
+                            USER_NAME_CHANGE: Oh! You decided to change your name? Ok, {t_old_name}. From now on, \
+                                  I will call you {.t_user_name}, then.
+                            .user
+                            ###
+                                // Ignore follow up after name change
+                                USER_NAME_CHANGE @unk
+                        .user
+                        ###
+                            // Ignore follow up
+                            I_KNOW_UR_NAME @unk
+                    .user
+                    #####
+                        R~TELL_MY_NAME: USERS_NAME What is yours?
+
+.script
+    def on_user_name( o, user, sid ):
+        if o.t_intent == 'USERS_NAME':
+            if hasattr( o, 't_user_name' ):
+                name = o.t_user_name[ -1 ]
+                if not user.name :
+                    user.name = name
+                    write( sid, 'user.json', to_json( user ), shared = False )
+                elif user.name.lower( ) == name.lower( ):
+                    o.t_intent = 'I_KNOW_UR_NAME'
+                else:
+                    o.t_intent = 'USER_NAME_CHANGE'
+                    o.t_old_name = user.name
+                    user.name = name
+                    write( sid, 'user.json', to_json( user ), shared = False )
+
+//--------------------------------------------------------------------------------------------------
+// What is your favorite color?
+//--------------------------------------------------------------------------------------------------
+.vars
+    // Per application instance data
+    s_user = to_namespace( { 'name':'', 'color': '' } )
+
+.script
+    // Shared data: list of colors among all instances of the application
+    g_colors = [ 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'white' ]
+
+//--------------------------------------------------------------------------------------------------
+.user
+ ####
+    COLOR_Q: What is your favorite color?
+
+    .gate2
+        if o.t_intent == 'COLOR_Q':
+            o.t_intent = 'TELL_MY_COLOR' if hasattr( o, 't_user_color' ) else 'TELL_MY_COLOR_ASK_USERS'
 
         .bot
-            F~WHAT_TIME: It is {t_cur_time}
+         ###
+            // When bot knows user's fav color already
+            TELL_MY_COLOR: My favorite color is blue
+            // When bot does not know user's fav color
+            TELL_MY_COLOR_ASK_USERS: My favorite color is blue. What is yours?
+
+            .user
+            #####
+                USER_COLOR: My favorite color is <UNK>{t_user_color}
+
+                .gate2
+                    if o.t_intent == 'USER_COLOR':
+                        if hasattr( o, 't_user_color' ):
+                            if o.t_user_color[ -1 ].lower( ) not in g_colors:
+                                o.t_intent = 'UNK_COLOR'
+                            else:
+                                user_fav_color = o.t_user_color[ -1 ]
+                                write( z_sid, 'my_color.txt', user_fav_color, shared = False )
+                        else:
+                            o.t_intent = 'F~NONE'
+                .bot
+                ####
+                    USER_COLOR: Great. {t_user_color} it is.
+                    UNK_COLOR: Hmm, I don't know this color. Is it really, a color?
+
+                    .user
+                    #####
+                        ADD_NEW_COLOR: UNK_COLOR @yes
+                        .gate2
+                            if o.t_intent == 'ADD_NEW_COLOR':
+                                g_colors.append( o.t_user_color[ -1 ] )
+                                write( z_sid, 'colors.json', to_json( g_colors ), shared = True )
+                            .bot
+                            ####
+                                ADD_NEW_COLOR: Great you tought me new thing today. {t_user_color} is a new color.
+                    .user
+                    #####
+                        NOT_A_COLOR: UNK_COLOR @no
+                        .bot
+                        ####
+                            NOT_A_COLOR: Sure, I was not sure too.
+
+            .user
+            #####
+                NO_COLORS: I don't like colors
+                .bot
+                ####
+                    // At this point you could run a gate to mark the fact 
+                    // that user dont like any color and not ask the question again
+                    // But, we skip that part
+                    NO_COLORS: Hmmm, Ok.
+//--------------------------------------------------------------------------------------------------
+// Handle the case when intent is not infered
+//--------------------------------------------------------------------------------------------------
+.gate2
+    if not hasattr( c, 't_intent' ):
+        o.t_intent = 'F~NONE'
 //--------------------------------------------------------------------------------------------------
