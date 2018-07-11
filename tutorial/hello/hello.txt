@@ -1,5 +1,5 @@
 # Training section contains utterances with intents
-.train
+.user
     # Utterances:
     #   Hello world
     #   Hi
@@ -7,3 +7,5 @@
     #   Hey
     # 'GREETING' is the intent
     GREETING: (Hello World|Hi|Hello|Hey)
+    .bot
+        GREETING: Hello
