@@ -65,7 +65,7 @@ Table of Contents
       * [I~ prefix. Clean previous history and restart command](#i-prefix-clean-previous-history-and-restart-command)
    * [Idioms interpretation. Intent prefix ~](#idioms-interpretation-intent-prefix-)
    * [Remove slot value from inference history. $del command](#remove-slot-value-from-inference-history-del-command)
-   * [Coreinference](#coreinference)
+   * [Coreference](#Coreference)
    * [Script sections](#script-sections)
       * [.gate2 section](#gate2-section)
       * [.script section](#script-section)
@@ -1074,7 +1074,7 @@ Lets say you want to delete a slot value from the history. Consider the example:
 ```
 In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.
 
-# Coreinference
+# Coreference
 
 Consider the training samples using `P_PLACE` slot type:
 ```
