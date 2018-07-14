@@ -76,37 +76,37 @@
 <li><a href="#How_to_control_inference_history_939">How to control inference history</a>
 <ul>
 <li><a href="#Intent_Prefixes_942">Intent Prefixes</a></li>
-<li><a href="#Empty_prefix_954">Empty prefix</a></li>
-<li><a href="#R_prefix_Return_command_960">R~ prefix. Return command</a></li>
-<li><a href="#F_prefix_Infere_and_Forget_command_978">F~ prefix. Infere and Forget command</a></li>
-<li><a href="#P_prefix_One_step_back_command_988">P~ prefix. One step back command</a></li>
-<li><a href="#B_prefix_Two_steps_back_command_1005">B~ prefix. Two steps back command</a></li>
-<li><a href="#C_prefix_Change_slot_value_command_1008">C~ prefix. Change slot value command</a></li>
-<li><a href="#X_prefix_Clean_previous_history_command_1027">X~ prefix. Clean previous history command</a></li>
-<li><a href="#I_prefix_Clean_previous_history_and_restart_command_1045">I~ prefix. Clean previous history and restart command</a></li>
+<li><a href="#Empty_prefix_956">Empty prefix</a></li>
+<li><a href="#R_prefix_Return_command_962">R~ prefix. Return command</a></li>
+<li><a href="#F_prefix_Infere_and_Forget_command_980">F~ prefix. Infere and Forget command</a></li>
+<li><a href="#P_prefix_One_step_back_command_990">P~ prefix. One step back command</a></li>
+<li><a href="#B_prefix_Two_steps_back_command_1009">B~ prefix. Two steps back command</a></li>
+<li><a href="#C_prefix_Change_slot_value_command_1012">C~ prefix. Change slot value command</a></li>
+<li><a href="#X_prefix_Clean_previous_history_command_1031">X~ prefix. Clean previous history command</a></li>
+<li><a href="#I_prefix_Clean_previous_history_and_restart_command_1049">I~ prefix. Clean previous history and restart command</a></li>
 </ul>
 </li>
-<li><a href="#Idioms_interpretation_Intent_prefix__1048">Idioms interpretation. Intent prefix ~</a></li>
-<li><a href="#Remove_slot_value_from_inference_history_del_command_1062">Remove slot value from inference history. $del command</a></li>
-<li><a href="#Coreference_1076">Coreference_1076</a></li>
-<li><a href="#Script_sections_1095">Script sections</a>
+<li><a href="#Idioms_interpretation_Intent_prefix__1052">Idioms interpretation. Intent prefix ~</a></li>
+<li><a href="#Remove_slot_value_from_inference_history_del_command_1066">Remove slot value from inference history. $del command</a></li>
+<li><a href="#Coreference_1080">Coreference_1080</a></li>
+<li><a href="#Script_sections_1099">Script sections</a>
 <ul>
-<li><a href="#gate2_section_1098">.gate2 section</a></li>
-<li><a href="#script_section_1123">.script section</a></li>
-<li><a href="#vars_section_1159">.vars section</a></li>
-<li><a href="#slist_section_1162">.slist section</a></li>
+<li><a href="#gate2_section_1102">.gate2 section</a></li>
+<li><a href="#script_section_1141">.script section</a></li>
+<li><a href="#vars_section_1177">.vars section</a></li>
+<li><a href="#slist_section_1180">.slist section</a></li>
 </ul>
 </li>
-<li><a href="#Events_States_Sensors_Information_Embedding_1184">Events, States, Sensors Information Embedding</a></li>
-<li><a href="#Multiple_language_support_1226">Multiple language support</a></li>
-<li><a href="#Comments_in_training_files_1237">Comments in training files</a></li>
-<li><a href="#Long_lines_continuation_1240">Long lines continuation</a></li>
-<li><a href="#Unknown_word_marker_1243">Unknown word marker</a></li>
-<li><a href="#Named_Entity_Recognition_1246">Named Entity Recognition</a></li>
-<li><a href="#Expert_systems_support_1292">Expert systems support</a></li>
-<li><a href="#Recommendations_tips_and_tricks_1295">Recommendations, tips and tricks</a></li>
-<li><a href="#Optional_configuration_parameters_1348">Optional configuration parameters</a></li>
-<li><a href="#Advanced_configuration_parameters_1474">Advanced configuration parameters</a></li>
+<li><a href="#Events_States_Sensors_Information_Embedding_1202">Events, States, Sensors Information Embedding</a></li>
+<li><a href="#Multiple_language_support_1244">Multiple language support</a></li>
+<li><a href="#Comments_in_training_files_1255">Comments in training files</a></li>
+<li><a href="#Long_lines_continuation_1258">Long lines continuation</a></li>
+<li><a href="#Unknown_word_marker_1261">Unknown word marker</a></li>
+<li><a href="#Named_Entity_Recognition_1264">Named Entity Recognition</a></li>
+<li><a href="#Expert_systems_support_1310">Expert systems support</a></li>
+<li><a href="#Recommendations_tips_and_tricks_1313">Recommendations, tips and tricks</a></li>
+<li><a href="#Optional_configuration_parameters_1366">Optional configuration parameters</a></li>
+<li><a href="#Advanced_configuration_parameters_1492">Advanced configuration parameters</a></li>
 </ul>
 <h4><a id="Machine_learning_NLU_system_designed_for_dialogues_and_expert_systems_The_platform_utilizes_proprietary_TothTrain_Of_Thought_technology_for_conversation_flow_tracking_and_supports_many_other_features_85"></a>Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features…</h4>
 <h3><a id="___Context_IS_everything_____86"></a><strong><em>“…Context IS everything …”</em></strong></h3>
@@ -864,17 +864,19 @@ What is the delivery address?
 </ul>
 <pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history
 R~ - Return all collected slots values in the inference history and clean the history. &quot;Return&quot; command.
-F~ - Do not remember this particular inference in the history - &quot;Infere and forget&quot; command.
 P~ - One step back command. 'Can you repeat it please?'
 B~ - Two steps back command. 'What did you say before that?'
+F~ - Do not save current inference to history.
+F&lt;x&gt;~ - Do not save current inference to history and remove 'x' steps from the top.
+G&lt;x&gt;~ - Remove 'x-1' steps from the history and set 'x' item from the top as current one. Intuition: &quot;Where were we?&quot; in the conversation.
 C~ - Change value of a slot. &quot;Change&quot; command.
 X~ - Clean previous inference history and do not save current inference in it.
-I~ - Clean previous inference history and save current inference in it. 'Tertis' game effect.
+I~ - Clean previous inference history and save current inference in it.
 ?? - We are open to discuss any other prefixes to control the history.
 </code></pre>
 <ul>
 <li>
-<h2><a id="Empty_prefix_954"></a><code>Empty</code> prefix</h2>
+<h2><a id="Empty_prefix_956"></a><code>Empty</code> prefix</h2>
 </li>
 </ul>
 <p>Intent without prefix with infered slots and their values are saved in the inference history.<br>
@@ -883,7 +885,7 @@ where<br>
 <code>t_intent = ORDER_PIZZA</code> will be kelp in stack until <code>R~</code> or <code>X~</code> session-based conversation intent comes along to erase it.</p>
 <ul>
 <li>
-<h2><a id="R_prefix_Return_command_960"></a><code>R~</code> prefix. Return command</h2>
+<h2><a id="R_prefix_Return_command_962"></a><code>R~</code> prefix. Return command</h2>
 </li>
 </ul>
 <p>In ‘Pizza’ layer we have:</p>
@@ -903,7 +905,7 @@ where<br>
 </code></pre>
 <ul>
 <li>
-<h2><a id="F_prefix_Infere_and_Forget_command_978"></a><code>F~</code> prefix. Infere and Forget command</h2>
+<h2><a id="F_prefix_Infere_and_Forget_command_980"></a><code>F~</code> prefix. Infere and Forget command</h2>
 </li>
 </ul>
 <p>The prefix is used to prevent saving the inference in the history. For instance: <code>What time is it?</code> This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting inference will be returned, and it will not be remembered in the stack.</p>
@@ -912,17 +914,19 @@ where<br>
     "<span class="hljs-attribute">t_prompt</span>":<span class="hljs-value"><span class="hljs-string">"It is 1:38PM"</span>
 </span>}
 </code></pre>
-<p>This is actually tricky example. <a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform does not act on user requests. It only inferes the intents and slots and follows the conversation flows. <code>t_prompt</code>'s time value above must be provided by the client application. The framework returns the prompt template from the training set: <code>&quot;It is {t_time}&quot;</code>, so user application should replace <code>t_time</code> with its value.</p>
+<p>There is a derivative: <code>F&lt;n_steps&gt;~</code>. For example <code>F2~</code>, where <code>n_steps = 2</code>: Do not remember current inference and remove 2 top items from the history/memory. You can think of this prefix as return command from a function. It allows to keep the train of thought of main conversation, if ‘function call’ or micro conversation is finished.</p>
 <ul>
 <li>
-<h2><a id="P_prefix_One_step_back_command_988"></a><code>P~</code> prefix. One step back command</h2>
+<h2><a id="P_prefix_One_step_back_command_990"></a><code>P~</code> prefix. One step back command</h2>
 </li>
 </ul>
-<p>The prefix tells the framework to take last/previous inference in the history and return it. It is useful for cases when user asks, ‘What did you say?’ ‘Repeat please?’.</p>
-<pre><code>Bot&gt;What type of pizza would you like?
-User&gt;What?
-Bot&gt;What type of pizza would you like?
+<p>The prefix tells framework to take last inference in the history and return it. It is useful for cases when user asks, ‘What did you say?’ ‘Repeat please?’.</p>
+<pre><code>.bot
+    QUESTION_X: What type of pizza would you like?
+    .user
+        P~REPEAT: What?
 </code></pre>
+<p>Intent <code>P~REPEAT</code> will trigger automatic return of <code>What type of pizza would you like?</code> in t_prompt field of the inference. You don’t have to define the value of <code>P~REPEAT</code> in the <code>.prompt</code> section.</p>
 <p>Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:</p>
 <pre><code>.train
     F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
@@ -932,13 +936,13 @@ Bot&gt;What type of pizza would you like?
 <p>Star <code>*</code> symbol tells to grab last value of the <code>t_prompt</code> in the history.</p>
 <ul>
 <li>
-<h2><a id="B_prefix_Two_steps_back_command_1005"></a><code>B~</code> prefix. Two steps back command</h2>
+<h2><a id="B_prefix_Two_steps_back_command_1009"></a><code>B~</code> prefix. Two steps back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take <code>top-1</code> inference from the history. It is useful for cases when user asks ‘What did you say BEFORE that?’</p>
 <ul>
 <li>
-<h2><a id="C_prefix_Change_slot_value_command_1008"></a><code>C~</code> prefix. Change slot value command</h2>
+<h2><a id="C_prefix_Change_slot_value_command_1012"></a><code>C~</code> prefix. Change slot value command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to change the value of the slot in the history<br>
@@ -957,7 +961,7 @@ Bot&gt;What type of pizza would you like?
 <p>The <code>t_dest</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
 <ul>
 <li>
-<h2><a id="X_prefix_Clean_previous_history_command_1027"></a><code>X~</code> prefix. Clean previous history command</h2>
+<h2><a id="X_prefix_Clean_previous_history_command_1031"></a><code>X~</code> prefix. Clean previous history command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current inference suggests that the previous history must not be kept any longer. <strong><em>Current inference is not saved in the history.</em></strong></p>
@@ -977,11 +981,11 @@ Bot&gt;What type of pizza would you like?
 This prefix should be used for self-contained inference, meaning it has all information needed to make confident conclusion, plus no further inference should rely on it.</p>
 <ul>
 <li>
-<h2><a id="I_prefix_Clean_previous_history_and_restart_command_1045"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
+<h2><a id="I_prefix_Clean_previous_history_and_restart_command_1049"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current inference suggests that the previous history must not be kept any longer. <strong><em>Current inference is saved in the history.</em></strong> Think of this command’s effect as ‘Tertis’ effect.</p>
-<h1><a id="Idioms_interpretation_Intent_prefix__1048"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
+<h1><a id="Idioms_interpretation_Intent_prefix__1052"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
 <p>To support truly natural language understanding, we have a mechanism to interpret idioms and enable <code>slot filling</code> with semantic values <strong><em>not found in the original utterance</em></strong>. Here is an example:</p>
 <pre><code>.train
     ~NAV: take me to a place where i can have a nice meal
@@ -992,7 +996,7 @@ This prefix should be used for self-contained inference, meaning it has all info
 </code></pre>
 <p>Prefix <code>~</code> must be first one in the intent. It <strong>can</strong> be used in combination with previously described prefixes. For example <code>~I~NAV</code>. It means that prompt contains additional slots. <code>I~</code> tells framework to restart collecting the history, while previous history will be lost. See <a href="#i-prefix-clean-previous-history-and-restart-command">above</a>.<br>
 Please also note the separator <code>;</code> between slots-value pairs.</p>
-<h1><a id="Remove_slot_value_from_inference_history_del_command_1062"></a>Remove slot value from inference history. <code>$del</code> command</h1>
+<h1><a id="Remove_slot_value_from_inference_history_del_command_1066"></a>Remove slot value from inference history. <code>$del</code> command</h1>
 <p>Lets say you want to delete a slot value from the history. Consider the example:</p>
 <pre><code>.train
     C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
@@ -1004,7 +1008,7 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
     ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
 </code></pre>
 <p>In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.</p>
-<h1><a id="Coreference_1076"></a>Coreference</h1>
+<h1><a id="Coreference_1080"></a>Coreference</h1>
 <p>Consider the training samples using <code>P_PLACE</code> slot type:</p>
 <pre><code>.train
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
@@ -1016,31 +1020,41 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
 <p>First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve <code>it</code>:<br>
 <code>INT_NAVIGATE/t_place/t_dest:take me there</code><br>
 Why list of slots? The intuition is this - search for either <code>t_place</code> or <code>t_dest</code> in that order in the inference history and put its value to substitute <code>there</code>.<br>
-<img src="http://www.zcymatix.com/img/session_memory_01.png" alt="Conventional &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="Conventional it/there reolution"><br>
+<img src="http://www.zcymatix.com/img/session_memory_01.png" alt="Conventional &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="Coreference resolution"><br>
 As you can see, you have to collect inferences in client application and resolve the value of ‘it’. With zCymatix platform all done automatically on backend side.</p>
 <p><img src="http://www.zcymatix.com/img/session_memory_02.png" alt="zCymatix &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="zCymatix it/there reolution"></p>
-<h1><a id="Script_sections_1095"></a>Script sections</h1>
+<h1><a id="Script_sections_1099"></a>Script sections</h1>
 <p>To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.</p>
-<h2><a id="gate2_section_1098"></a><code>.gate2</code> section</h2>
-<p>Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is when intent and slot values are known. Important to remember the scope of exposed data.<br>
-Object <code>o</code> as a Namespace object containing all inferences data from the collected history. Object <code>c</code> same as object <code>o</code>, but with current inference data only. NOTE! The following slot names are <strong>reserved</strong>:</p>
-<p><strong><code>o.t_intent</code></strong> - is a string value of the current intent.</p>
-<p><strong><code>o.t_prev_intent</code></strong> - is a string value of previous intent.</p>
-<p><strong><code>o.t_prompt</code></strong> - is a list of previous prompts.</p>
-<p>All other values of <strong>user</strong> defined the slots are lists(!). Example: <code>o.t_target = ['Seattle', 'Los Angeles'].</code><br>
+<h2><a id="gate2_section_1102"></a><code>.gate2</code> section</h2>
+<p>Its purpose is to fullfil user query. It contains python script executed AFTER inference is made in the layer, that is when intent and slot values are known. Important to remember the scope of exposed data.<br>
+Mutable object <code>o</code> as a Namespace object containing all(including current) inferences data from the collected history. Read only object <code>c</code> contains <code>current</code> inference data only. NOTE! The following slot names are <strong>reserved</strong>:</p>
+<p><strong><code>o.t_intent</code></strong> - is a string value of the current intent. Value can be changed.</p>
+<p><strong><code>o.t_prev_intent</code></strong> - is a string value of previous intent. Value cannot be changed.</p>
+<p><strong><code>o.t_prompt</code></strong> - is a list of previous prompts. Value can be changed.</p>
+<p>All other values of <strong>user</strong> defined the slots are <strong>lists</strong>(!). Example: <code>o.t_target = ['Seattle', 'Los Angeles'].</code><br>
 So if you want to access the last value, do it like this:<br>
 <code>o.t_target[ -1 ]</code></p>
 <pre><code>.user
     WHAT_TIME: what time is it?
     .gate2
-        if o.t_intent == 'F~TIME':
+        if o.t_intent == 'WHAT_TIME':
             o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
         .bot
-            F~TIME: It is {t_cur_time}
+            WHAT_TIME: It is {t_cur_time}
+</code></pre>
+<p>Object ‘o’ is a reflection of the history. User may change values following the rules. Note the difference of handling ‘t_intent’ from other slots:</p>
+<pre><code>o.t_intent = 'NEW_INTENT' # Changes current intent value. All previous values are kept.
+o.t_param = 'new_value' # Sets new value to the slot. All other collected values are replaced.
+o.t_param = None # Removes the slot from the current inference.
+del o.t_param # Removes all collected values from the history.
+o.t_param.append( 'new_value' ) # Appends a value to a slot.
+</code></pre>
+<p>Also, user can add new slot by simply:</p>
+<pre><code>o.t_new_slot_name = 'new_slot_value'
 </code></pre>
 <p>Set of sandboxed functions available below. <strong>In <code>.gate2</code> you can change, add, delete any slot from deduction history.</strong> Note! All the changes must be made in <code>o</code> object. Changes in <code>c</code> object will be ignored.<br>
 <strong>NOTE!</strong> Order of the gates is important, if gate execution depends on previous gate(s) outcome.</p>
-<h2><a id="script_section_1123"></a><code>.script</code> section</h2>
+<h2><a id="script_section_1141"></a><code>.script</code> section</h2>
 <p>Its purpose to define global python methods and shared, application wide, data within one layer. These methods are accessible from <code>.gate</code> and <code>.gate2</code> sections in runtime mode. Builtin set of functions is sandboxed and limited to:</p>
 <pre><code>'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
@@ -1075,9 +1089,9 @@ datetime.now( ) # Incorrect
         write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
 </code></pre>
 <p>Data structures declared in this sections should be treated as <code>shared data</code> of the application, which can be saved/retrived to/from persisant memory via available methods: <code>read</code> and <code>write</code></p>
-<h2><a id="vars_section_1159"></a><code>.vars</code> section</h2>
+<h2><a id="vars_section_1177"></a><code>.vars</code> section</h2>
 <p>Its purpose to allocate variables declared in local context of python script.</p>
-<h2><a id="slist_section_1162"></a><code>.slist</code> section</h2>
+<h2><a id="slist_section_1180"></a><code>.slist</code> section</h2>
 <p>The purpose is the same as <code>.list</code> section. In addition, global list variable in python environment is created. Example:</p>
 <pre><code>.slist = allergy_type
     Eggs
@@ -1095,7 +1109,7 @@ datetime.now( ) # Incorrect
     'Fish'
 ]
 </code></pre>
-<h1><a id="Events_States_Sensors_Information_Embedding_1184"></a>Events, States, Sensors Information Embedding</h1>
+<h1><a id="Events_States_Sensors_Information_Embedding_1202"></a>Events, States, Sensors Information Embedding</h1>
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
 Let’s review an example:</p>
@@ -1137,7 +1151,7 @@ In which room? I did not say it explicitly.
 </li>
 </ol>
 <p>This makes client application <strong>cleaner, focusing on its task</strong> and <code>backend</code> takes care of the session, its history and the context. In our example my phone would only <strong><code>act</code></strong> on the intent by playing <code>Def Leppard</code> in <code>living room</code>.</p>
-<h1><a id="Multiple_language_support_1226"></a>Multiple language support</h1>
+<h1><a id="Multiple_language_support_1244"></a>Multiple language support</h1>
 <p>In order to support other languages besides English, all you have to do is to add ‘lang’ field (ISO 639-1 and ISO alpha-2) into any of the layers of you project configurationISO:</p>
 <pre><code>[
     {
@@ -1146,13 +1160,13 @@ In which room? I did not say it explicitly.
     }
 ]
 </code></pre>
-<h1><a id="Comments_in_training_files_1237"></a>Comments in training files</h1>
+<h1><a id="Comments_in_training_files_1255"></a>Comments in training files</h1>
 <p>Comment must start from a new line and be prefixed with either <code>#</code> or <code>//</code></p>
-<h1><a id="Long_lines_continuation_1240"></a>Long lines continuation</h1>
+<h1><a id="Long_lines_continuation_1258"></a>Long lines continuation</h1>
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
-<h1><a id="Unknown_word_marker_1243"></a>Unknown word marker</h1>
+<h1><a id="Unknown_word_marker_1261"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Named_Entity_Recognition_1246"></a>Named Entity Recognition</h1>
+<h1><a id="Named_Entity_Recognition_1264"></a>Named Entity Recognition</h1>
 <p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity recognition</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
 <pre><code>.define 
     @unk: &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt; &lt;UNK&gt;
@@ -1193,9 +1207,9 @@ In which room? I did not say it explicitly.
 }
 </code></pre>
 <p>This approach is recommended to be used when you don’t know all the values of the slot type or values are known, but they are too many. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for. We will not be discussing here whether this is good or bad way leaving it to developers, because it is task specific. The example above can be handled in one layer, if desired.</p>
-<h1><a id="Expert_systems_support_1292"></a>Expert systems support</h1>
+<h1><a id="Expert_systems_support_1310"></a>Expert systems support</h1>
 <p>The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient’s answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.</p>
-<h1><a id="Recommendations_tips_and_tricks_1295"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_1313"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -1251,7 +1265,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_1348"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_1366"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
@@ -1394,7 +1408,7 @@ Alternatively, prompt mechanism can be used to achieve the same result, however 
 <p>See <a href="#Prefix______657">Prefix “.”</a></p>
 </li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1474"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1492"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>

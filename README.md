@@ -944,12 +944,14 @@ At some point we need to collect all slots values in the stack to build an aggre
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
 R~ - Return all collected slots values in the inference history and clean the history. "Return" command.
-F~ - Do not remember this particular inference in the history - "Infere and forget" command.
 P~ - One step back command. 'Can you repeat it please?'
 B~ - Two steps back command. 'What did you say before that?'
+F~ - Do not save current inference to history.
+F<x>~ - Do not save current inference to history and remove 'x' steps from the top.
+G<x>~ - Remove 'x-1' steps from the history and set 'x' item from the top as current one. Intuition: "Where were we?" in the conversation.
 C~ - Change value of a slot. "Change" command.
 X~ - Clean previous inference history and do not save current inference in it.
-I~ - Clean previous inference history and save current inference in it. 'Tertis' game effect.
+I~ - Clean previous inference history and save current inference in it.
 ?? - We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
@@ -984,15 +986,17 @@ The prefix is used to prevent saving the inference in the history. For instance:
     "t_prompt":"It is 1:38PM"
 }
 ```
-This is actually tricky example. [`zCymatix`](http://www.zcymatix.com) platform does not act on user requests. It only inferes the intents and slots and follows the conversation flows. `t_prompt`'s time value above must be provided by the client application. The framework returns the prompt template from the training set: `"It is {t_time}"`, so user application should replace `t_time` with its value.
+There is a derivative: `F<n_steps>~`. For example `F2~`, where `n_steps = 2`: Do not remember current inference and remove 2 top items from the history/memory. You can think of this prefix as return command from a function. It allows to keep the train of thought of main conversation, if 'function call' or micro conversation is finished.
 
 * ## `P~` prefix. One step back command
-The prefix tells the framework to take last/previous inference in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
+The prefix tells framework to take last inference in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
 ```
-Bot>What type of pizza would you like?
-User>What?
-Bot>What type of pizza would you like?
+.bot
+    QUESTION_X: What type of pizza would you like?
+    .user
+        P~REPEAT: What?
 ```
+Intent `P~REPEAT` will trigger automatic return of `What type of pizza would you like?` in t_prompt field of the inference. You don't have to define the value of `P~REPEAT` in the `.prompt` section.
 
 Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:
 ```
@@ -1088,7 +1092,7 @@ Consider the training samples using `P_PLACE` slot type:
 First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
 `INT_NAVIGATE/t_place/t_dest:take me there`
 Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the inference history and put its value to substitute `there`.
-![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_01.png "Conventional it/there reolution")
+![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_01.png "Coreference resolution")
 As you can see, you have to collect inferences in client application and resolve the value of 'it'. With zCymatix platform all done automatically on backend side.
 
 ![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
@@ -1097,27 +1101,41 @@ As you can see, you have to collect inferences in client application and resolve
 To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.
 
 ## `.gate2` section
-Its purpose is to fullfil user query. It contains python script executed AFTER inference is made, that is when intent and slot values are known. Important to remember the scope of exposed data. 
-Object `o` as a Namespace object containing all inferences data from the collected history. Object `c` same as object `o`, but with current inference data only. NOTE! The following slot names are __reserved__:
+Its purpose is to fullfil user query. It contains python script executed AFTER inference is made in the layer, that is when intent and slot values are known. Important to remember the scope of exposed data. 
+Mutable object `o` as a Namespace object containing all(including current) inferences data from the collected history. Read only object `c` contains `current` inference data only. NOTE! The following slot names are __reserved__:
 
-__`o.t_intent`__ - is a string value of the current intent.
+__`o.t_intent`__ - is a string value of the current intent. Value can be changed.
 
-__`o.t_prev_intent`__ - is a string value of previous intent.
+__`o.t_prev_intent`__ - is a string value of previous intent. Value cannot be changed.
 
-__`o.t_prompt`__ - is a list of previous prompts. 
+__`o.t_prompt`__ - is a list of previous prompts. Value can be changed.
 
-All other values of __user__ defined the slots are lists(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
+All other values of __user__ defined the slots are __lists__(!). Example: `o.t_target = ['Seattle', 'Los Angeles'].`
 So if you want to access the last value, do it like this: 
 `o.t_target[ -1 ]`
 ```
 .user
     WHAT_TIME: what time is it?
     .gate2
-        if o.t_intent == 'F~TIME':
+        if o.t_intent == 'WHAT_TIME':
             o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
         .bot
-            F~TIME: It is {t_cur_time}
+            WHAT_TIME: It is {t_cur_time}
 ```
+Object 'o' is a reflection of the history. User may change values following the rules. Note the difference of handling 't_intent' from other slots:
+```
+o.t_intent = 'NEW_INTENT' # Changes current intent value. All previous values are kept.
+o.t_param = 'new_value' # Sets new value to the slot. All other collected values are replaced.
+o.t_param = None # Removes the slot from the current inference.
+del o.t_param # Removes all collected values from the history.
+o.t_param.append( 'new_value' ) # Appends a value to a slot.
+```
+Also, user can add new slot by simply:
+```
+o.t_new_slot_name = 'new_slot_value'
+```
+
+
 Set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
 **NOTE!** Order of the gates is important, if gate execution depends on previous gate(s) outcome.
 
