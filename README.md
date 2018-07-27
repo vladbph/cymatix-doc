@@ -57,7 +57,7 @@ Table of Contents
       * [Intent Prefixes](#intent-prefixes)
       * [Empty prefix](#empty-prefix)
       * [R~ prefix. Return command](#r-prefix-return-command)
-      * [F~ prefix. Infere and Forget command](#f-prefix-infere-and-forget-command)
+      * [F~ prefix. Infer and Forget command](#f-prefix-infere-and-forget-command)
       * [P~ prefix. One step back command](#p-prefix-one-step-back-command)
       * [B~ prefix. Two steps back command](#b-prefix-two-steps-back-command)
       * [C~ prefix. Change slot value command](#c-prefix-change-slot-value-command)
@@ -367,10 +367,10 @@ The inference will look like:
 ```json
 {"t_intent":"NAVIGATE", "t_dest":"Seattle", "t_transport":"car"}
 ```
-This way we infere the meaning of the utterance.
+This way we infer the meaning of the utterance.
 
 # Introduction to Layers
-[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infere ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot inference`](#placement-slot-inference), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
+[`zCymatix`](http://www.zcymatix.com) platform is using the concept of ***layers***. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infer ***pizza toppings*** and ***pizza kinds*** in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use [`placement slot inference`](#placement-slot-inference), but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like ***PIZZA_KIND*** and ***PIZZA_TOPPING*** labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:
 ```json
 [
     {
@@ -777,7 +777,7 @@ Lets review regex section.
 ```&and:(as well as|and also)``` == to replace ```as well as``` and ```and also``` with ```and```. Prefix '&' tells that no need to resolve ```and``` to actual values it replaces in the final inference.
 ```P_SIZE:@small```  == to replace ```small```, ```medium``` or ```large``` with the type  ```P_SIZE```, which must be resolved to its value in the final inference result. 
 ___NOTE!___ Regex section is used for both - __training__ and __prediction__ modes.
-___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc. so next layer that supposed to infere user intents would not deal with them.
+___NOTE!___ Be careful if your knowledge domain contains names of __movies__, __places__, __songs__ etc. In this case it could backfire at you, because you don't want to modify those names. Consider creation of separate layers that would isolate such names into types like __P_MOVIE_NAME__, __P_SONG_NAME__, etc. so next layer that supposed to infer user intents would not deal with them.
 __base.h__ file:
 ```
 .define
@@ -978,7 +978,7 @@ Intents with ```'R~'``` prefix tell the framework to collect all slots and their
     "t_toppings": ["cheese", "ham"]
 }
 ```
-* ## `F~` prefix. Infere and Forget command
+* ## `F~` prefix. Infer and Forget command
 The prefix is used to prevent saving the inference in the history. For instance: `What time is it?` This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting inference will be returned, and it will not be remembered in the stack.
 ```json
 {
@@ -1134,7 +1134,6 @@ Also, user can add new slot by simply:
 ```
 o.t_new_slot_name = 'new_slot_value'
 ```
-
 
 Set of sandboxed functions available below. __In `.gate2` you can change, add, delete any slot from deduction history.__ Note! All the changes must be made in `o` object. Changes in `c` object will be ignored.
 **NOTE!** Order of the gates is important, if gate execution depends on previous gate(s) outcome.
