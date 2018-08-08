@@ -57,7 +57,8 @@ Table of Contents
       * [Intent Prefixes](#intent-prefixes)
       * [Empty prefix](#empty-prefix)
       * [R~ prefix. Return command](#r-prefix-return-command)
-      * [F~ prefix. Infer and Forget command](#f-prefix-infere-and-forget-command)
+      * [F~ prefix. Infer and Forget command](#f-prefix-infer-and-forget-command)
+      * [G~ prefix. Go to command](#g-prefix-go-to-command)
       * [P~ prefix. One step back command](#p-prefix-one-step-back-command)
       * [B~ prefix. Two steps back command](#b-prefix-two-steps-back-command)
       * [C~ prefix. Change slot value command](#c-prefix-change-slot-value-command)
@@ -943,16 +944,23 @@ At some point we need to collect all slots values in the stack to build an aggre
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history
-R~ - Return all collected slots values in the inference history and clean the history. "Return" command.
-P~ - One step back command. 'Can you repeat it please?'
-B~ - Two steps back command. 'What did you say before that?'
-F~ - Do not save current inference to history.
-F<x>~ - Do not save current inference to history and remove 'x' steps from the top.
-G<x>~ - Remove 'x-1' steps from the history and set 'x' item from the top as current one. Intuition: "Where were we?" in the conversation.
-C~ - Change value of a slot. "Change" command.
-X~ - Clean previous inference history and do not save current inference in it.
-I~ - Clean previous inference history and save current inference in it.
-?? - We are open to discuss any other prefixes to control the history.
+R~  Return command. Return all collected slots values in the 
+    inference history and clean the history. .
+P~  One step back command. 'Can you repeat it please?'
+B~  Two steps back command. 'What did you say before that?'
+F~  Forget current intent, that is do not save current inference to history.
+F1~ Forget current intent and remove one extra from history.
+F2~ Forget current intent and remove two extra from history.
+F<x>~   Forget current intent and remove 'x' extra from history.
+G~  'Goto' intent. Sets last intent in the history as current one while ignoring the current one.
+G1~ Same as G~ 
+G<x>~   Sets 'x-1' intent in the history as current one. 
+        Please note handling difference b/n F~ and G~ intents.
+        Intuition: "Where were we?" in the conversation.
+C~  Change command. Change value of a slot. 
+X~  Clean previous inference history and do not save current inference in it.
+I~  Clean previous inference history and save current inference in it.
+??  We are open to discuss any other prefixes to control the history.
 ```
 * ## `Empty` prefix
 Intent without prefix with infered slots and their values are saved in the inference history.
@@ -988,6 +996,13 @@ The prefix is used to prevent saving the inference in the history. For instance:
 ```
 There is a derivative: `F<n_steps>~`. For example `F2~`, where `n_steps = 2`: Do not remember current inference and remove 2 top items from the history/memory. You can think of this prefix as return command from a function. It allows to keep the train of thought of main conversation, if 'function call' or micro conversation is finished.
 
+* ## `G~` prefix. Go to command
+Intuition: "Where were we?" in the conversation.
+`G~`  `Go to` in the history intent. Sets last intent in the history as current one.
+`G0~` and `G1~` Same as `G~` 
+`G<x>~`   Sets `x-1` intent in the history as current one. Please note the difference b/n `F~` and `G~` intents.
+        
+
 * ## `P~` prefix. One step back command
 The prefix tells framework to take last inference in the history and return it. It is useful for cases when user asks, 'What did you say?' 'Repeat please?'.
 ```
@@ -995,14 +1010,17 @@ The prefix tells framework to take last inference in the history and return it. 
     QUESTION_X: What type of pizza would you like?
     .user
         P~REPEAT: What?
+        P~REPEAT: What did you say?
+        P~REPEAT: could you repeat please
+        ...
 ```
 Intent `P~REPEAT` will trigger automatic return of `What type of pizza would you like?` in t_prompt field of the inference. You don't have to define the value of `P~REPEAT` in the `.prompt` section.
 
 Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:
 ```
-.train
+.user
     F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
-.prompt:
+.bot:
     F~REPEAT: *
 ```
 Star `*` symbol tells to grab last value of the `t_prompt` in the history. 
