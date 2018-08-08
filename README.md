@@ -943,7 +943,7 @@ This information is useful to understand platform operation under the hood. Infe
 At some point we need to collect all slots values in the stack to build an aggregative inference (pizza order), or may be forget whole inference, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says "What?" or "Could you repeat it?". Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of __ToTh__ technology. It is done via intent prefixes:
 * ## Intent Prefixes
 ```
-<no prefix> - Normal intent. The intent and slots values to be collected in the history
+<no prefix> - Normal intent. The intent and slots values to be collected in the history.
 R~  Return command. Return all collected slots values in the 
     inference history and clean the history. .
 P~  One step back command. 'Can you repeat it please?'
