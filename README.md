@@ -945,7 +945,7 @@ At some point we need to collect all slots values in the stack to build an aggre
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history.
 R~  Return command. Return all collected slots values in the 
-    inference history and clean the history. .
+    inference history and clean the history. 
 P~  One step back command. 'Can you repeat it please?'
 B~  Two steps back command. 'What did you say before that?'
 F~  Forget current intent, that is do not save current inference to history.
