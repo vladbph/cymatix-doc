@@ -954,7 +954,7 @@ F2~ Forget current intent and remove two extra from history.
 F<x>~   Forget current intent and remove 'x' extra from history.
 G~  'Goto' intent. Sets last intent in the history as current one while ignoring the current one.
 G1~ Same as G~ 
-G<x>~   Sets 'x-1' intent in the history as current one. 
+G<x>~   Sets 'x-1' intent from the top of the history as current one. 
         Please note handling difference b/n F~ and G~ intents.
         Intuition: "Where were we?" in the conversation.
 C~  Change command. Change value of a slot. 
