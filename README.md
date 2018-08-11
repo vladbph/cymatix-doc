@@ -1234,7 +1234,11 @@ The purpose is the same as `.list` section. In addition, global list variable in
     Tree nuts
     Fish
 ```
+<<<<<<< HEAD
 In a training utterances you can use `@allery_type` as a macro. In a scripted sections `.gate`, `.gate2` and `.script` __`g_allergy_type`__ list is created in global context. Please note __`g_`__ prefix.
+=======
+In a training utterances you can use `@allery_type` as a macro. In a scripted sections `.gate`, `.gate2` and `.script` __`g_allergy_type`__ list is created in global context. Please note __`g_`__ prefix:
+>>>>>>> 832944ed616f7af4eedc7cdf622eb59c584e1438
 ```
 g_allery_type = [
     'Eggs',
