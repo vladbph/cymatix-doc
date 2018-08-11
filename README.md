@@ -1161,9 +1161,12 @@ Its purpose to define global python methods and shared, application wide, data w
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
-'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime'
+'xrange', 'zip', 'vars',
+'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime', 
+'lemma', 'lexeme', 'phoneme',
+'is_str', 'is_number'
 ```
-NOTE! Access to `datetime` must be done as a function. See example in `.gate2` section.
+NOTE! `datetime` object must be accessed as a function. See example in `.gate2` section.
 ```
 datetime( ).now( ) # Correct
 datetime.now( ) # Incorrect
@@ -1172,24 +1175,50 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
 
 - To convert an object to a json string:
 
-__`to_json( obj )`__ 
+    __`to_json( obj )`__ 
+
 - To convert dict to Namespace object:
 
-__`to_namespace( obj )`__
+    __`to_namespace( obj )`__
+
+- To convert namespace object to dict:
+
+    __`to_dict( obj )`__ 
+
+- To pluralize a word:
+
+    __`to_pural( word )`__ 
+ 
+- To singularize a word:
+
+    __`to_single( word )`__ 
+
+- Get lemma of a word:
+
+    __`lemma( word )`__ 
+
+- Get lexeme of a word:
+
+    __`lexeme( word )`__ 
+
+- Get phoneme of a word:
+
+    __`phoneme( word )`__ 
+
 - Read from __shared__ or __private__ data storage. Private data storage is a persistant storage, associated with an **instance of the application**
 
-__`read( session_id, file_name, data_string, shared = True )`__ 
+    __`read( session_id, file_name, data_string, shared = True )`__ 
 - Write to __shared__ or __private__ data storage:
 
-__`write( session_id, file_name, data_string, shared = True )`__ 
+    __`write( session_id, file_name, data_string, shared = True )`__ 
 - The __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls:
 
-__`z_sid`__ 
+    __`z_sid`__ 
 
-```
-Example:
+    ```
+    Example:
         write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
-```
+    ```
 Data structures declared in this sections should be treated as `shared data` of the application, which can be saved/retrived to/from persisant memory via available methods: `read` and `write`
 
 ## `.vars` section

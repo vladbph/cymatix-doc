@@ -866,9 +866,9 @@ What is the delivery address?
 <h2><a id="Intent_Prefixes_943"></a>Intent Prefixes</h2>
 </li>
 </ul>
-<pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history
+<pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history.
 R~  Return command. Return all collected slots values in the 
-    inference history and clean the history. .
+    inference history and clean the history. 
 P~  One step back command. 'Can you repeat it please?'
 B~  Two steps back command. 'What did you say before that?'
 F~  Forget current intent, that is do not save current inference to history.
@@ -1081,40 +1081,69 @@ o.t_param.append( 'new_value' ) # Appends a value to a slot.
 <p>Its purpose to define global python methods and shared, application wide, data within one layer. These methods are accessible from <code>.gate</code> and <code>.gate2</code> sections in runtime mode. Builtin set of functions is sandboxed and limited to:</p>
 <pre><code>'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
-'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime'
+'xrange', 'zip', 'vars',
+'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime', 
+'lemma', 'lexeme', 'phoneme',
+'is_str', 'is_number'
 </code></pre>
-<p>NOTE! Access to <code>datetime</code> must be done as a function. See example in <code>.gate2</code> section.</p>
+<p>NOTE! <code>datetime</code> object must be accessed as a function. See example in <code>.gate2</code> section.</p>
 <pre><code>datetime( ).now( ) # Correct
 datetime.now( ) # Incorrect
 </code></pre>
 <p>Most of the functions are standard builtin. Custom methods and data exposed by plaform:</p>
 <ul>
-<li>To convert an object to a json string:</li>
-</ul>
+<li>
+<p>To convert an object to a json string:</p>
 <p><strong><code>to_json( obj )</code></strong></p>
-<ul>
-<li>To convert dict to Namespace object:</li>
-</ul>
+</li>
+<li>
+<p>To convert dict to Namespace object:</p>
 <p><strong><code>to_namespace( obj )</code></strong></p>
-<ul>
-<li>Read from <strong>shared</strong> or <strong>private</strong> data storage. Private data storage is a persistant storage, associated with an <strong>instance of the application</strong></li>
-</ul>
+</li>
+<li>
+<p>To convert namespace object to dict:</p>
+<p><strong><code>to_dict( obj )</code></strong></p>
+</li>
+<li>
+<p>To pluralize a word:</p>
+<p><strong><code>to_pural( word )</code></strong></p>
+</li>
+<li>
+<p>To singularize a word:</p>
+<p><strong><code>to_single( word )</code></strong></p>
+</li>
+<li>
+<p>Get lemma of a word:</p>
+<p><strong><code>lemma( word )</code></strong></p>
+</li>
+<li>
+<p>Get lexeme of a word:</p>
+<p><strong><code>lexeme( word )</code></strong></p>
+</li>
+<li>
+<p>Get phoneme of a word:</p>
+<p><strong><code>phoneme( word )</code></strong></p>
+</li>
+<li>
+<p>Read from <strong>shared</strong> or <strong>private</strong> data storage. Private data storage is a persistant storage, associated with an <strong>instance of the application</strong></p>
 <p><strong><code>read( session_id, file_name, data_string, shared = True )</code></strong></p>
-<ul>
-<li>Write to <strong>shared</strong> or <strong>private</strong> data storage:</li>
-</ul>
+</li>
+<li>
+<p>Write to <strong>shared</strong> or <strong>private</strong> data storage:</p>
 <p><strong><code>write( session_id, file_name, data_string, shared = True )</code></strong></p>
-<ul>
-<li>The <strong>local</strong> variable, <code>token/session_id</code>, that must be passed with <code>read</code> and <code>write</code> functions calls:</li>
-</ul>
+</li>
+<li>
+<p>The <strong>local</strong> variable, <code>token/session_id</code>, that must be passed with <code>read</code> and <code>write</code> functions calls:</p>
 <p><strong><code>z_sid</code></strong></p>
 <pre><code>Example:
-        write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
+    write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
 </code></pre>
+</li>
+</ul>
 <p>Data structures declared in this sections should be treated as <code>shared data</code> of the application, which can be saved/retrived to/from persisant memory via available methods: <code>read</code> and <code>write</code></p>
-<h2><a id="vars_section_1194"></a><code>.vars</code> section</h2>
+<h2><a id="vars_section_1223"></a><code>.vars</code> section</h2>
 <p>Its purpose to allocate variables declared in local context of python script.</p>
-<h2><a id="slist_section_1197"></a><code>.slist</code> section</h2>
+<h2><a id="slist_section_1226"></a><code>.slist</code> section</h2>
 <p>The purpose is the same as <code>.list</code> section. In addition, global list variable in python environment is created. Example:</p>
 <pre><code>.slist = allergy_type
     Eggs
@@ -1133,7 +1162,7 @@ datetime.now( ) # Incorrect
 ]
 
 </code></pre>
-<h1><a id="Events_States_Sensors_Information_Embedding_1219"></a>Events, States, Sensors Information Embedding</h1>
+<h1><a id="Events_States_Sensors_Information_Embedding_1248"></a>Events, States, Sensors Information Embedding</h1>
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
 Let’s review an example:</p>
@@ -1175,7 +1204,7 @@ In which room? I did not say it explicitly.
 </li>
 </ol>
 <p>This makes client application <strong>cleaner, focusing on its task</strong> and <code>backend</code> takes care of the session, its history and the context. In our example my phone would only <strong><code>act</code></strong> on the intent by playing <code>Def Leppard</code> in <code>living room</code>.</p>
-<h1><a id="Multiple_language_support_1261"></a>Multiple language support</h1>
+<h1><a id="Multiple_language_support_1290"></a>Multiple language support</h1>
 <p>In order to support other languages besides English, all you have to do is to add ‘lang’ field (ISO 639-1 and ISO alpha-2) into any of the layers of you project configurationISO:</p>
 <pre><code>[
     {
@@ -1184,13 +1213,13 @@ In which room? I did not say it explicitly.
     }
 ]
 </code></pre>
-<h1><a id="Comments_in_training_files_1272"></a>Comments in training files</h1>
+<h1><a id="Comments_in_training_files_1301"></a>Comments in training files</h1>
 <p>Comment must start from a new line and be prefixed with either <code>#</code> or <code>//</code></p>
-<h1><a id="Long_lines_continuation_1275"></a>Long lines continuation</h1>
+<h1><a id="Long_lines_continuation_1304"></a>Long lines continuation</h1>
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
-<h1><a id="Unknown_word_marker_1278"></a>Unknown word marker</h1>
+<h1><a id="Unknown_word_marker_1307"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Named_Entity_Recognition_1281"></a>Named Entity Recognition</h1>
+<h1><a id="Named_Entity_Recognition_1310"></a>Named Entity Recognition</h1>
 <p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity recognition</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
 <pre><code>.define 
     @unk: &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt; &lt;UNK&gt;
@@ -1231,9 +1260,9 @@ In which room? I did not say it explicitly.
 }
 </code></pre>
 <p>This approach is recommended to be used when you don’t know all the values of the slot type or values are known, but they are too many. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for. We will not be discussing here whether this is good or bad way leaving it to developers, because it is task specific. The example above can be handled in one layer, if desired.</p>
-<h1><a id="Expert_systems_support_1327"></a>Expert systems support</h1>
+<h1><a id="Expert_systems_support_1356"></a>Expert systems support</h1>
 <p>The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient’s answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.</p>
-<h1><a id="Recommendations_tips_and_tricks_1330"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_1359"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -1289,7 +1318,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_1383"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_1412"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
@@ -1432,7 +1461,7 @@ Alternatively, prompt mechanism can be used to achieve the same result, however 
 <p>See <a href="#prefix--4">Prefix “.”</a></p>
 </li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1509"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1538"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>

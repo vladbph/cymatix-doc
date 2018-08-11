@@ -14,7 +14,6 @@
     .gate2
         // See script section below for the function definition
         on_what_time( o )
-
         .bot
             // Note F~ prefix. Let's assume that 'time' question is self contained,
             // and should not be remembered, because no follow up 
