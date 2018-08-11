@@ -1234,7 +1234,7 @@ The purpose is the same as `.list` section. In addition, global list variable in
     Tree nuts
     Fish
 ```
-as a result global variable __`g_allergy_type`__ is created in global context of python script making it visible from `.gate`, `.gate2` and `.script` sections. Please note __`g_`__ prefix:
+In a training utterances you can use `@allery_type` as a macro. In a scripted sections `.gate`, `.gate2` and `.script` __`g_allergy_type`__ list is created in global context. Please note __`g_`__ prefix:
 ```
 g_allery_type = [
     'Eggs',

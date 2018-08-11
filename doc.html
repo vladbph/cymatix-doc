@@ -1152,7 +1152,7 @@ datetime.now( ) # Incorrect
     Tree nuts
     Fish
 </code></pre>
-<p>as a result global variable <strong><code>g_allergy_type</code></strong> is created in global context of python script making it visible from <code>.gate</code>, <code>.gate2</code> and <code>.script</code> sections. Please note <strong><code>g_</code></strong> prefix:</p>
+<p>In a training utterances you can use <code>@allery_type</code> as a macro. In a scripted sections <code>.gate</code>, <code>.gate2</code> and <code>.script</code> <strong><code>g_allergy_type</code></strong> list is created in global context. Please note <strong><code>g_</code></strong> prefix:</p>
 <pre><code>g_allery_type = [
     'Eggs',
     'Milk',
