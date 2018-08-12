@@ -1,0 +1,54 @@
+//--------------------------------------------------------------------------------------------------
+// Training file for Named Entity Recognition (NER): detect user name (Common English names)
+// There are no intents detected in this layer.
+// 
+// The issue with the following training dataset is that we will get lots of false positive detections.
+// To avoid that, user may define validator script <type name>_handler(). See P_NAME_handler() in 
+// below script section.
+//--------------------------------------------------------------------------------------------------
+.define
+    @call: called|named|call
+.user
+    my name is <UNK>{&P_NAME} 
+    i am <UNK>{&P_NAME} 
+    this is <UNK>{&P_NAME} 
+    my parents @call me <UNK>{&P_NAME} 
+    my friends @call me <UNK>{&P_NAME} 
+    you can @call me <UNK>{&P_NAME}
+
+    // As you can see here that the hint that <UNK> word could be a name is behind the word
+    // To handle this we add bidirectional model into configuration
+    //
+    // bi_lstm = true
+    //
+    <UNK>{&P_NAME} is my name
+    <UNK>{&P_NAME} this is my name
+    <UNK>{&P_NAME} that is my name
+    <UNK>{&P_NAME} it is my name
+
+    // IMPORTANT! Marking unknown word as P_NAME type is not good idea. It is too ambiguous, however
+    // if we know that the previous intent was 'I~NAME_Q' and we got uknown word,
+    // it might be a hint that this is a name. To be sure P_NAME_handler() is called to 
+    // validate the hint.
+    // Configuration of the layer must be changed(!) 
+    //
+    // toth = true
+    //
+    I~NAME_Q <UNK>{&P_NAME}
+
+//--------------------------------------------------------------------------------------------------
+// P_NAME_handler() takes the value and checks against the list of male and females names
+// It return true if it is valid, false otherwise
+//--------------------------------------------------------------------------------------------------
+.script
+def P_NAME_handler( value ):
+    name = value.lower( )
+
+    # See 'g_male_name' and 'g_female_name' definitions in 
+    found = name in g_male_name or name in g_female_name
+
+    # If name is found utterance 'my name is John' will be updated to 'my name is P_NAME'
+    # to be passed to next layer. Otherwise utterance will stay the same.
+    return found
+//--------------------------------------------------------------------------------------------------
+

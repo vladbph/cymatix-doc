@@ -1,0 +1,16 @@
+[
+    {    
+        "layer_name": "ner",
+        "data_files":[
+            "base.def", "ner.txt", "name_female.txt", "name_male.txt"
+        ],
+        "toth": true,
+        "bi_lstm": true
+    },
+    {    
+        "layer_name": "main",
+        "data_files":[
+            "base.def", "main.txt", "main_ext.txt"
+        ]
+    }
+]

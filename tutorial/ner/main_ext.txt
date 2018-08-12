@@ -1,0 +1,36 @@
+//--------------------------------------------------------------------------------------------------
+// More utterances
+//--------------------------------------------------------------------------------------------------
+.user
+    I~NAME_Q: what is your name?
+    I~NAME_Q: your name please?
+    I~NAME_Q: please tell me your name
+    I~NAME_Q: what name do you go by?
+    I~NAME_Q: name?
+    I~NAME_Q: your name?
+    I~NAME_Q: your name what is it?
+//--------------------------------------------------------------------------------------------------
+.user
+    X~USER_NAME: my name P_NAME{t_user_name}
+    X~USER_NAME: they call me P_NAME{t_user_name}
+    X~USER_NAME: call me P_NAME{t_user_name}
+    X~USER_NAME: i go by the name P_NAME{t_user_name}
+    X~USER_NAME: it is P_NAME{t_user_name}
+    X~USER_NAME: P_NAME{t_user_name}
+//--------------------------------------------------------------------------------------------------
+// The following training section teaches the model to ignore incompleted queries.
+// Try to disable the following section by using .ignore and see the difference in inference
+//--------------------------------------------------------------------------------------------------
+.define 
+    // This macro would be unwrapped into <UNK> or empty string
+    @unk: <UNK>|
+//--------------------------------------------------------------------------------------------------
+// .ignore
+.user
+    my name @unk
+    they call me @unk
+    call me @unk
+    i go by the name @unk
+    it is @unk
+//--------------------------------------------------------------------------------------------------
+    

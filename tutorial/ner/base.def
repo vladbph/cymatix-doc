@@ -1,0 +1,27 @@
+//--------------------------------------------------------------------------------------------------
+// Some replacement rules before utterance used for training and prediction
+//--------------------------------------------------------------------------------------------------
+.regex
+    &it is: \b(it'?s)\b
+    &what is: \b([Ww]hat'?s)\b
+    &what: \b(wh?at?)\b
+    &i am: \b([Ii]'?m)\b
+    &i will: \b([Ii]'?ll)\b
+    &i would: \b([Ii]'?d)\b
+    &i have: \b[Ii]'?ve\b
+    &we will: \b([Ww]e'll)\b
+    &we would: \b([Ww]e'?d)\b
+    &that is: \bthat'?s\b
+    &who is: \b(?:[Ww]ho'?s)\b
+    &did not: \b(didn'?t)\b
+    &do not: \b(don'?t)\b
+    &cannot: \b(can\s+not|can'?t)\b
+    &will not: \bwon'?t|willnot?\b
+    &should not: \bshouldn'?t|shall\s*not\b
+    &would not: \b(wouldnot|wouldn'?t)\b
+    &you are: \b[Yy]ou'?re\b
+    &is not: \b(isn'?t|isnot)\b
+    &are: \b(are|r)\b
+    &you: \b(?:u|yuo|yu)\b
+    &your: \b(?:ur|yuor)\b
+//--------------------------------------------------------------------------------------------------

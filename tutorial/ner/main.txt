@@ -1,0 +1,33 @@
+//--------------------------------------------------------------------------------------------------
+// Conversation flow
+// user> What is your name?
+// bot> My name is Silly. What is yours?
+// user> My name is John
+//--------------------------------------------------------------------------------------------------
+// User says
+.user
+    // Prefix I~ tells platform to reset history or forget everything it remembered until this point
+    // and start collecting from the current inference
+    I~NAME_Q: what is your name?
+    // Bot replies
+    .bot
+        I~NAME_Q: My name is Silly. What is yours?
+        // User says
+        .user
+            // Prefix X~ tells platform to reset hisotry and do not remember the current one either
+            // Basically it means that we consider the conversation is over at this point
+            X~USER_NAME: My name P_NAME{t_user_name}
+            // Bot replies
+            .bot
+                X~USER_NAME: Nice to meet you {t_user_name}
+//--------------------------------------------------------------------------------------------------
+// Example how to check gating conditions to change the inference
+// Note: 'o' object contains all history, 'c' object contains only current inference data
+//--------------------------------------------------------------------------------------------------
+.gate2
+    if o.t_prev_intent == 'I~NAME_Q' and not c.t_intent:
+        c.t_intent = 'X~UNKNOWN_NAME'
+    .bot
+        // Intent -> prompt definition
+        X~UNKNOWN_NAME: I don't know this name. Sorry!
+//--------------------------------------------------------------------------------------------------
