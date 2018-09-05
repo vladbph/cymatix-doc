@@ -104,7 +104,9 @@ Table of Contents
 - NOTE! Platform DOES NOT provide voice recognition services
 
 [DEMO: Web Voice UI](https://youtu.be/usa1AnWNsqI)
+
 [DEMO: Hardware Store Salesperson](https://youtu.be/8D0r9-WizNk)
+
 [DEMO: Medical assistant - headache diagnosis](https://youtu.be/TLYtw2YY4nI)
 
    ___So, Let's do it!___
