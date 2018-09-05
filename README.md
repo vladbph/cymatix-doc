@@ -84,49 +84,28 @@ Table of Contents
    * [Advanced configuration parameters](#advanced-configuration-parameters)
 
 
-#### Machine learning NLU system designed for dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
+#### Machine learning NLU system designed for complex dialogues and expert systems. The platform utilizes proprietary Toth(Train Of Thought) technology for conversation flow tracking and supports many other features...
 ### ___"...Context IS everything ..."___
 # Features Highlights
-- ***`Train Of Thought technology`***
-    * Maintains a train of thought of the conversation using proprietary mechanism and inferences history
-- ***`Session-based conversation instances`***  Memory and context is kept on the `backend`. Client application does not need to collect inference history(!).
-- Ability to create ***`1000s of utterances`*** in minutes
-- ***`States, Events and Sensors Data Embedding`*** contextual support
-- ***`Scripting support`***
-    * Along with `ToTh`, developer may choose to use python scripts that runs on backend to update inferences based on the context. This way client application focuses on the task at hand.
-- `Regex` support. Yes, why would you need to use trainable models for simple things.? You may, but you don't have to.
-- Idioms interpretation mechanism
-    * "I would really want to grab a bite and then go back home" => ``` { 't_intent':'NAVIGATE', 't_stopover':'restaurant', 't_dest':'Home' } ```
-- Named Entity Recognition support
-    * "I want BBQ chicken and new york pizza" => "I want PIZZA_KIND and PIZZA_KIND pizza" => ``` { 't_intent':'ORDER_PIZZA', 't_kind':['BBQ chicken', 'new york']```
-- NLU tasks:
-    - `Self-contained` inferences:
-        * __"Play the latest from Def Leppard"__ =>  
-            ``` { 't_intent':'PLAY_MUSIC', 't_artist':'Def Leppard', 't_attr':'latest' } ```
-        * __"Show flights to Seattle"__ =>  ``` { 't_intent':'SHOW_FLIGHT, 't_dest':'Seattle' } ```
-    - `AI Bot asks User` questions. Example: Order pizza bot
-        * User> __I am hungry for pizza.__
-        * __Bot__> What kind of pizza would you like?
-        * User> __I would like BBQ chicken and pepperoni__
-        * __Bot__> What toppings would you like?
-        * User> __I will go with extra cheese and tomatoes on top__
-        * ...
-    - `User asks AI bot` questions. Example: Web site 'How To' section:
-        * User> __What can you do for me?__
-        * __Bot__> I can help you to create AI chat bots, make your website to talk to you and more...
-        * User> __how?__
-        * __Bot__> First, you need to create a project
-        * User> __How?__
-        * __Bot__> Create a folder, then create configuration file and training files for me to learn
-    - Combination of above
-- ***Coreference Resolution*** 
-        * 'Where is Seattle'
-        * 'Take me there'
-- ***`Expert systems support`*** Result of the dialog could be fed into a layer to process conversation outcome.
-    * This is not NLU specific feature which enables platform utilization in any field of knowledge
-- ***`Multiple language support`***
+- Next generation contextual NLU to create more human AI
+- Train Of Thought (ToTh) technology
+- Utterances generator
+- Memory & persistent storages
+- Interpreting idioms
+- Inference layers
+- Expert systems support
+- Coreference resolution
+- Customizable Machine Learning configuration
+- Named Entity Resolution (NER)
+- Multiple intents
+- Layered scripted fulfillment
+- Real time teaching capabilities
+- All of above are back-end tools, so client application focuses on it's task
 - NOTE! Platform DOES NOT provide voice recognition services
 
+[DEMO: Web Voice UI](https://youtu.be/usa1AnWNsqI)
+[DEMO: Hardware Store Salesperson](https://youtu.be/8D0r9-WizNk)
+[DEMO: Medical assistant - headache diagnosis](https://youtu.be/TLYtw2YY4nI)
 
    ___So, Let's do it!___
 # 'Hello Word' Example
@@ -1234,11 +1213,7 @@ The purpose is the same as `.list` section. In addition, global list variable in
     Tree nuts
     Fish
 ```
-<<<<<<< HEAD
 In a training utterances you can use `@allery_type` as a macro. In a scripted sections `.gate`, `.gate2` and `.script` __`g_allergy_type`__ list is created in global context. Please note __`g_`__ prefix.
-=======
-In a training utterances you can use `@allery_type` as a macro. In a scripted sections `.gate`, `.gate2` and `.script` __`g_allergy_type`__ list is created in global context. Please note __`g_`__ prefix:
->>>>>>> 832944ed616f7af4eedc7cdf622eb59c584e1438
 ```
 g_allery_type = [
     'Eggs',
