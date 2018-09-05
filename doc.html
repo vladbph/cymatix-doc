@@ -128,11 +128,11 @@
 <li>All of above are back-end tools, so client application focuses on it’s task</li>
 <li>NOTE! Platform DOES NOT provide voice recognition services</li>
 </ul>
-<p><a href="https://youtu.be/usa1AnWNsqI">DEMO: Web Voice UI</a><br>
-<a href="https://youtu.be/8D0r9-WizNk">DEMO: Hardware Store Salesperson</a><br>
-<a href="https://youtu.be/TLYtw2YY4nI">DEMO: Medical assistant - headache diagnosis</a></p>
+<p><a href="https://youtu.be/usa1AnWNsqI">DEMO: Web Voice UI</a></p>
+<p><a href="https://youtu.be/8D0r9-WizNk">DEMO: Hardware Store Salesperson</a></p>
+<p><a href="https://youtu.be/TLYtw2YY4nI">DEMO: Medical assistant - headache diagnosis</a></p>
 <p><strong><em>So, Let’s do it!</em></strong></p>
-<h1><a id="Hello_Word_Example_110"></a>‘Hello Word’ Example</h1>
+<h1><a id="Hello_Word_Example_112"></a>‘Hello Word’ Example</h1>
 <p>Let’s demonstrate how 3 lines of text/code makes your first NLU project.</p>
 <ul>
 <li>Create and enter <strong>hello</strong> folder. <code>Folder name is the name of the project.</code></li>
@@ -156,31 +156,31 @@ So, this is it. Literally, 3 lines of code get you there. The inference of the p
 </code></pre>
 <p>To get end-to-end experience go to <a href="http://www.zcymatix.com">zcymatix.com</a> and sign up. Press <strong><em>Sign In</em></strong> and then <strong><em>Sign Up</em></strong>.<br>
 <strong><em>NOTE!</em></strong> Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.<br>
-<img src="http://www.zcymatix.com/img/signup3.png" alt="Register" title="Register"></p>
+<img src="https://nlp2.zcymatix.com/img/signup2.png" alt="Register" title="Register"></p>
 <p>After login, upload the project by choosing your project folder - <strong><em>hello</em></strong>.<br>
 Remember, <strong>project name</strong> is the name of the <strong>folder</strong> and configuration file name must be<br>
 <code>&lt;project name&gt;.json</code><br>
-<img src="http://www.zcymatix.com/img/upload_page1.png" alt="Upload" title="Upload"></p>
+<img src="https://nlp2.zcymatix.com/img/upload_page1.png" alt="Upload" title="Upload"></p>
 <p>When project is uploaded, you need to train it. Choose <strong><em>Build</em></strong> option for that. When project was stopped and/or you want to continue building it, press <strong><em>Continue Build</em></strong>. However, keep in mind that if you changed the training files, continuing building the project DOES NOT always means faster training times. So, we suggest to use <strong><em>Build</em></strong> option when training files have changed.<br>
 Option <strong><em>Start/Restart</em></strong> launches the project in production mode. It should be used when project has been already built. NOTE! You <strong><em>can</em></strong> start building the project while it is in launched/production mode (we use these terms interchangeably). Once the building is finished, the project will <code>go online without distrupting client applications</code>.<br>
-<img src="http://www.zcymatix.com/img/launch_project1.png" alt="Launch" title="Launch"></p>
-<h1><a id="Project_Layers_146"></a>Project Layers</h1>
+<img src="https://nlp2.zcymatix.com/img/launch_project1.png" alt="Launch" title="Launch"></p>
+<h1><a id="Project_Layers_148"></a>Project Layers</h1>
 <p>Once a project has been uploaded it will appear in the list of projects. When you click on it, the list of layers will be displayed. Layer <code>All</code> represent the whole project. You can either build or train whole project using <code>All</code> layer or each layer separately for debug purposes. The menu option for <code>All</code> layer is almost the same as each layer. Single layer has <code>Settings</code> options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.<br>
 On the picture below, you can see <code>project id</code> associated with the project. It is needed for REST API.</p>
-<p><img src="http://www.zcymatix.com/img/layer_page1.png" alt="Layer menu" title="Launch"></p>
+<p><img src="https://nlp2.zcymatix.com/img/layer_page1.png" alt="Layer menu" title="Launch"></p>
 <p>NOTE! Launching all layer of the project separately, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch ‘All’ layer to engage all layers in a stack to run in production mode.</p>
-<h1><a id="Project_ID_154"></a>Project ID</h1>
+<h1><a id="Project_ID_156"></a>Project ID</h1>
 <p>By clicking on the project ID, you will see the REST API to use your project in production.<br>
-<img src="http://www.zcymatix.com/img/rest_info.png" alt="Using project id" title="Launch"></p>
-<h1><a id="Training_time_158"></a>Training time</h1>
+<img src="https://nlp2.zcymatix.com/img/rest_info.png" alt="Using project id" title="Launch"></p>
+<h1><a id="Training_time_160"></a>Training time</h1>
 <p>Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the <strong><em>PROJECT ID</em></strong> required for <strong><em>project launch</em></strong> REST request. When training, project’s or layer’s icon is blinking.</p>
-<h1><a id="Project_WEB_UI_indicators_161"></a>Project WEB UI indicators</h1>
+<h1><a id="Project_WEB_UI_indicators_163"></a>Project WEB UI indicators</h1>
 <p>Web interface has color coded icons against project and each layer.</p>
 <p>RED - means that the project is NOT loaded</p>
 <p>GREEN - means that the project has been loaded in production mode</p>
 <p>YELLOW - indicates that one of the project layer has been loaded, but not the whole project</p>
-<h1><a id="NLU_service_REST_API_170"></a>NLU service REST API</h1>
-<h2><a id="Launch_request_171"></a>Launch request</h2>
+<h1><a id="NLU_service_REST_API_172"></a>NLU service REST API</h1>
+<h2><a id="Launch_request_173"></a>Launch request</h2>
 <p>This is <code>very first</code> handshake request from client application when it is started for the first time. The goal is to allocate <code>session_id</code>, which must be stored by application and provided with all sequential requests afterwards, including <code>launch</code> request. <em>It is a key to the instance of the application.</em><br>
 Example:<br>
 <strong><em><a href="https://nlp2.zcymatix.com/?zcmd=launch&amp;project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8">https://nlp2.zcymatix.com/?zcmd=launch&amp;project_id=f38360cd-08c5-482b-8c22-c2bc67194ab8</a></em></strong><br>
@@ -203,8 +203,8 @@ Parameters:</p>
     session_id = 2cb3b87d-e29c-4743-bab1-0fc5cb98db6d
 </code></pre>
 <p>Here is REST API flow diagram:<br>
-<img src="http://www.zcymatix.com/img/REST_workflow.png" alt="REST API workflow" title="REST API workflow"></p>
-<h2><a id="Inference_example_205"></a>Inference example</h2>
+<img src="https://nlp2.zcymatix.com/img/REST_workflow.png" alt="REST API workflow" title="REST API workflow"></p>
+<h2><a id="Inference_example_207"></a>Inference example</h2>
 <p><strong><em><a href="https://nlp2.zcymatix.com/?zcmd=deduce&amp;session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&amp;query=Hello+World">https://nlp2.zcymatix.com/?zcmd=deduce&amp;session_id=2cb3b87d-e29c-4743-bab1-0fc5cb98db6d&amp;query=Hello+World</a></em></strong><br>
 Parameters:</p>
 <pre><code class="language-json">    cmd = deduce
@@ -214,7 +214,7 @@ Parameters:</p>
 <p>The response:</p>
 <pre><code class="language-json">{ "<span class="hljs-attribute">code</span>":<span class="hljs-value"><span class="hljs-number">201</span></span>, "<span class="hljs-attribute">msg</span>":<span class="hljs-value"><span class="hljs-string">"{"</span>t_intent<span class="hljs-string">":"</span>GREETINGS<span class="hljs-string">"}"</span></span>}
 </code></pre>
-<h2><a id="List_of_response_codes_219"></a>List of response codes</h2>
+<h2><a id="List_of_response_codes_221"></a>List of response codes</h2>
 <pre><code>List of codes:
     200 - Session id is provided in msg field as a string
     201 - Inference is provided in msg field as a JSON string
@@ -225,7 +225,7 @@ Parameters:</p>
 </code></pre>
 <p>It may take few seconds for a project to be launched (if it was not before). If during this time client’s inference request comes to the backend, it will respond with the code <code>102</code>. <strong><em>Client must repeat the request</em></strong> until the inference response comes back with the code <code>201</code>.<br>
 This is the ‘worst’ case scenario, because projects must be loaded in prediction mode for <code>production</code> use after training is finished, thus it should be always loaded.</p>
-<h1><a id="train_section_233"></a><code>.train</code> section</h1>
+<h1><a id="train_section_235"></a><code>.train</code> section</h1>
 <p>Alternative name is <strong><code>.user</code></strong> for readability.<br>
 The section contains training samples. Formal syntax is:</p>
 <pre><code>.train
@@ -240,7 +240,7 @@ The section contains training samples. Formal syntax is:</p>
     I am not sure what I want
 </code></pre>
 <p>This example is quite important to demonstrate the key concept, while building a training set. One thing can be descrided <code>what it is</code> and <code>what it is not</code>! Keeping this in mind, you can create more accurate training sets.</p>
-<h1><a id="prompt_section_252"></a><code>.prompt</code> section</h1>
+<h1><a id="prompt_section_254"></a><code>.prompt</code> section</h1>
 <p>Alternative name is <strong><code>.bot</code></strong> for readability.<br>
 What if we want AI system to respond to user query? Let’s use the ‘Hello World’ code:</p>
 <pre><code>.user
@@ -264,7 +264,7 @@ The idea: You collect all the data from user in the form of slots and their valu
     R~READY: {t_param1} {t_param2} {t_param3}...
 </code></pre>
 <p>Please, be careful when having multiple layers in non expert system projects. Let’s say you have three layer project. Second layer defines a prompt. In such cases <code>propmt is passed to third layer instead of utterance(!)</code></p>
-<h1><a id="define_section_281"></a><code>.define</code> section</h1>
+<h1><a id="define_section_283"></a><code>.define</code> section</h1>
 <p>Let’s update <strong><em>hello.txt</em></strong> file a little. Add <strong><em>.define</em></strong> section.</p>
 <pre><code class="language-json">.define
     @hi: Hello|hi
@@ -288,7 +288,7 @@ GREETING:hi
 <li><strong><em>folk(s|)</em></strong> is INVALID</li>
 <li><strong><em>(folk|folks)</em></strong> is VALID</li>
 </ul>
-<h1><a id="list_section_306"></a><code>.list</code> section</h1>
+<h1><a id="list_section_308"></a><code>.list</code> section</h1>
 <p>This section is very much the same as define with different syntax:</p>
 <pre><code>.list=&lt;define name&gt;
     item1
@@ -309,7 +309,7 @@ GREETING:hi
     @us_state: Alabama|Alaska|Arizona|Arkansas|California|...
 </code></pre>
 <p>Imagine you want to train <code>named entity recognizer</code>. Usually you get the text file with the list of items. <code>.list</code> section lets you quickly transform text file into the training file by adding the section header to the top.</p>
-<h1><a id="Slots_parameters_332"></a><code>Slots</code> (parameters)</h1>
+<h1><a id="Slots_parameters_334"></a><code>Slots</code> (parameters)</h1>
 <p>In the training set we can assign intent and mark/label words with slot names for each utterance.<br>
 Training file:</p>
 <pre><code class="language-json">.define
@@ -324,7 +324,7 @@ Training file:</p>
 <pre><code class="language-json">{"<span class="hljs-attribute">t_intent</span>":<span class="hljs-value"><span class="hljs-string">"NAVIGATE"</span></span>, "<span class="hljs-attribute">t_dest</span>":<span class="hljs-value"><span class="hljs-string">"Seattle"</span></span>, "<span class="hljs-attribute">t_transport</span>":<span class="hljs-value"><span class="hljs-string">"car"</span></span>}
 </code></pre>
 <p>This way we infer the meaning of the utterance.</p>
-<h1><a id="Introduction_to_Layers_351"></a>Introduction to Layers</h1>
+<h1><a id="Introduction_to_Layers_353"></a>Introduction to Layers</h1>
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform is using the concept of <strong><em>layers</em></strong>. Each layer could be responsible for inference of specific things. For example, in case of ordering pizza you may want to infer <strong><em>pizza toppings</em></strong> and <strong><em>pizza kinds</em></strong> in separation of the training set that will be using them. Why? Because there may be too many pizza kinds and toppings, meaning that final training data set will grow dramatically if we use each pizza kind and topping explicitly. Of course you can use <a href="#placement-slot-inference"><code>placement slot inference</code></a>, but it is up to developer to decide which way to go. So, it is advisable to have a layer that would be replacing specific pizza kind and topping with something like <strong><em>PIZZA_KIND</em></strong> and <strong><em>PIZZA_TOPPING</em></strong> labels. Layer after that, would use them instead of actual values. At the end of the inference cycle they will be resolved to the actual values. The following example starts with more complex configuration file with two layers. Once you have more than one layer you have to name each of them:</p>
 <pre><code class="language-json">[
     {
@@ -387,9 +387,9 @@ The resulting inference after applying both layers will be:</p>
     @small @pizza_kind{&amp;PIZZA_KIND} (and @pizza_kind{&amp;PIZZA_KIND} pizza|)
 </code></pre>
 <p>So, having a context consisting only surrounding words is enough? You decide. But be careful though. <strong><em>False positives one of the biggest issues in NLU systems</em></strong>, finding the balance between training time, number of utterances and sufficient context is not easy task to create <strong><em>high quality training set.</em></strong> <a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform gives the tools to go either way.</p>
-<h1><a id="Dialogs_425"></a>Dialogs</h1>
+<h1><a id="Dialogs_427"></a>Dialogs</h1>
 <p>There are two types of dialogs supported by the platform <strong><em>AI system asks questions</em></strong> and <strong><em>User asks questions</em></strong>. And third one is the combination of these two.</p>
-<h2><a id="AI_system_asks_questions_427"></a>AI system asks questions</h2>
+<h2><a id="AI_system_asks_questions_429"></a>AI system asks questions</h2>
 <p>This type of dialog assumes that AI system knows the set of slots/parameters to collect from user. <code>Presence of the slots values</code> is sufficient for the system to consider conversation complete.<br>
 Let’s take as example a visit to doctor.</p>
 <pre><code>Patient&gt; I have a stomach ache
@@ -427,7 +427,7 @@ Using <code>toth</code> flags:</p>
     User&gt; Yes
 </code></pre>
 <p>There are few things to know before we can create such dialog.</p>
-<h3><a id="gate_section_472"></a><code>.gate</code> section</h3>
+<h3><a id="gate_section_474"></a><code>.gate</code> section</h3>
 <p>Its purpose is to fullfil user query. .gate section contains a small script for generating new intent based on the inference history. The syntax uses python style <code>if</code> statements. It is better to demonstrate on <code>Pizza</code> example:</p>
 <pre><code class="language-python">.gate
     <span class="hljs-string">'ASK_KIND'</span>        <span class="hljs-keyword">if</span> o.t_intent == <span class="hljs-string">'ORDER_PIZZA'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> hasattr( o, <span class="hljs-string">'t_kind'</span> )
@@ -465,7 +465,7 @@ Consider another example:</p>
 </code></pre>
 <p>Keeping in mind that the goal of the gate is to potentially change the intent, the gate above checks if current intent is <code>Q42</code>, but the t_city was not provided, return intent which would tell user something like: ‘You did not provide the city’. You can argue the rational of this, saying why can’t I just train it in such way, so when city is provided one intent is produced and if not provided - another one? Absolutely true. However, we want to keep the options open for developer. Not to mention, that the gate mechanism does not require training.<br>
 NOTE! Order of the gates is important, if gate execution depends on previous gate outcome.</p>
-<h2><a id="User_asks_questions_515"></a>User asks questions</h2>
+<h2><a id="User_asks_questions_517"></a>User asks questions</h2>
 <p>The best example of such dialog would be Frequetly Asked Questions of a website. Again toth mechanism allows following handling questions differently depending on the context. Example of our web service:</p>
 <pre><code>User&gt; What can you do for me?
 Service&gt; I am a Natural Language Understanding platform and I can help you to create AI assistants
@@ -501,8 +501,8 @@ Service&gt; Minimalistic project consists of two files - configuration file and 
     MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
 </code></pre>
 <p>As you can see here, the same question ‘How?’ gives contextual adequate response. Also see <a href="#how-to-control-inference-history">how to control inference history</a> section for intent prefixes.</p>
-<h1><a id="regex_section_554"></a><code>.regex</code> section</h1>
-<h2><a id="Replacement_555"></a>Replacement</h2>
+<h1><a id="regex_section_556"></a><code>.regex</code> section</h1>
+<h2><a id="Replacement_557"></a>Replacement</h2>
 <pre><code>.regex
     &amp;and:\b(?:as well as|and also)\b
 </code></pre>
@@ -511,13 +511,13 @@ Service&gt; Minimalistic project consists of two files - configuration file and 
 <pre><code>.regex
     &amp;1 hours and 30 minutes : \bone\s+(?:and|\&amp;)\s+(?:(?:a|the)\s+)?half\s+(?:an?\s+)?h(?:ou)?r?s?\b
 </code></pre>
-<h2><a id="Lookup_lables_568"></a>Lookup lables</h2>
+<h2><a id="Lookup_lables_570"></a>Lookup lables</h2>
 <pre><code>.regex
     P_SIZE:\b(?:small|medium|large)\b
 </code></pre>
 <p>The actual value of <code>small</code>, <code>medium</code> or <code>large</code> is replaced by <code>P_SIZE</code> and passed to the NN layer so that we have less training samples. At the last layer of the model, the values will be restored. See <a href="#pizza2-bot-example">pizza2 example</a> for more details.<br>
 <code>IMPORTANT!</code> There must be one group infered by the regular expression(!)</p>
-<h1><a id="Prompt_label_576"></a>Prompt label</h1>
+<h1><a id="Prompt_label_578"></a>Prompt label</h1>
 <p>Prompt is a powerful tool of <strong><em>ToTh</em></strong> mechanism to control passing information from one inference layer to another. It could be a simple text response corresponding to user query or a <strong><em>template which uses collected slot and their values</em></strong> to build next ‘utterance’ for next layer in the pipeline, <strong>IF desired</strong>. Must reiterate this point. Very first inference layer gets user query. The output is either updated utterance or a prompt, which becomes an input to next layer and so on.</p>
 <pre><code>utterance =&gt; 
     Layer1 =&gt; 
@@ -539,60 +539,60 @@ Example:</p>
                 }
 </code></pre>
 <p>The values in the template are controlled by prompt’s prefixes as described below:</p>
-<h2><a id="Prefix______601"></a>Prefix <strong>“#”</strong></h2>
+<h2><a id="Prefix______603"></a>Prefix <strong>“#”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in the <strong><em>most recent inference</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name value is in the last inference, t_age is absent
 .prompt
     RESULT: {#t_name} {#t_age}
     # The value of RESULT: t_name None
 </code></pre>
-<h2><a id="Prefix______610"></a>Prefix <strong>“?#”</strong></h2>
+<h2><a id="Prefix______612"></a>Prefix <strong>“?#”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in the <strong><em>most recent inference</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example:  t_name value is in the last inference, t_age is absent
 .prompt
     RESULT: {?#t_name} {?#t_age}
     # The value of RESULT: t_name 
 </code></pre>
-<h2><a id="Prefix______619"></a>Prefix <strong>“$”</strong></h2>
+<h2><a id="Prefix______621"></a>Prefix <strong>“$”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in <strong><em>whole inference history</em></strong>. The approach can be used as an input for dialog tracking layers. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name value is in all whole history, t_age is absent
 .prompt
     RESULT: {$t_name} {$t_age}
     # The value of RESULT: t_name None
 </code></pre>
-<h2><a id="Prefix______628"></a>Prefix <strong>“?$”</strong></h2>
+<h2><a id="Prefix______630"></a>Prefix <strong>“?$”</strong></h2>
 <p>Implies using label’s <strong><em>name</em></strong> in <strong><em>whole inference history</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name value is in all whole history, t_age is absent
 .prompt
     RESULT: {?$t_name} {?$t_age}
     # The value of RESULT: t_name 
 </code></pre>
-<h2><a id="Prefix______637"></a>Prefix <strong>“.”</strong></h2>
+<h2><a id="Prefix______639"></a>Prefix <strong>“.”</strong></h2>
 <p>Implies using label’s <strong><em>value</em></strong> in the <strong><em>most recent inference</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_name = John is in the last inference. 
 .prompt
     GREETING: Hello {.t_name} =&gt; Hello John
 </code></pre>
-<h2><a id="Prefix______645"></a>Prefix <strong>“?.”</strong></h2>
+<h2><a id="Prefix______647"></a>Prefix <strong>“?.”</strong></h2>
 <p>Implies using label’s <strong><em>value</em></strong> in the <strong><em>most recent inference</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name is absent in the last inference. 
 .prompt
     GREETING: Hello {?.t_name} =&gt; Hello
 </code></pre>
-<h2><a id="Empty_label_prefix_653"></a>Empty label prefix</h2>
+<h2><a id="Empty_label_prefix_655"></a>Empty label prefix</h2>
 <p>Implies using label’s <strong><em>values</em></strong> in <strong><em>whole inference history</em></strong>. <strong><em>NOTE: if value is absent it will be replaced with ‘None’</em></strong></p>
 <pre><code>Example: t_kind values are in whole inference history, t_kind = BBQ and t_kind = meat
 .prompt
     ORDER_PIZZA: Ok, I will place an order of {t_kind} pizza for you =&gt; 
     =&gt; Ok, I will place an order of BBQ, meat pizza for you
 </code></pre>
-<h2><a id="Prefix______662"></a>Prefix <strong>“?”</strong></h2>
+<h2><a id="Prefix______664"></a>Prefix <strong>“?”</strong></h2>
 <p>Implies using label’s <strong><em>values</em></strong> in <strong><em>whole inference history</em></strong>. <strong><em>NOTE: if value is absent it will be skipped from the prompt</em></strong></p>
 <pre><code>Example: t_name is absent in inference history
 .prompt
     GREETING: Hello {?t_name} =&gt; Hello
 </code></pre>
-<h2><a id="Prompt_label_value_access_by_index_670"></a>Prompt label value access by index</h2>
+<h2><a id="Prompt_label_value_access_by_index_672"></a>Prompt label value access by index</h2>
 <p>While building a prompt, the label value can be accessed by index in the inference history, like so: <code>{t_utt-1}</code>. Index <code>-1</code> refers value of the label <code>t_utt</code> of in the previous inference.<br>
 If previous inference is not available, <code>None</code> value is used in the prompt. If you want the value to be omitted in such case, use <code>{?t_utt-1}</code>.</p>
 <pre><code>Example: 
@@ -606,9 +606,9 @@ If previous inference is not available, <code>None</code> value is used in the p
     R~RESP_NO: Ok, no problem.
 </code></pre>
 <p>Side note: this particular example relies on <code>flag</code> toth to be enabled</p>
-<h1><a id="PIZZA2_BOT_Example_687"></a>PIZZA2 BOT Example</h1>
+<h1><a id="PIZZA2_BOT_Example_689"></a>PIZZA2 BOT Example</h1>
 <p>Let’s consider PIZZA2 BOT example. In this example we will not use scripting part utilizing only <strong><em>Neural Networks(NN)</em></strong> layers. By no means it should be considered completed, however it showcases many useful features of the platform. The project has 3 layers.</p>
-<h2><a id="Layer_1_Slots_689"></a>Layer 1 Slots</h2>
+<h2><a id="Layer_1_Slots_691"></a>Layer 1 Slots</h2>
 <p>Layer 1 is named “slots” is dedicated to isolate types of the slots - <strong>pizza kind</strong>, <strong>pizza toppings</strong>,  <strong>size</strong> and <strong>delivery address</strong>. Here is the configuration for the layer:</p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"slots"</span></span>,
@@ -695,7 +695,7 @@ Lets review regex section.</p>
 I would like to place an order for P_SIZE P_KIND with extra P_TOPPINGS and P_TOPPINGS on top
 </code></pre>
 <p>Latter is an input utterance to next layer called ‘Pizza’</p>
-<h2><a id="Layer_2_Pizza_787"></a>Layer 2 Pizza</h2>
+<h2><a id="Layer_2_Pizza_789"></a>Layer 2 Pizza</h2>
 <p>Config for this layer:</p>
 <pre><code class="language-json">{
     "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"pizza"</span></span>,
@@ -763,7 +763,7 @@ if t_toppings is missing
 if t_address is missing
 </code></pre>
 <p>Next layer is called ‘Bot’.</p>
-<h2><a id="Layer_3_Bot_866"></a>Layer 3 Bot</h2>
+<h2><a id="Layer_3_Bot_868"></a>Layer 3 Bot</h2>
 <p>Configuration:</p>
 <pre><code class="language-json">    {
         "<span class="hljs-attribute">layer_name</span>":<span class="hljs-value"><span class="hljs-string">"bot"</span></span>,
@@ -786,7 +786,7 @@ if t_address is missing
                      be delivered to {t_address}. Would you like to go ahead with the order?
 </code></pre>
 <p>The training set for ‘Bot’ layer is self-explanatory. Generate <strong><em>ASK_KIND</em></strong> prompt to user if <strong><em>t_kind</em></strong> slot is missing and so on. Valid question at this point is: Do I need to create training layer for such simple task? The answer is NO. Alternatively, you can use <a href="#gate-section-script">.gate</a> section described before to ‘script’ the same logic, thus skipping training altogether for this type of inference.</p>
-<h2><a id="Pizza_project_Final_Inference_892"></a>Pizza project Final Inference</h2>
+<h2><a id="Pizza_project_Final_Inference_894"></a>Pizza project Final Inference</h2>
 <p>Let’s review utterance transformation going though all layers of the ‘Pizza2’ project:</p>
 <pre><code>// 'Slot' layer
 I would like to place an order for small pepperoni with extra cheese and ham on top
@@ -803,7 +803,7 @@ if t_address is missing
 What is the delivery address?
 </code></pre>
 <p>I hope it is clear why the 1st question is ‘What is the delivery address’. It is because user already provided <strong><em>t_kind</em></strong>, <strong><em>t_toppings</em></strong> and <strong><em>t_size</em></strong> in the original sentence.</p>
-<h1><a id="Inference_history_912"></a>Inference history</h1>
+<h1><a id="Inference_history_914"></a>Inference history</h1>
 <p>This information is useful to understand platform operation under the hood. Inference history could be simply described as the “things user said before”. All inferences are collected in the <code>history</code> or <code>stack</code>. Those terms will be used interchangeably. The inference history contains:</p>
 <ul>
 <li>Layer’s input utterance with predefined slot name <code>t_utt</code></li>
@@ -811,11 +811,11 @@ What is the delivery address?
 <li>Layer’s infered <code>slots</code> and their <code>values</code>, if any</li>
 <li>Layer’s prompt with predefined slot name <code>t_prompt</code>, if any</li>
 </ul>
-<h1><a id="How_to_control_inference_history_919"></a>How to control inference history</h1>
+<h1><a id="How_to_control_inference_history_921"></a>How to control inference history</h1>
 <p>At some point we need to collect all slots values in the stack to build an aggregative inference (pizza order), or may be forget whole inference, because it is self-contained and there is no need to remember it, or go one or more steps back in history when user says “What?” or “Could you repeat it?”. Or what if user changed their mind and wants to change the value of a slot? All of above are pieces of <strong>ToTh</strong> technology. It is done via intent prefixes:</p>
 <ul>
 <li>
-<h2><a id="Intent_Prefixes_922"></a>Intent Prefixes</h2>
+<h2><a id="Intent_Prefixes_924"></a>Intent Prefixes</h2>
 </li>
 </ul>
 <pre><code>&lt;no prefix&gt; - Normal intent. The intent and slots values to be collected in the history.
@@ -839,7 +839,7 @@ I~  Clean previous inference history and save current inference in it.
 </code></pre>
 <ul>
 <li>
-<h2><a id="Empty_prefix_943"></a><code>Empty</code> prefix</h2>
+<h2><a id="Empty_prefix_945"></a><code>Empty</code> prefix</h2>
 </li>
 </ul>
 <p>Intent without prefix with infered slots and their values are saved in the inference history.<br>
@@ -848,7 +848,7 @@ where<br>
 <code>t_intent = ORDER_PIZZA</code> will be kelp in stack until <code>R~</code> or <code>X~</code> session-based conversation intent comes along to erase it.</p>
 <ul>
 <li>
-<h2><a id="R_prefix_Return_command_949"></a><code>R~</code> prefix. Return command</h2>
+<h2><a id="R_prefix_Return_command_951"></a><code>R~</code> prefix. Return command</h2>
 </li>
 </ul>
 <p>In ‘Pizza’ layer we have:</p>
@@ -868,7 +868,7 @@ where<br>
 </code></pre>
 <ul>
 <li>
-<h2><a id="F_prefix_Infer_and_Forget_command_967"></a><code>F~</code> prefix. Infer and Forget command</h2>
+<h2><a id="F_prefix_Infer_and_Forget_command_969"></a><code>F~</code> prefix. Infer and Forget command</h2>
 </li>
 </ul>
 <p>The prefix is used to prevent saving the inference in the history. For instance: <code>What time is it?</code> This is, most likely, self-contained statement and depending on the domain there may be no need to keep it in the history. So, the resulting inference will be returned, and it will not be remembered in the stack.</p>
@@ -880,7 +880,7 @@ where<br>
 <p>There is a derivative: <code>F&lt;n_steps&gt;~</code>. For example <code>F2~</code>, where <code>n_steps = 2</code>: Do not remember current inference and remove 2 top items from the history/memory. You can think of this prefix as return command from a function. It allows to keep the train of thought of main conversation, if ‘function call’ or micro conversation is finished.</p>
 <ul>
 <li>
-<h2><a id="G_prefix_Go_to_command_977"></a><code>G~</code> prefix. Go to command</h2>
+<h2><a id="G_prefix_Go_to_command_979"></a><code>G~</code> prefix. Go to command</h2>
 </li>
 </ul>
 <p>Intuition: “Where were we?” in the conversation.<br>
@@ -889,7 +889,7 @@ where<br>
 <code>G&lt;x&gt;~</code>   Sets <code>x-1</code> intent in the history as current one. Please note the difference b/n <code>F~</code> and <code>G~</code> intents.</p>
 <ul>
 <li>
-<h2><a id="P_prefix_One_step_back_command_984"></a><code>P~</code> prefix. One step back command</h2>
+<h2><a id="P_prefix_One_step_back_command_986"></a><code>P~</code> prefix. One step back command</h2>
 </li>
 </ul>
 <p>The prefix tells framework to take last inference in the history and return it. It is useful for cases when user asks, ‘What did you say?’ ‘Repeat please?’.</p>
@@ -911,13 +911,13 @@ where<br>
 <p>Star <code>*</code> symbol tells to grab last value of the <code>t_prompt</code> in the history.</p>
 <ul>
 <li>
-<h2><a id="B_prefix_Two_steps_back_command_1006"></a><code>B~</code> prefix. Two steps back command</h2>
+<h2><a id="B_prefix_Two_steps_back_command_1008"></a><code>B~</code> prefix. Two steps back command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to take <code>top-1</code> inference from the history. It is useful for cases when user asks ‘What did you say BEFORE that?’</p>
 <ul>
 <li>
-<h2><a id="C_prefix_Change_slot_value_command_1009"></a><code>C~</code> prefix. Change slot value command</h2>
+<h2><a id="C_prefix_Change_slot_value_command_1011"></a><code>C~</code> prefix. Change slot value command</h2>
 </li>
 </ul>
 <p>The prefix tells the framework to change the value of the slot in the history<br>
@@ -936,7 +936,7 @@ where<br>
 <p>The <code>t_dest</code> slot value <code>Seattle</code> will be replaced with <code>Vancouver</code> directly in the history.</p>
 <ul>
 <li>
-<h2><a id="X_prefix_Clean_previous_history_command_1028"></a><code>X~</code> prefix. Clean previous history command</h2>
+<h2><a id="X_prefix_Clean_previous_history_command_1030"></a><code>X~</code> prefix. Clean previous history command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current inference suggests that the previous history must not be kept any longer. <strong><em>Current inference is not saved in the history.</em></strong></p>
@@ -956,11 +956,11 @@ where<br>
 This prefix should be used for self-contained inference, meaning it has all information needed to make confident conclusion, plus no further inference should rely on it.</p>
 <ul>
 <li>
-<h2><a id="I_prefix_Clean_previous_history_and_restart_command_1046"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
+<h2><a id="I_prefix_Clean_previous_history_and_restart_command_1048"></a><code>I~</code> prefix. Clean previous history and restart command</h2>
 </li>
 </ul>
 <p>The prefix should be used if current inference suggests that the previous history must not be kept any longer. <strong><em>Current inference is saved in the history.</em></strong> Think of this command’s effect as ‘Tertis’ effect.</p>
-<h1><a id="Idioms_interpretation_Intent_prefix__1049"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
+<h1><a id="Idioms_interpretation_Intent_prefix__1051"></a>Idioms interpretation. Intent prefix <code>~</code></h1>
 <p>To support truly natural language understanding, we have a mechanism to interpret idioms and enable <code>slot filling</code> with semantic values <strong><em>not found in the original utterance</em></strong>. Here is an example:</p>
 <pre><code>.train
     ~NAV: take me to a place where i can have a nice meal
@@ -971,7 +971,7 @@ This prefix should be used for self-contained inference, meaning it has all info
 </code></pre>
 <p>Prefix <code>~</code> must be first one in the intent. It <strong>can</strong> be used in combination with previously described prefixes. For example <code>~I~NAV</code>. It means that prompt contains additional slots. <code>I~</code> tells framework to restart collecting the history, while previous history will be lost. See <a href="#i-prefix-clean-previous-history-and-restart-command">above</a>.<br>
 Please also note the separator <code>;</code> between slots-value pairs.</p>
-<h1><a id="Remove_slot_value_from_inference_history_del_command_1063"></a>Remove slot value from inference history. <code>$del</code> command</h1>
+<h1><a id="Remove_slot_value_from_inference_history_del_command_1065"></a>Remove slot value from inference history. <code>$del</code> command</h1>
 <p>Lets say you want to delete a slot value from the history. Consider the example:</p>
 <pre><code>.train
     C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
@@ -983,7 +983,7 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
     ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
 </code></pre>
 <p>In this example user can change his/her mind as many time as desired, and slot values will be updated in history accordingly. Implicetly, ~C_PARKING_HS means that previous t_time_hour and t_time_min should be erased. We are explicitly chaning the value of t_time_hour and implicitly t_time_min.</p>
-<h1><a id="Coreference_1077"></a>Coreference</h1>
+<h1><a id="Coreference_1079"></a>Coreference</h1>
 <p>Consider the training samples using <code>P_PLACE</code> slot type:</p>
 <pre><code>.train
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
@@ -995,12 +995,12 @@ Please also note the separator <code>;</code> between slots-value pairs.</p>
 <p>First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve <code>it</code>:<br>
 <code>INT_NAVIGATE/t_place/t_dest:take me there</code><br>
 Why list of slots? The intuition is this - search for either <code>t_place</code> or <code>t_dest</code> in that order in the inference history and put its value to substitute <code>there</code>.<br>
-<img src="http://www.zcymatix.com/img/session_memory_01.png" alt="Conventional &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="Coreference resolution"><br>
+<img src="https://nlp2.zcymatix.com/img/session_memory_01.png" alt="Conventional &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="Coreference resolution"><br>
 As you can see, you have to collect inferences in client application and resolve the value of ‘it’. With zCymatix platform all done automatically on backend side.</p>
-<p><img src="http://www.zcymatix.com/img/session_memory_02.png" alt="zCymatix &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="zCymatix it/there reolution"></p>
-<h1><a id="Script_sections_1096"></a>Script sections</h1>
+<p><img src="https://nlp2.zcymatix.com/img/session_memory_02.png" alt="zCymatix &amp;quot;it&amp;quot;/&amp;quot;there&amp;quot; reolution" title="zCymatix it/there reolution"></p>
+<h1><a id="Script_sections_1098"></a>Script sections</h1>
 <p>To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.</p>
-<h2><a id="gate2_section_1099"></a><code>.gate2</code> section</h2>
+<h2><a id="gate2_section_1101"></a><code>.gate2</code> section</h2>
 <p>Its purpose is to fullfil user query. It contains python script executed AFTER inference is made in the layer, that is when intent and slot values are known. Important to remember the scope of exposed data.<br>
 Mutable object <code>o</code> as a Namespace object containing all(including current) inferences data from the collected history. Read only object <code>c</code> contains <code>current</code> inference data only. NOTE! The following slot names are <strong>reserved</strong>:</p>
 <p><strong><code>o.t_intent</code></strong> - is a string value of the current intent. Value can be changed.</p>
@@ -1029,7 +1029,7 @@ o.t_param.append( 'new_value' ) # Appends a value to a slot.
 </code></pre>
 <p>Set of sandboxed functions available below. <strong>In <code>.gate2</code> you can change, add, delete any slot from deduction history.</strong> Note! All the changes must be made in <code>o</code> object. Changes in <code>c</code> object will be ignored.<br>
 <strong>NOTE!</strong> Order of the gates is important, if gate execution depends on previous gate(s) outcome.</p>
-<h2><a id="script_section_1137"></a><code>.script</code> section</h2>
+<h2><a id="script_section_1139"></a><code>.script</code> section</h2>
 <p>Its purpose to define global python methods and shared, application wide, data within one layer. These methods are accessible from <code>.gate</code> and <code>.gate2</code> sections in runtime mode. Builtin set of functions is sandboxed and limited to:</p>
 <pre><code>'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
@@ -1093,9 +1093,9 @@ datetime.now( ) # Incorrect
 </li>
 </ul>
 <p>Data structures declared in this sections should be treated as <code>shared data</code> of the application, which can be saved/retrived to/from persisant memory via available methods: <code>read</code> and <code>write</code></p>
-<h2><a id="vars_section_1202"></a><code>.vars</code> section</h2>
+<h2><a id="vars_section_1204"></a><code>.vars</code> section</h2>
 <p>Its purpose to allocate variables declared in local context of python script.</p>
-<h2><a id="slist_section_1205"></a><code>.slist</code> section</h2>
+<h2><a id="slist_section_1207"></a><code>.slist</code> section</h2>
 <p>The purpose is the same as <code>.list</code> section. In addition, global list variable in python environment is created. Example:</p>
 <pre><code>.slist = allergy_type
     Eggs
@@ -1114,7 +1114,7 @@ datetime.now( ) # Incorrect
 ]
 
 </code></pre>
-<h1><a id="Events_States_Sensors_Information_Embedding_1227"></a>Events, States, Sensors Information Embedding</h1>
+<h1><a id="Events_States_Sensors_Information_Embedding_1229"></a>Events, States, Sensors Information Embedding</h1>
 <p>Contextual information embedding into utterances and prompts is the foundation of ToTh technology.<br>
 Language operates by <code>symbols</code>. All words are the symbols, which are inherently indirect references to things that we can experience and understand. Keeping this in mind, we can <code>encode</code> any <code>contextual information</code> such as <code>events</code> or <code>states</code> or even <code>sensors information</code> using symbols, which we can use in the <code>training set</code> expanding our samples with those symbols.<br>
 Let’s review an example:</p>
@@ -1156,7 +1156,7 @@ In which room? I did not say it explicitly.
 </li>
 </ol>
 <p>This makes client application <strong>cleaner, focusing on its task</strong> and <code>backend</code> takes care of the session, its history and the context. In our example my phone would only <strong><code>act</code></strong> on the intent by playing <code>Def Leppard</code> in <code>living room</code>.</p>
-<h1><a id="Multiple_language_support_1269"></a>Multiple language support</h1>
+<h1><a id="Multiple_language_support_1271"></a>Multiple language support</h1>
 <p>In order to support other languages besides English, all you have to do is to add ‘lang’ field (ISO 639-1 and ISO alpha-2) into any of the layers of you project configurationISO:</p>
 <pre><code>[
     {
@@ -1165,13 +1165,13 @@ In which room? I did not say it explicitly.
     }
 ]
 </code></pre>
-<h1><a id="Comments_in_training_files_1280"></a>Comments in training files</h1>
+<h1><a id="Comments_in_training_files_1282"></a>Comments in training files</h1>
 <p>Comment must start from a new line and be prefixed with either <code>#</code> or <code>//</code></p>
-<h1><a id="Long_lines_continuation_1283"></a>Long lines continuation</h1>
+<h1><a id="Long_lines_continuation_1285"></a>Long lines continuation</h1>
 <p>Use backslash <code>\</code> to break long line. NOTE, white spaces on next line are ignored.</p>
-<h1><a id="Unknown_word_marker_1286"></a>Unknown word marker</h1>
+<h1><a id="Unknown_word_marker_1288"></a>Unknown word marker</h1>
 <p><strong><code>&lt;UNK&gt;</code></strong> is used in training sets to mark words that are not in the vocabulary of the training set.</p>
-<h1><a id="Named_Entity_Recognition_1289"></a>Named Entity Recognition</h1>
+<h1><a id="Named_Entity_Recognition_1291"></a>Named Entity Recognition</h1>
 <p>Can you imagine number of pizza types, toppings, crust etc. Well, and this is not the worst example. Now, if to put all combinations in utterances, training set can be easily few millions samples. Which is not good if you want to have <code>named entity recognition</code>. To solve this, you have to come up with the training set, where unknown words would be labled based on the context and not by the context and the value. Let’s have a layer that would isolate P_TOPPING label. Note, this is a type, not a slot value.</p>
 <pre><code>.define 
     @unk: &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt;|&lt;UNK&gt; &lt;UNK&gt; &lt;UNK&gt;
@@ -1212,9 +1212,9 @@ In which room? I did not say it explicitly.
 }
 </code></pre>
 <p>This approach is recommended to be used when you don’t know all the values of the slot type or values are known, but they are too many. Training set must include utterances that create sufficient, high probability context to be sure that unknown word is something that we are looking for. We will not be discussing here whether this is good or bad way leaving it to developers, because it is task specific. The example above can be handled in one layer, if desired.</p>
-<h1><a id="Expert_systems_support_1335"></a>Expert systems support</h1>
+<h1><a id="Expert_systems_support_1337"></a>Expert systems support</h1>
 <p>The platform support a layer type, which goal is not related to NLU. You may decide to collect slots values and feed them to expert layer to infer additional information. Example: Doctor patient use case. Patient comes to a doctor and the assistent app asks a set of questions. Patient’s answers are collected as a slot values and as a prompt passed to expert system layer to make a diagnosys.</p>
-<h1><a id="Recommendations_tips_and_tricks_1338"></a>Recommendations, tips and tricks</h1>
+<h1><a id="Recommendations_tips_and_tricks_1340"></a>Recommendations, tips and tricks</h1>
 <ul>
 <li>
 <p>Before starting creating a <code>project</code> or <code>knowledge domain</code> important to remember:<br>
@@ -1270,7 +1270,7 @@ There are two ways to describe something. <strong><code>What it IS</code></stron
 <p><a href="http://www.zcymatix.com"><code>zCymatix</code></a> platform <strong>does not</strong> provide <code>voice recognition services</code>. For web applications we recommend using <a href="https://cloud.google.com/speech/"><code>Google service</code></a>, since it is superior of other products available on the market today. See also available solutions for <a href="https://developer.android.com/reference/android/speech/SpeechRecognizer.html">Android</a> and <a href="https://developer.apple.com/documentation/speech">iOS</a>.</p>
 </li>
 </ul>
-<h1><a id="Optional_configuration_parameters_1391"></a>Optional configuration parameters</h1>
+<h1><a id="Optional_configuration_parameters_1393"></a>Optional configuration parameters</h1>
 <p><strong>NOTE</strong>! If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>
@@ -1413,7 +1413,7 @@ Alternatively, prompt mechanism can be used to achieve the same result, however 
 <p>See <a href="#prefix--4">Prefix “.”</a></p>
 </li>
 </ul>
-<h1><a id="Advanced_configuration_parameters_1517"></a>Advanced configuration parameters</h1>
+<h1><a id="Advanced_configuration_parameters_1519"></a>Advanced configuration parameters</h1>
 <p><strong>NOTE!</strong> If the meaning of the parameters are not clear, keep the defaults or drop me a note.</p>
 <ul>
 <li>

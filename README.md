@@ -135,28 +135,28 @@ That's it. If you want to see system to respond to you, add:
 
 To get end-to-end experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
-![Register](http://www.zcymatix.com/img/signup3.png "Register")
+![Register](https://nlp2.zcymatix.com/img/signup2.png "Register")
 
 After login, upload the project by choosing your project folder - ***hello***. 
 Remember, __project name__ is the name of the __folder__ and configuration file name must be 
 `<project name>.json`
-![Upload](http://www.zcymatix.com/img/upload_page1.png "Upload")
+![Upload](https://nlp2.zcymatix.com/img/upload_page1.png "Upload")
 
 When project is uploaded, you need to train it. Choose ***Build*** option for that. When project was stopped and/or you want to continue building it, press ***Continue Build***. However, keep in mind that if you changed the training files, continuing building the project DOES NOT always means faster training times. So, we suggest to use ***Build*** option when training files have changed.
 Option ***Start/Restart*** launches the project in production mode. It should be used when project has been already built. NOTE! You ___can___ start building the project while it is in launched/production mode (we use these terms interchangeably). Once the building is finished, the project will `go online without distrupting client applications`.
-![Launch](http://www.zcymatix.com/img/launch_project1.png "Launch")
+![Launch](https://nlp2.zcymatix.com/img/launch_project1.png "Launch")
 
 # Project Layers
 Once a project has been uploaded it will appear in the list of projects. When you click on it, the list of layers will be displayed. Layer `All` represent the whole project. You can either build or train whole project using `All` layer or each layer separately for debug purposes. The menu option for `All` layer is almost the same as each layer. Single layer has `Settings` options reflecting current settings of the layer taken from the configuration file. You can delete the whole project but cannot a selected layer. To do so, you need to upload the updated project from your local machine.
 On the picture below, you can see `project id` associated with the project. It is needed for REST API.
 
-![Layer menu](http://www.zcymatix.com/img/layer_page1.png "Launch")
+![Layer menu](https://nlp2.zcymatix.com/img/layer_page1.png "Launch")
 
 NOTE! Launching all layer of the project separately, does not mean launching the whole project(!). As it was stated above, launching a layer is only for test purposes. You must launch 'All' layer to engage all layers in a stack to run in production mode.
 
 # Project ID
 By clicking on the project ID, you will see the REST API to use your project in production.
-![Using project id](http://www.zcymatix.com/img/rest_info.png "Launch")
+![Using project id](https://nlp2.zcymatix.com/img/rest_info.png "Launch")
 
 # Training time
 Depending on project complexity it may take from few seconds to few hours to train it. When project training/building is finished you will receive e-mail notification with the ***PROJECT ID*** required for ***project launch*** REST request. When training, project's or layer's icon is blinking.
@@ -203,7 +203,7 @@ Parameters:
 
 
 Here is REST API flow diagram:
-![REST API workflow](http://www.zcymatix.com/img/REST_workflow.png "REST API workflow")
+![REST API workflow](https://nlp2.zcymatix.com/img/REST_workflow.png "REST API workflow")
 
 ## Inference example
 
@@ -1091,10 +1091,10 @@ Consider the training samples using `P_PLACE` slot type:
 First four training samples rely on explicit place name we want to see or check the distance to. Last one has an intent and a list of slot names to look in the history to choose to resolve `it`:
 `INT_NAVIGATE/t_place/t_dest:take me there`
 Why list of slots? The intuition is this - search for either `t_place` or `t_dest` in that order in the inference history and put its value to substitute `there`.
-![Conventional "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_01.png "Coreference resolution")
+![Conventional "it"/"there" reolution](https://nlp2.zcymatix.com/img/session_memory_01.png "Coreference resolution")
 As you can see, you have to collect inferences in client application and resolve the value of 'it'. With zCymatix platform all done automatically on backend side.
 
-![zCymatix "it"/"there" reolution](http://www.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
+![zCymatix "it"/"there" reolution](https://nlp2.zcymatix.com/img/session_memory_02.png "zCymatix it/there reolution")
 
 # Script sections
 To fulfill user queries zCymatix platform uses python script. By default, all inferences are returend to application as json objects. Application should parse them and act on user requests. Alternatevly, developers could keep the application focusing on its task and not deal with NLU aspects. Following project sections enable such functionality.
