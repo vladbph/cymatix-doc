@@ -1117,7 +1117,7 @@ So if you want to access the last value, do it like this:
     WHAT_TIME: what time is it?
     .gate2
         if o.t_intent == 'WHAT_TIME':
-            o.t_cur_time = datetime( ).now( ).strftime( '%H:%M' )
+            o.t_cur_time = datetime.now( ).strftime( '%H:%M' )
         .bot
             WHAT_TIME: It is {t_cur_time}
 ```
@@ -1143,14 +1143,8 @@ Its purpose to define global python methods and shared, application wide, data w
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
 'xrange', 'zip', 'vars',
-'to_json', 'to_namespace', 'to_dict', 'read', 'write', 'datetime', 
-'lemma', 'lexeme', 'phoneme',
-'is_str', 'is_number'
-```
-NOTE! `datetime` object must be accessed as a function. See example in `.gate2` section.
-```
-datetime( ).now( ) # Correct
-datetime.now( ) # Incorrect
+'datetime', 'timedelta', 'time', 'date',
+'copy', 'deepcopy'
 ```
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
 
@@ -1165,6 +1159,18 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
 - To convert namespace object to dict:
 
     __`to_dict( obj )`__ 
+    
+- To check if an object is a string or unicode:
+
+    __`is_str( obj )`__ 
+    
+- To check if an object is a number:
+
+    __`is_number( obj )`__ 
+    
+- To check if an object is an array (list, tuple or numpy.array):
+
+    __`is_array( obj )`__ 
 
 - To pluralize a word:
 
@@ -1189,9 +1195,11 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
 - Read from __shared__ or __private__ data storage. Private data storage is a persistant storage, associated with an **instance of the application**
 
     __`read( session_id, file_name, data_string, shared = True )`__ 
+    
 - Write to __shared__ or __private__ data storage:
 
     __`write( session_id, file_name, data_string, shared = True )`__ 
+    
 - The __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls:
 
     __`z_sid`__ 
@@ -1200,6 +1208,7 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
     Example:
         write( z_sid, 'my_file.json', to_json( my_app_obj ), shared = True )
     ```
+    
 Data structures declared in this sections should be treated as `shared data` of the application, which can be saved/retrived to/from persisant memory via available methods: `read` and `write`
 
 ## `.vars` section
@@ -1395,21 +1404,17 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 
 __NOTE__! If the meaning of the parameters are not clear, keep the defaults or drop me a note. 
 
-- Depth of the model. By default, `1`
+- LSTM layers parameters(hidden units #, dropout value for input tensor, dropout value for hidden units, bi-directional LSTM flag, merge of forward and backward LSTMs outputs)
     ```
-    "n_lstm":1
+    "lstm":["hidden" : 100, "dropout_W": 0.1, "dropout_U": 0.1, "bi": false, "merge": false ]
     ```
 
-- Bidirectional LSTM models. By default, `true`.  
-    ```
-    "bi_lstm":true
-    ```
-    Example :
+    Example when you need to use bidirectional LSTM:
     ```
     I want ABC{t_pizza_type} pizza
     I want ABC{t_pizza_topping} on top
     ```
-    Unless `bi_lstm` is enabled, model will not be able to tell that in first case `ABC` refers to a `pizza type` and in second, to `pizza toppings`. It is sort of look ahead. There is an alternative though - enable convolutional layer.
+    Unless `bi` is enabled, model will not be able to tell that in first case `ABC` refers to a `pizza type` and in second, to `pizza toppings`. It is sort of look ahead. There is an alternative though - enable convolutional layer.
 
 - Training confidence level. By default, `0.9` - 90%. Level to consider inference reliable during training. If infered intent has lower probability, it will be replaced with `error_intent`, if it is set.
     ```
@@ -1550,18 +1555,6 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ```
     "emb_dimension":50
     ```
-- Number of hidden units. By default, it is `100`
-    ```
-    "n_hidden":100
-    ```
-- Dropout coefficient for feature vector. By default, it is `0.1`
-    ```
-    "dropout_W":0.1
-    ```
-- Dropout coefficient for hidden units. By default, it is `0.1`
-    ```
-    "dropout_U":0.1
-    ```
 - Optimizer name. By default, `Adam`
     ```
     "optimizer":"Adam"
@@ -1578,25 +1571,9 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
         'Adamax(lr = 0.002, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-08, decay = 0.0)'    
     ]
     ```
-- Use convolutional layer. By default, `false`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
+- Convolutional layer parameters. See the description [here](https://keras.io/layers/convolutional/#conv1d).
     ```
-    "conv":false
-    ```
-- Convolutional layer outputs. By default, `128`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
-    ```
-    "conv_outputs":128
-    ```    
-- Convolutional layer kernel size. By default, `5`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
-    ```
-    "conv_kernel_size ":128
-    ```    
-- Convolutional layer activation function. By default, `relu`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
-    ```
-    "conv_activation ":"relu"
-    ```    
-- Convolutional layer padding method. By default, `same`. See the description [here](https://keras.io/layers/convolutional/#conv1d)
-    ```
-    "conv_padding ":"same"
+    "conv":[ { "outputs": 128, "kernel_size": 3, "activation ": None, "padding ": "same", "use_bias": false } ]
     ```
 - Dropout layer value. By default, `0.0`.
     ```
