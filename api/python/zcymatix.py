@@ -76,6 +76,10 @@ class zCymatix:
         project_name = os.path.basename( project_folder )
 
         filenames = zCymatix._dir( project_folder )
+        if not filenames:
+            return 100, 'Project folder {} is invalid'.format( project_folder )
+        else:
+            print 'Uploading {}'.format( project_folder )
         file_handles = [ open( filename, 'rb' ) for filename in filenames ]
         filenames_only = [ filename[ len( project_folder ) + len( os.sep ) : ] for filename in filenames ]
         project_files = [ zCymatix._join( project_name, filename ) for filename in filenames_only ]
