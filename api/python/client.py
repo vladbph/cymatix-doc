@@ -1,6 +1,6 @@
 from zcymatix import zCymatix
 
-api = zCymatix( user_name = 'benchmark', user_pwd = 'benchmark', url = 'http2://nlp2.zcymatix.com' )
+api = zCymatix( user_name = 'benchmark', user_pwd = 'benchmark', url = 'https://nlp2.zcymatix.com' )
 
 class Color:
     OkGreen = '\033[92m'
