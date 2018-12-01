@@ -1155,9 +1155,10 @@ Its purpose to define global python methods and shared, application wide, data w
 ```
 'hasattr', 'isinstance', 'len', 'vars', 'min', 'max', 'int', 'long', 'float', 'complex', 'list', 
 'dict', 'str', 'unicode', 'tuple', 'set', 'False', 'True', 'None', 'oct', 'bin', 'bool', 'sorted'
-'xrange', 'zip', 'vars',
-'datetime', 'timedelta', 'time', 'date',
-'copy', 'deepcopy'
+'xrange', 'zip', 'vars', 'filter', 
+'datetime', 'timedelta', 'time', 'date', 'relativedelta',
+'requests',
+'copy', 'deepcopy', 'dir'
 ```
 Most of the functions are standard builtin. Custom methods and data exposed by plaform:
 
@@ -1207,7 +1208,7 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
 
 - Read from __shared__ or __private__ data storage. Private data storage is a persistant storage, associated with an **instance of the application**
 
-    __`read( session_id, file_name, data_string, shared = True )`__ 
+    __`read( session_id, file_name, shared = True )`__ 
     
 - Write to __shared__ or __private__ data storage:
 
