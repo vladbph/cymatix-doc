@@ -1,0 +1,116 @@
+//--------------------------------------------------------------------------------------------------
+.define
+    @want: want|need|must|would like
+    @i_want: @i @want
+    @can_i: (do|@can) @i|is it possible
+    @should: should|could|would|can
+    @how: how|how am i supposed to do it|how should @i do that|which way|in what way|instructions|@can you help me with that|guide me|show me how|im listening|im all ears
+    @what: what|which
+    @type: type|kind
+    @of: of|
+    @can: can|could|would
+    @your: your|ur
+    @you: you|u|yo
+    @are: are|r
+    @i: i|we
+    @looking: looking|looking for|searching|trying to find
+    @my: my|our|
+    @im: i am
+
+    @yes1: (yes|yep|yea|yeah|affirmative|positive|i do|true|correct|i (guess|believe) (so|)|i'd say so|sure|okey)
+    @yes2: (of course|definitely|certainly|surely|for sure|absolutely|no shit|hell yes)
+    @yes: (@yes1|@yes2|you bet|maybe|may be|why not)
+
+    @no1: @i_dont_think_so|i doubt (it|)
+    @no2: (@i_think|) (no|nope|negative|hell no|never|false|i dont|now|incorrect)
+    @no: @no1|@no2
+
+    @a: a|the|an|
+    @the: @a 
+    @an: @a
+    @think: guess|think|believe
+    @i_think: i @think
+    @i_dont_think_so: i do not (think|) (so|)
+    @it: it
+    @cannot: cannot
+
+    @need: @want
+    @find: find|locate|see|look at
+
+    @dont: do not
+    @hi: hi|hello|hey
+
+    @like: like|prefer|favor|love
+
+//--------------------------------------------------------------------------------------------------
+// For example purposes we use terminating system '@s' and '@e' macros. They must be used for unicode
+// character. Alternatevly '\b' symbols are used.
+.regex
+    &it is: @s(it'?s)@e
+    &: @s(a|the|this|that)@e
+    &: @s(please)@e
+    &: @s(@a)@e
+    &: \bcould you tell me( please)?\b
+    &: \tell me( please)?\b
+    &: ^\s*explain\b
+    &: \please tell me\b
+    &: \b(would you be able to tell me)\b
+    &how: \bhow( is that)?|is there any ways?\b
+    &what is: \b(what'?s)\b
+    &the: \b(a|the)\b
+    &i: \b(we|they|us|he|she)\b
+    &i am: \b([Ii]'?m)\b
+    &: \b([iI] (?:was|am) wondering)\b
+    &: \b([iI]'m wondering)\b
+    &: \btell me\b
+    &is it: \b(?:i|we|they) want to know if it is\b
+    &: \b[Ii] want to know if\b
+    &i will: \b([Ii]'?ll)\b
+    &we will: \b([Ww]e'?ll)\b
+    &i would: \b([Ii]'?d)\b
+    &we would: \b([Ww]e'?d)\b
+    &help: \b([Ii] would appreciate if you can (?:help|assist))\b
+    &: \bplease\b
+    &: \b((?:[Ii]|[Ww]e) would appreticate|(?:[Ii]|[Ww]e) would be grateful)\b
+    &: \b([Ww]e would be thankful)\b
+    &: \b(it would be great)\b
+    &: \bwould you please\b
+    &: \bwould you be so kind to tell me\b
+    &: \bwould you be so kind to telling me\b
+    &: \bwould you be so kind\b
+    &: \bcan you tell me\b
+    &: \b[Ii] would like to know\b
+    &: \bcan you tell me( please)?\b
+    &: \bmy dear\b
+    &: \b[Ii] don't suppose\b
+    &: ^\s*(okey|ok)(?= \w+)
+    &: ^\s*(btw|by the way)@e
+    &your: @s(urs?)@e
+    &looking: @s(lookig|lookin|lukin|luking)@e
+
+    &ok: [Oo]k'?[ae]y
+    &did not: @s(didn'?t)@e
+    &do not: @s(don'?t)@e
+    &cannot: @s(can'?t|can\s+not)@e
+    &would not: @s(wouldnot|wouldn'?t)@e
+    &should not: @s(shouldnot|shouldn'?t)@e
+    &yes: @s(yes yes)@e
+    &no: @s(no no)@e
+    &thanks: @s(thank\s+you)@e
+    &: ((?<=yes\s)|(?<=no\s))(thanks)@e
+
+    &type: @s(types)@e
+    &kind: @s(kind)@e
+    &: @s((?:@can\s+you\s+)?explain)@e
+    &: ^look\b
+
+    &lets:\b([Ll]et'?s?)\b
+    &:\bcould you tell me (please)?\b
+    &you:\b(?:u|yuo|yu)\b
+    &your:\b(?:ur|yuor)\b
+    &who is: \b(?:[Ww]ho'?s)\b
+    &did not: @s(didn'?t)@e
+    &do not: @s(don'?t)@e
+    &cannot: @s(can\s+not|can'?t)@e
+    &would not: @s(wouldnot|wouldn'?t)@e
+    &should not: @s(shouldnot|shouldn'?t)@e
