@@ -114,14 +114,14 @@ The zCymatix platform is a new generation conversational/dialog NLU service. It 
 zCymatix platform has an expert systems capabilities along with NLU in one package to solve complex problems like medical diagnoses or analytics if you wish. 
 The platform has tools to create 1000's of utternaces in minutes, helping to minimize time for dataset creation. Interpreting idioms is also handled by backend: 'grabbing a bite' will be easily resolved to useable term 'restaurant'.
 Have you tried asking Alexa: **'What is the population of Seattle?'** and after getting the responce **'What about Vancouver?'**. Sounds simple in human terms, but intent propagation is not widely handled by public NLU patforms. zCymatix platform will do **that** with ease. Please, read the previous sentence! Many platforms will be confused: 'Will do what?'. Not a problem for zCymatix with its coreference resolution feature.
-Sure you have heard 'Divide and conquer'. Same principle is applied in the platform to handle complex knowledge domains. zCymatix platform allows developers to create inference layers. This feature allows significant training time reduction. In addition, scripted(python) fulfillment is supported at each layer.
-Weather you are an expert in NLU or an application developer who wants to have voice/text interface we have tools for all categories. We expose practically all machine learning models parameters so you can achieve the best possible results in solving your problems. If you don't know what these parameters mean, leave them alone.
+Sure you have heard 'Divide and conquer'. Same principle is used to handle complex knowledge domains. The platform allows developers to create inference layers enabling significant training time reduction. In addition, scripted(python) fulfillment is supported at each layer exit point.
+Whether you are NLU expert or an application developer who wants to have voice/text interface, we have tools for all categories. We expose practically all machine learning models parameters so you can achieve the best possible results in solving **your** problems. If you don't know what these parameters mean, leave them alone.
 Intent prefixes is another feature, which drastically simplifies handling conversation flow. 
 For example how would you handle simple user query **'What did you say?'** in other platforms? In zCymatix it will look like this:
 ```json
 P~REPEAT: What did you say?
 ```
-That's it! Prefix **P~** will tell the system to get last prompt from the history and return to user. Even more you can also ask **'What did you say before that?'**...It is simple too.
+That's it! Prefix **P~** tells the system to get last prompt from the inference history and return it to user. 
    
 # 'Hello Word' Example
 Let's demonstrate how 3 lines of text/code makes your first NLU project.
