@@ -1214,6 +1214,10 @@ Most of the functions are standard builtin. Custom methods and data exposed by p
 
     __`write( session_id, file_name, data_string, shared = True )`__ 
     
+- Delete a file from __shared__ or __private__ data storage.NOTE! To delete file from __shared__ storage user must have special preveledges:
+
+    __`delete( session_id, file_name, shared = True )`__ 
+
 - The __local__ variable, `token/session_id`, that must be passed with `read` and `write` functions calls:
 
     __`z_sid`__ 
