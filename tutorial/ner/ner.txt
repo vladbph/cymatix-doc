@@ -41,7 +41,7 @@
 // It return true if it is valid, false otherwise
 //--------------------------------------------------------------------------------------------------
 .script
-def P_NAME_handler( value ):
+def P_NAME_handler( value, is_first = True ):
     name = value.lower( )
 
     # See 'g_male_name' and 'g_female_name' definitions in 
