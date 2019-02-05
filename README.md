@@ -132,7 +132,7 @@ Let's demonstrate how 3 lines of text/code makes your first NLU project.
 ```
 * Create **hello.txt** training file
 ```
-.train
+.user
     GREETING: (Hello World|hi|hello)
 ```
 ***GREETING*** is the ***intent***, 'Hello world' is how you say it. You may ask what if the intent is not specified? Well - this means that utterance 'Hello World' will not have any associations. This is very important point to understand - you can describe things two ways a) by what ***it is*** and b) what ***it is not***. We will come to this later.
@@ -250,17 +250,17 @@ It may take few seconds for a project to be launched (if it was not before). If 
 Alternative name is **`.user`** for readability.
 The section contains training samples. Formal syntax is:
 ```
-.train
+.user
     <INTENT>: <utterance with or without slot labels>
 ```
 Note, the intent is optional. In this case the utterance may be used to slot fitting:
 ```
-.train
+.user
     I want pizza with (extra cheese){t_toppings} and ham{t_toppings}
 ```
 The following example teaches to ingore the utterace all together:
 ```
-.train
+.user
     I am not sure what I want
 ```
 This example is quite important to demonstrate the key concept, while building a training set. One thing can be descrided `what it is` and `what it is not`! Keeping this in mind, you can create more accurate training sets.
@@ -271,7 +271,7 @@ What if we want AI system to respond to user query? Let's use the 'Hello World' 
 ```
 .user
     GREETING: Hello World
-.prompt
+.bot
     GREETING: Hello my friend
     GREETING: Hello!
     GREETING: Hi!    
@@ -282,14 +282,14 @@ INTENT:<PROMPT VARIANT>
 ```
 In the example above GREETING has three variants. They will be selected randomly in order to create more human like interaction. It reads like this - 'when user greets me reply this'. Prompt text may contain slots/parameters values. 
 ```
-.prompt
+.bot
     NAVIGATE: Ok, I am starting navigation to {t_dest} by {t_car}
 ```
 Where ___t_dest___ and ___t_car___ are slots/parameters.
 Prompts purpose is twofold 1. to be able to respond to user. 2. Prompt as a template with slot names to be passed to next layer in the inference pipeline. This mechanism is used in `expert systems` layers.
 The idea: You collect all the data from user in the form of slots and their values and then use prompt template to build the 'utterance' for the next model. 
 ```json
-.prompt
+.bot
     R~READY: {t_param1} {t_param2} {t_param3}...
 ```
 Please, be careful when having multiple layers in non expert system projects. Let's say you have three layer project. Second layer defines a prompt. In such cases `propmt is passed to third layer instead of utterance(!)`
@@ -301,7 +301,7 @@ Let's update ***hello.txt*** file a little. Add ***.define*** section.
     @hi: Hello|hi
     @guys: guys|folks|World|
 
-.train
+.user
     GREETING:@hi @guys
 ```
 In this example we define two macros ***@hi*** and ***@guys***. The resulting training set will be:
@@ -352,9 +352,9 @@ Training file:
 .define
     @take: take|bring
     @me: me|us|them
-.train
+.user
     NAVIGATE: @take @me to Seattle{t_dest} by car{t_transport}
-.prompt
+.bot
     NAVIGATE: Sure, I am starting navigation to {t_dest} by {t_transport}
 ```
 
@@ -386,7 +386,7 @@ For simplicity sake, let's ignore pizza sizes inference.
 
 ***kinds.txt***:
 ```
-.train
+.user
     I would like to place an order for a small (BBQ chicken){&PIZZA_KIND} and \
     large meat{&PIZZA_KIND} pizza
 ```
@@ -397,7 +397,7 @@ For simplicity sake, let's ignore pizza sizes inference.
 This is a mechanism to label multiple words with specific `label` and using multiple instance of the label in a single utterance. To explain further, let's look at the next layer and file 
 ***order_pizza.txt***:
 ```
-.train
+.user
     ORDER_PIZZA: I would like to place an order for a small PIZZA_KIND{t_kind} and \
                  large PIZZA_KIND{t_kind} pizza
 ```
@@ -415,7 +415,7 @@ You could say - ___How about if I have a macro @pizza_kind and put all values th
 ```
 .define
     @pizza_kind: BBQ chicken|meat|Hawaiian|...
-.train
+.user
     ORDER_PIZZA: i would like to place an order for small @pizza_kind{t_kind} and \
                  large @pizza_kind{t_kind} pizza
 ```
@@ -434,7 +434,7 @@ So, this mechanism enables smaller context needed to train the layer to extract 
 ```
 .define 
     @pizza_kind: BBQ chicken|meat|pepperoni|Hawaiian
-.train
+.user
     @small @pizza_kind{&PIZZA_KIND} (and @pizza_kind{&PIZZA_KIND} pizza|)
 ```
 So, having a context consisting only surrounding words is enough? You decide. But be careful though. ***False positives one of the biggest issues in NLU systems***, finding the balance between training time, number of utterances and sufficient context is not easy task to create ***high quality training set.*** [`zCymatix`](http://www.zcymatix.com) platform gives the tools to go either way.
@@ -498,7 +498,7 @@ Its purpose is to fullfil user query. .gate section contains a small script for 
     'R~THANKS_NO'     if o.t_intent == 'ORDER_PIZZA_NO'
 ```
 ```
-.prompt
+.bot
     ASK_KIND: What kind of pizza would you like?(BBQ chicken, Hawaiian, pepperoni, etc)
     ASK_SIZE: What size? (large, medium, small, etc)
     ASK_TOPPINGS: Anything on top?(ham, cheese, tomatoes, etc)
@@ -540,7 +540,7 @@ Service> Minimalistic project consists of two files - configuration file and tra
 ```
 Training file:
 ```
-.train
+.user
     I~INTRO: what can you do for me
     I~INTRO: what is your (purpose|goal|task|agenda)
     I~INTRO: how you can help me
@@ -560,7 +560,7 @@ Training file:
     MIN_PROJECT: DO_CREATE_PROJECT any guidance (please|)?
     MIN_PROJECT: <...>
 
-.prompt
+.bot
     I~INTRO: I am a Natural Language Understanding platform and I can help you to create AI assistants
     DO_CREATE_PROJECT: First, you need to create a project
     MIN_PROJECT: Minimalistic project consists of two files - configuration file and training file
@@ -618,7 +618,7 @@ The values in the template are controlled by prompt's prefixes as described belo
 Implies using label's ___name___ in the ___most recent inference___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in the last inference, t_age is absent
-.prompt
+.bot
     RESULT: {#t_name} {#t_age}
     # The value of RESULT: t_name None
 ```
@@ -627,7 +627,7 @@ Example: t_name value is in the last inference, t_age is absent
 Implies using label's ___name___ in the ___most recent inference___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example:  t_name value is in the last inference, t_age is absent
-.prompt
+.bot
     RESULT: {?#t_name} {?#t_age}
     # The value of RESULT: t_name 
 ```
@@ -636,7 +636,7 @@ Example:  t_name value is in the last inference, t_age is absent
 Implies using label's ___name___ in ___whole inference history___. The approach can be used as an input for dialog tracking layers. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name value is in all whole history, t_age is absent
-.prompt
+.bot
     RESULT: {$t_name} {$t_age}
     # The value of RESULT: t_name None
 ```
@@ -645,7 +645,7 @@ Example: t_name value is in all whole history, t_age is absent
 Implies using label's ___name___ in ___whole inference history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name value is in all whole history, t_age is absent
-.prompt
+.bot
     RESULT: {?$t_name} {?$t_age}
     # The value of RESULT: t_name 
 ```
@@ -654,7 +654,7 @@ Example: t_name value is in all whole history, t_age is absent
 Implies using label's ___value___ in the ___most recent inference___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_name = John is in the last inference. 
-.prompt
+.bot
     GREETING: Hello {.t_name} => Hello John
 ```
 
@@ -662,7 +662,7 @@ Example: t_name = John is in the last inference.
 Implies using label's ___value___ in the ___most recent inference___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in the last inference. 
-.prompt
+.bot
     GREETING: Hello {?.t_name} => Hello
 ```
 
@@ -670,7 +670,7 @@ Example: t_name is absent in the last inference.
 Implies using label's ___values___ in ___whole inference history___. ___NOTE: if value is absent it will be replaced with 'None'___
 ```
 Example: t_kind values are in whole inference history, t_kind = BBQ and t_kind = meat
-.prompt
+.bot
     ORDER_PIZZA: Ok, I will place an order of {t_kind} pizza for you => 
     => Ok, I will place an order of BBQ, meat pizza for you
 ```
@@ -679,7 +679,7 @@ Example: t_kind values are in whole inference history, t_kind = BBQ and t_kind =
 Implies using label's ___values___ in ___whole inference history___. ___NOTE: if value is absent it will be skipped from the prompt___
 ```
 Example: t_name is absent in inference history
-.prompt
+.bot
     GREETING: Hello {?t_name} => Hello
 ```
 
@@ -689,11 +689,11 @@ If previous inference is not available, `None` value is used in the prompt. If y
 
 ```
 Example: 
-.train
+.user
     ASKING_AGE: how old are you
     R~RESP_YES: ASKING_AGE (yes|sure|of course)
     R~RESP_NO: ASKING_AGE (no|nope|don't care)
-.prompt
+.bot
     ASKING_AGE: I don't know answer to the question, would you like to forward it to my parents?
     R~RESP_YES: Sure. I am forwarding your question {t_utt-1} to my parents
     R~RESP_NO: Ok, no problem.
@@ -728,7 +728,7 @@ __slots.txt__ file:
     &and:\b(?:as well as|and also)\b
     // Replace, but finally resolve to actual value
     P_SIZE: (?:@small)
-.train
+.user
     // The goal is to isolate slot types(!) and replace them by the type name, so next layer - has
     // less samples to be trained with
     (ORDER_PIZZA|) @kind{&P_KIND}
@@ -749,7 +749,7 @@ Developers of knowledge domains are faced with the challenge to come up with as 
 ```
 .define
     @and: and|also|as well as
-.train
+.user
     I would like ham @and extra cheese on top 
 ```
 In the example above we would have 3 utterances instead of one because we have 3 variants for ```and```
@@ -814,7 +814,7 @@ Config for this layer:
 
 __pizza.txt__ file:
 ```
-.train
+.user
     ORDER_PIZZA: @i @want some @pizza @please
     ORDER_PIZZA: @pizza (@please|)
     ORDER_PIZZA: ASK_SIZE P_SIZE{t_size}
@@ -828,7 +828,7 @@ __pizza.txt__ file:
     ORDER_PIZZA: ASK_ADDRESS @i live in P_ADDRESS{t_address}
     R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
     R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
-.prompt
+.bot
     // Generate Prompt that contains only one(!) missing slot to train next dialog layer
     // With the prompt definition below one of:
     //   if t_kind is missing
@@ -837,7 +837,7 @@ __pizza.txt__ file:
     //   if t_address is missing
     //   if none is missing
     // will be passed to the next layer, which must be trained like this:
-    // .train
+    // .user
     //   ASK_KIND: if t_kind is missing
     // See bot.txt file.
     ORDER_PIZZA: if {$!t_kind|t_size|t_toppings|t_address|none} is missing
@@ -853,7 +853,7 @@ Now time to discuss:
 ```
 It tells that the layer wants to receive ___last intent___ as a prefix to the input utterance. This is the essence of __ToTh__ mechanism to communicate contextual information to make inferences more accurate. __NOTE!__ Intents can be generated by any layer in the stack and be passed to the next layer with ```toth``` set to ```true```. Otherwise, current utterance or prompt value is passed to the next layer unchanged. Consider the following training utterance:
 ```
-.train
+.user
     ORDER_PIZZA: ASK_TOPPINGS I want pizza with P_TOPPINGS{t_toppings}
 ```    
 It reads like this: when user is prompted to provide pizza toppings(previous intent was ___ASK_TOPPINGS___) and user response is 'I want pizza with cheese', produce ___ORDER_PIZZA___ intent and assign ___t_toppings___ with its value. ```t_toppings = cheese```
@@ -861,12 +861,12 @@ It reads like this: when user is prompted to provide pizza toppings(previous int
 Layer 'Pizza' should contain as many utterances as possible to understand any user and the way they talk! The layer collects all slots and their values. 
 Now, what is next? Next - is to figure out which question we need to ask. To do so we need to generate prompts, not utterances, because next layer inference is based on the fact which slots we have already collected. This information is stored in the inference history, which is what user said before. See the comments in prompt section above.
 ```
-.prompt
+.bot
     ORDER_PIZZA: if {$!t_kind|t_size|t_toppings|t_address|none} is missing
 ```
 ```{$!t_kind|t_size|t_toppings|t_address|none}``` means look through all inference history and put __slot names__(prefix __'$'__) which are __NOT__ present in the inference history(prefix __'!'__). Last value in the statement is dummy slot name 'None'. It is used for readability purpose only as well as 'if' and 'is missing'. So the prompt's template could just look like this:
 ```
-.prompt
+.bot
     ORDER_PIZZA: {$!t_kind|t_size|t_toppings|t_address|none}
 ```
 This way we build prompts providing sufficient information to the next layer to decide - what to ask next. 
@@ -889,13 +889,13 @@ Configuration:
 ```
 __bot.txt__ training file is very simple and contains very few 'utterances', which are, in fact, prompts generated by previous layer.
 ```
-.train
+.user
     ASK_KIND: if t_kind is missing
     ASK_SIZE: if t_size is missing
     ASK_TOPPINGS: if t_toppings is missing
     ASK_ADDRESS: if t_address is missing
     ASK_TO_CONFIRM: if None is missing
-.prompt
+.bot
     ASK_KIND: What kind of pizza would you like. For example, Hawaiian, BBQ, etc.?
     ASK_SIZE: Small, medium or large?
     ASK_TOPPINGS: What do you want on top. For example: tomato, ham, cheese, etc.?
@@ -938,6 +938,7 @@ At some point we need to collect all slots values in the stack to build an aggre
 * ## Intent Prefixes
 ```
 <no prefix> - Normal intent. The intent and slots values to be collected in the history.
+U~  Keep the inference in the history without an intent value. Useful in Toth mode.
 R~  Return command. Return all collected slots values in the 
     inference history and clean the history. 
 P~  One step back command. 'Can you repeat it please?'
@@ -962,13 +963,26 @@ Intent without prefix with infered slots and their values are saved in the infer
 where
 `t_intent = ORDER_PIZZA` will be kelp in stack until `R~` or `X~` session-based conversation intent comes along to erase it.
 
+* ## `U~` prefix. Keep inference in histoty without intent value
+```
+.user
+    U~NAVIGATE: take me to Seattle{t_target}
+.bot
+    U~NAVIGATE: Sure, I will take you yo {.t_target}
+```
+Only `t_target` will be kept in the inferences history:
+```json
+{
+    "t_target":"Seattle"
+}
+```
 * ## `R~` prefix. Return command
 In 'Pizza' layer we have:
 ```
-.train
+.user
     R~ORDER_PIZZA_YES: ASK_TO_CONFIRM @yes
     R~ORDER_PIZZA_NO: ASK_TO_CONFIRM @no
-.prompt:
+.bot
     R~ORDER_PIZZA_YES: Thank you for you order :)
     R~ORDER_PIZZA_NO: Sure, may be next time
 ```
@@ -1008,13 +1022,13 @@ The prefix tells framework to take last inference in the history and return it. 
         P~REPEAT: could you repeat please
         ...
 ```
-Intent `P~REPEAT` will trigger automatic return of `What type of pizza would you like?` in t_prompt field of the inference. You don't have to define the value of `P~REPEAT` in the `.prompt` section.
+Intent `P~REPEAT` will trigger automatic return of `What type of pizza would you like?` in t_prompt field of the inference. You don't have to define the value of `P~REPEAT` in the `.bot` section.
 
 Please note, if previous intent was either R~ or I~ or X~, there will be no history records available. To have access  previous prompt always - consider training sample:
 ```
 .user
     F~REPEAT:what|what did you say|come again|repeat (please|)|pardon me
-.bot:
+.bot
     F~REPEAT: *
 ```
 Star `*` symbol tells to grab last value of the `t_prompt` in the history. 
@@ -1044,11 +1058,11 @@ The `t_dest` slot value `Seattle` will be replaced with `Vancouver` directly in 
 * ## `X~` prefix. Clean previous history command
 The prefix should be used if current inference suggests that the previous history must not be kept any longer. ___Current inference is not saved in the history.___
 ```
-.train
+.user
     CONFIRMATION:Would you like to proceed with your order?
     R~PLACE_ORDER: CONFIRMATION yes
     X~CANCEL_ORDER: CONFIRMATION no
-.prompt
+.bot
     USER_CONFUSED: I'm sorry
     // Collect all slots values in the collected history of the dialog and return to user
     R~PLACE_ORDER:Thank you for your order. Your order is {t_param1} {t_param2}...
@@ -1066,10 +1080,10 @@ The prefix should be used if current inference suggests that the previous histor
 
 To support truly natural language understanding, we have a mechanism to interpret idioms and enable `slot filling` with semantic values ***not found in the original utterance***. Here is an example:
 ```
-.train
+.user
     ~NAV: take me to a place where i can have a nice meal
     ~NAV_01: I am starving, walk me to a closest place where I can have a nice meal
-.prompt:
+.bot
     ~NAV: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=car
     ~NAV_01: t_target=restaurant;t_prompt=Sure, I will take you to a {t_target};t_transport=walk
 ```
@@ -1079,11 +1093,11 @@ Please also note the separator `;` between slots-value pairs.
 # Remove slot value from inference history. `$del` command
 Lets say you want to delete a slot value from the history. Consider the example:
 ```
-.train
+.user
     C~PARKING_HS_MS: I want to park my car for 2{t_time_hour} hours and 15{t_time_min} minutes
     ~C_PARKING_HS: No, I want to park for 3{t_time_hour} hours
     ~C_PARKING_MS: No, I just want to be here for 5{t_time_min} minutes
-.prompt:
+.bot
     C~PARKING_HS_MS: Sure. {t_time_hour} hours and {t_time_min} minutes timer starts now.
     ~C_PARKING_HS: t_time_min = $del; t_prompt = Sure, {t_time_hour} hours timer start now.
     ~C_PARKING_MS: t_time_hour = $del; t_prompt = Sure, {t_time_min} minutes timer start now.
@@ -1094,7 +1108,7 @@ In this example user can change his/her mind as many time as desired, and slot v
 
 Consider the training samples using `P_PLACE` slot type:
 ```
-.train
+.user
     INT_SHOW_PLACE: show me P_PLACE{t_place} (on the map|)
     INT_SHOW_PLACE: where is P_PLACE{t_place}
     INT_SHOW_PLACE: I am looking for P_PLACE{t_place}
@@ -1277,7 +1291,7 @@ now it needs to decide where to play the music or should we ask user? Sure, we m
 
 With [`zCymatix`](http://www.zcymatix.com) platform it is possible to encode and use sensor's real-time data "when I am in living" room as symbol `__living_room__`:
 ```
-.train
+.user
     PLAY_MUSIC: __living_room__{t_location} play P_ARTIST{t_artist}
 ```
 and the inference would be:
@@ -1369,7 +1383,7 @@ The platform support a layer type, which goal is not related to NLU. You may dec
 - Before starting creating a `project` or `knowledge domain` important to remember:
 There are two ways to describe something. __`What it IS`__ and __`what it IS NOT`__. Remember __Hello__ example in this tutorial? Does not matter what you say, it will `always` produce `GREETING` intent! Why? Because the example does not have any alternative samples to tell apart 'Hello World' from any other things user may say. Consider the example:
     ```
-    .train
+    .user
         INT_FLIGHT_INFO:show me flights to Seattle{t_dest}
         don't show me flights to Seattle
     ```
@@ -1386,7 +1400,7 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
 - Slot inference. Consider two training sets:
  `Single layer project` which attempts not to use slot types isolation step:
     ```
-        .train
+        .user
             INT_NAVIGATE:take me to (Los Angeles){t_dest} and to (New York){t_dest}
     ```
     with inference for the sample above:
@@ -1399,12 +1413,12 @@ There are two ways to describe something. __`What it IS`__ and __`what it IS NOT
     vs `Two layers project` which uses type definition layer and a separate slot value inference layer:
     ```
         # Layer 1 - type training
-        .train 
+        .user 
             take me to (Los Angeles){&P_PLACE} and to (New York){&P_PLACE}
     ```
     ```
         # Layer 2 - intents and slots inference
-        .train
+        .user
             INT_NAVIGATE:take me to P_PLACE{t_dest} and to P_PLACE{t_dest}
     ```
     with inference for the sample:
@@ -1525,15 +1539,15 @@ __NOTE__! If the meaning of the parameters are not clear, keep the defaults or d
     ```
     This is quite useful feature. Example: We want to interpret user's loose answer that would be considered `yes` or `no`.
     ```
-    .train
+    .user
         INT_YES:I guess so|it is rather yes then no|...
     ```
     If the intent was `INT_YES` it will become an utterance for next layer(!) reducing training set of this layer to deal only with `INT_YES` or `INT_NO`
     Alternatively, prompt mechanism can be used to achieve the same result, however this feature flag saves additional typing. I will not suggest which one is better. It depends on the application.
     ```
-    .train
+    .user
         INT_YES:I guess so|it is rather yes then no|...
-    .prompt
+    .bot
         // Utterance for the next layer will be the intent itself taken 
         // from the current inference
         INT_YES: {.t_intent}
@@ -1560,7 +1574,7 @@ __NOTE!__ If the meaning of the parameters are not clear, keep the defaults or d
     ```
     Example:
     ```
-    .train
+    .user
         INT_YES: sure|yes|of course|I would say so|...
         INT_NO: no|nope|I don't think so|negative|no way|...
     ```
