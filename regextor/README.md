@@ -1,6 +1,5 @@
 # NLP utterance generator
-
-NLP tool to unwind word level regular expression-like strings:
+Looking for for semi-automated training set generation? NLP tool to unwind word level regular expression-like strings:
  '(take|drive) (me|) to (Seattle|Vancouver)' => 
  
   'drive  to Vancouver', 'drive  to Seattle', 'drive me to Vancouver', 
@@ -9,8 +8,6 @@ NLP tool to unwind word level regular expression-like strings:
   
  NOTE, expression '(me|)' => ['me', '']
  
- This is _the_ tool for semi-automated training set generation
-
 # INSTALL
 
 ```
