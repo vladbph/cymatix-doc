@@ -146,7 +146,7 @@ That's it. If you want to see system to respond to you, add:
     GREETING: Hello my friend
 ```
 
-To get end-to-end experience go to [zcymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
+To get end-to-end experience go to [cymatix.com](http://www.zcymatix.com) and sign up. Press ***Sign In*** and then ***Sign Up***. 
 ***NOTE!*** Please use real e-mail address to be able to receive training completion notification with PROJECT ID. Otherwise you cannot use the service.
 ![Register](https://nlp2.zcymatix.com/img/signup2.png "Register")
 
