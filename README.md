@@ -1,4 +1,4 @@
-# [zCymatix](http://www.zcymatix.com) Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform 
+# [Cymatix](http://www.zcymatix.com) Natural Language Understanding(NLU) Voice/text UI & Expert Systems Platform 
 # [Sign Up](https://nlp2.zcymatix.com/) 
 # [Dashboard Android App](https://play.google.com/store/apps/details?id=com.zcymatix.demo)
 #### Applications:
